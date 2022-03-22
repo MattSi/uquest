@@ -1,5 +1,6 @@
 package org.bigorange.game.desktop;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import org.bigorange.game.UndergroundQuest;
@@ -9,6 +10,7 @@ public class DesktopLauncher {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
 		config.height = 720;
 		config.width = 1280;
-		new LwjglApplication(new UndergroundQuest(), config);
+		Application app = new LwjglApplication(new UndergroundQuest(), config);
+		app.setLogLevel(Application.LOG_DEBUG);
 	}
 }
