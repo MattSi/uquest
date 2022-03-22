@@ -28,7 +28,7 @@ allprojects {
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.1.0'
         junitVersion = '4.13.2'
-        mockitoVersion = '1.10.19'
+        mockitoVersion = '4.4.0'
     }
 
     repositories {
@@ -100,7 +100,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
-        api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+
     }
 }
 
@@ -109,7 +109,9 @@ project(":tests"){
 
     dependencies {
         api project(":core")
-        api "org.mockito:mockito-all:$mockitoVersion"
+        api "com.badlogicgames.gdx:gdx-backend-headless:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+        api "org.mockito:mockito-core:$mockitoVersion"
         api "junit:junit:$junitVersion"
     }
 

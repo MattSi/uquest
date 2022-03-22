@@ -1,10 +1,11 @@
-package org.bigorange.game.framework;
+package org.bigorange.game.tests.framework;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
+import org.bigorange.game.core.ResourceManager;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -14,32 +15,35 @@ import org.mockito.Mockito;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.mockito.Mockito.mock;
 
 
 /**
  * This class referenced https://github.com/TomGrill/gdx-testing
+ *
+ * 1. 定制化一个JUnit的Runner （https://blog.csdn.net/lzufeng/article/details/90291944）
+ * 2. 用HeadlessApplication创建测试应用
+ * 3. mock了gl
  */
 public class GdxTestRunner extends BlockJUnit4ClassRunner implements ApplicationListener {
 
     private Map<FrameworkMethod, RunNotifier> invokeInRender = new HashMap<>();
+    private ResourceManager resourceManager;
+
     public GdxTestRunner(Class<?> klass) throws InitializationError{
         super(klass);
         HeadlessApplicationConfiguration conf = new HeadlessApplicationConfiguration();
-
-        new HeadlessApplication(this, conf);
         Gdx.gl = Mockito.mock(GL20.class);
+        this.resourceManager = new ResourceManager();
+        new HeadlessApplication(this, conf);
     }
 
 
     @Override
     public void create() {
-
     }
 
     @Override
     public void resize(int width, int height) {
-
     }
 
     @Override
@@ -54,17 +58,15 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void dispose() {
-
+        this.resourceManager.dispose();
     }
 
     @Override
@@ -74,6 +76,7 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
         }
 
         // wait until that test was invoked
+        waitUntilInvokedInRenderMethod();
 
     }
 
@@ -90,4 +93,9 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
             // Ignored sleep Exception
         }
     }
+
+    public ResourceManager getResourceManager() {
+        return resourceManager;
+    }
+
 }

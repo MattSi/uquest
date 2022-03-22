@@ -26,12 +26,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 
 
-		resourceManager.load("map/battle1.tmx", TiledMap.class);
-		resourceManager.finishLoading();
 
-		final TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-		Map map = new Map(tiledMap);
-		Gdx.app.log(TAG, map.getGameObjects().toString());
 	}
 
 	@Override
