@@ -6,6 +6,8 @@ import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
 import org.bigorange.game.core.ResourceManager;
+import org.bigorange.game.core.input.EKey;
+import org.bigorange.game.map.MapManager;
 import org.junit.runner.notification.RunNotifier;
 import org.junit.runners.BlockJUnit4ClassRunner;
 import org.junit.runners.model.FrameworkMethod;
@@ -28,12 +30,16 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 
     private Map<FrameworkMethod, RunNotifier> invokeInRender = new HashMap<>();
     private ResourceManager resourceManager;
+    private MapManager mapManager;
+    private EKey eKey;
 
     public GdxTestRunner(Class<?> klass) throws InitializationError{
         super(klass);
         HeadlessApplicationConfiguration conf = new HeadlessApplicationConfiguration();
         Gdx.gl = Mockito.mock(GL20.class);
         this.resourceManager = new ResourceManager();
+        this.mapManager = new MapManager(this.resourceManager);
+        this.eKey = EKey.UP;
         new HeadlessApplication(this, conf);
     }
 
@@ -77,7 +83,6 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
 
         // wait until that test was invoked
         waitUntilInvokedInRenderMethod();
-
     }
 
     private void waitUntilInvokedInRenderMethod(){
@@ -98,4 +103,11 @@ public class GdxTestRunner extends BlockJUnit4ClassRunner implements Application
         return resourceManager;
     }
 
+    public MapManager getMapManager() {
+        return mapManager;
+    }
+
+    public EKey geteKey() {
+        return eKey;
+    }
 }

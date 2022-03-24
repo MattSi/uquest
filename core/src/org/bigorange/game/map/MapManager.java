@@ -4,6 +4,7 @@ package org.bigorange.game.map;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
@@ -37,9 +38,27 @@ public class MapManager {
         this.resourceManager = Utils.getResourceManager();
     }
 
-    public void loadMap(){
+    public MapManager(ResourceManager resourceManager){
+        this.currentMap = null;
+        this.gameObjectAnimationCache = new IntMap<>();
+        this.mapListeners = new Array<>();
+        this.resourceManager = resourceManager;
+    }
+
+    public void loadMap(TiledMap map){
+        if(currentMap == null){
+            currentMap = new Map(map);
+        }
+        for (final MapListener mapListener : mapListeners) {
+            mapListener.mapChanged(currentMap);
+        }
+
+        for (final GameObject gameObj : currentMap.getGameObjects()) {
+            getAnimation(gameObj);
+        }
 
     }
+
     private Animation<Sprite> getAnimation(final GameObject gameObj) {
         final TiledMapTile tile = gameObj.getTile();
         Animation<Sprite> animation = gameObjectAnimationCache.get(tile.getId());
@@ -73,5 +92,13 @@ public class MapManager {
         if(mapListeners.contains(mapListener, true)){
             mapListeners.removeValue(mapListener, true);
         }
+    }
+
+    public Map getCurrentMap() {
+        return currentMap;
+    }
+
+    public IntMap<Animation<Sprite>> getGameObjectAnimationCache() {
+        return gameObjectAnimationCache;
     }
 }
