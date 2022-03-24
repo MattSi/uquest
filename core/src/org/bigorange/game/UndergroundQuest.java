@@ -67,6 +67,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 		updateCamera();
 
 		batch.begin();
+		AnimatedTiledMapTile.updateAnimationBaseTime();
 		mapRenderer.setView(camera);
 		for (TiledMapTileLayer layer : layersToRender) {
 			mapRenderer.renderTileLayer(layer);
