@@ -13,19 +13,19 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.core.input.InputManager;
-import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
 
 public class UndergroundQuest extends ApplicationAdapter {
 
 	public static final String TAG = UndergroundQuest.class.getSimpleName();
-	public static final float UNIT_SCALE = 1 / 48f;
+	public static final float UNIT_SCALE = 1 / 64f;
 
 
 	private OrthographicCamera camera;
@@ -36,23 +36,25 @@ public class UndergroundQuest extends ApplicationAdapter {
 	private Array<TiledMapTileLayer> layersToRender;
 	private Vector2 direction;
 	TiledMap tiledMap;
-	SpriteBatch batch;
+	private SpriteBatch spriteBatch;
 	Texture img;
+	final Vector3 tmpVec3 = new Vector3();
 
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		viewport = new FitViewport(12.80f, 7.20f, camera);
-		batch = new SpriteBatch();
+		spriteBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
 
 		resourceManager.load("map/battle1.tmx", TiledMap.class);
 		resourceManager.finishLoading();
 		tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE, batch);
+		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE, spriteBatch);
 		layersToRender = tiledMap.getLayers().getByType(TiledMapTileLayer.class);
 		img = new Texture("badlogic.jpg");
+
 
 
 		direction = new Vector2();
@@ -66,13 +68,13 @@ public class UndergroundQuest extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		updateCamera();
 
-		batch.begin();
+		spriteBatch.begin();
 		AnimatedTiledMapTile.updateAnimationBaseTime();
 		mapRenderer.setView(camera);
 		for (TiledMapTileLayer layer : layersToRender) {
 			mapRenderer.renderTileLayer(layer);
 		}
-		batch.end();
+		spriteBatch.end();
 	}
 	private void updateCamera(){
 		direction.set(0.0f, 0.0f);
@@ -117,7 +119,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	@Override
 	public void dispose () {
-		batch.dispose();
+		spriteBatch.dispose();
 		img.dispose();
 		resourceManager.dispose();
 	}
@@ -125,7 +127,19 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	@Override
 	public void resize(final int width, final int height) {
-		viewport.update(width, height);
+		viewport.update(width, height, false);
+
+		TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
+
+		float cameraMinX = viewport.getWorldWidth() * 0.5f;
+		float cameraMinY = viewport.getWorldHeight() * 0.5f;
+		float cameraMaxX = layer.getWidth() * layer.getTileWidth() * UNIT_SCALE - cameraMinX;
+		float cameraMaxY = layer.getHeight() * layer.getTileHeight() * UNIT_SCALE - cameraMinY;
+
+		camera.position.x = MathUtils.clamp(camera.position.x, cameraMinX, cameraMaxX);
+		camera.position.y= MathUtils.clamp(camera.position.y, cameraMinY, cameraMaxY);
+
+		camera.update();
 	}
 
 	public ResourceManager getResourceManager() {
@@ -134,5 +148,9 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	public MapManager getMapManager() {
 		return mapManager;
+	}
+
+	public SpriteBatch getSpriteBatch() {
+		return spriteBatch;
 	}
 }

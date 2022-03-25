@@ -55,4 +55,8 @@ public class Map {
     public Array<GameObject> getGameObjects() {
         return gameObjects;
     }
+
+    public TiledMap getTiledMap() {
+        return tiledMap;
+    }
 }

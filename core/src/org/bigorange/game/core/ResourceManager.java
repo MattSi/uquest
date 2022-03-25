@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.assets.loaders.FileHandleResolver;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import org.bigorange.game.core.ui.TTFSkin;
 
 public class ResourceManager extends AssetManager {
 
@@ -15,4 +16,5 @@ public class ResourceManager extends AssetManager {
         final FileHandleResolver resolver = getFileHandleResolver();
         setLoader(TiledMap.class, new TmxMapLoader());
     }
+
 }
