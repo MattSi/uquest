@@ -1,4 +1,4 @@
-package org.bigorange.game.core.gamestate;
+package org.bigorange.game.gamestate;
 
 import org.bigorange.game.gamestate.GSGame;
 
@@ -12,7 +12,7 @@ public enum EGameState {
         this.gsClass = gsClass;
     }
 
-    public Class<? extends GSGame> getGsClass() {
+    public Class<? extends GSGame> getGameStateType() {
         return gsClass;
     }
 }

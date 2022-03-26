@@ -1,4 +1,4 @@
-package org.bigorange.game.core.ecs;
+package org.bigorange.game.ecs;
 
 import com.badlogic.gdx.utils.Disposable;
 

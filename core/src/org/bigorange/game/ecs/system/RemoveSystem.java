@@ -1,9 +1,9 @@
-package org.bigorange.game.core.ecs.system;
+package org.bigorange.game.ecs.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import org.bigorange.game.core.ecs.component.RemoveComponent;
+import org.bigorange.game.ecs.component.RemoveComponent;
 
 public class RemoveSystem extends IteratingSystem {
     public RemoveSystem() {

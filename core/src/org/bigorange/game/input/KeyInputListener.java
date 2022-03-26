@@ -1,4 +1,4 @@
-package org.bigorange.game.core.input;
+package org.bigorange.game.input;
 
 
 public interface KeyInputListener {

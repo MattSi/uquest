@@ -1,4 +1,4 @@
-package org.bigorange.game.core.input;
+package org.bigorange.game.input;
 
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.utils.Array;

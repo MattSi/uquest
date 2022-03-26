@@ -18,8 +18,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.input.InputManager;
+import org.bigorange.game.gamestate.EGameState;
+import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 
 public class UndergroundQuest extends ApplicationAdapter {
@@ -39,6 +39,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 	private SpriteBatch spriteBatch;
 	Texture img;
 	final Vector3 tmpVec3 = new Vector3();
+	private Game game;
 
 	@Override
 	public void create () {
@@ -60,22 +61,27 @@ public class UndergroundQuest extends ApplicationAdapter {
 		direction = new Vector2();
 
 		Gdx.input.setInputProcessor(new InputManager());
+		this.game = new Game(EGameState.GAME);
 	}
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		updateCamera();
+		game.process();
+//		ScreenUtils.clear(0, 0, 0, 1);
+//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+//		updateCamera();
+//
+//		spriteBatch.begin();
+//		AnimatedTiledMapTile.updateAnimationBaseTime();
+//		mapRenderer.setView(camera);
+//		for (TiledMapTileLayer layer : layersToRender) {
+//			mapRenderer.renderTileLayer(layer);
+//		}
+//		spriteBatch.end();
 
-		spriteBatch.begin();
-		AnimatedTiledMapTile.updateAnimationBaseTime();
-		mapRenderer.setView(camera);
-		for (TiledMapTileLayer layer : layersToRender) {
-			mapRenderer.renderTileLayer(layer);
-		}
-		spriteBatch.end();
 	}
+
+
 	private void updateCamera(){
 		direction.set(0.0f, 0.0f);
 
@@ -152,5 +158,9 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	public SpriteBatch getSpriteBatch() {
 		return spriteBatch;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 }

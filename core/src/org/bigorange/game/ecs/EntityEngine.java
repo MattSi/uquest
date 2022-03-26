@@ -1,12 +1,13 @@
-package org.bigorange.game.core.ecs;
+package org.bigorange.game.ecs;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.PooledEngine;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import org.bigorange.game.core.ecs.component.AnimationComponent;
-import org.bigorange.game.core.ecs.system.AnimationSystem;
-import org.bigorange.game.core.ecs.system.RemoveSystem;
+import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.system.AnimationSystem;
+import org.bigorange.game.ecs.system.RemoveSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
@@ -30,6 +31,7 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
         }
     }
 
+
     public void render(final float alpha){
         for (RenderSystem renderSystem : renderSystems) {
             renderSystem.render(alpha);
@@ -45,7 +47,7 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
 
     @Override
     public void dispose() {
-
+        Gdx.app.debug(TAG, "Disposing ECSEngine " + this);
         for (final RenderSystem renderSystem : renderSystems) {
             renderSystem.dispose();
         }

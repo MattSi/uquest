@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.utils.IntMap;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.input.EKey;
+import org.bigorange.game.ResourceManager;
+import org.bigorange.game.input.EKey;
 import org.bigorange.game.map.GameObject;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
@@ -16,8 +16,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
-import java.util.Iterator;
 
 @RunWith(GdxTestRunner.class)
 public class AssetExistsExampleTest {
