@@ -26,8 +26,7 @@ public class Game implements Disposable {
         gameStateCache = new EnumMap<EGameState, GameState>(EGameState.class);
         accumulator = 0f;
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(
-                new InputManager()));
+        Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
 
         setGameState(initialStage, true);
     }
@@ -70,17 +69,16 @@ public class Game implements Disposable {
 
     public void process() {
         final float deltaTime = Gdx.graphics.getDeltaTime();
-//        accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
-//
-//        while(accumulator >= TARGET_FRAME_TIME){
-//            activeState.step(TARGET_FRAME_TIME);
-//            accumulator -= TARGET_FRAME_TIME;
-//        }
+        accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
 
-        activeState.step(deltaTime);
-       // Gdx.gl.glClearColor(0,0,0,1);
-       // Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        activeState.render(deltaTime);
+        while(accumulator >= TARGET_FRAME_TIME){
+            activeState.step(TARGET_FRAME_TIME);
+            accumulator -= TARGET_FRAME_TIME;
+        }
+
+        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        activeState.render(accumulator / TARGET_FRAME_TIME);
     }
 
     public void resize(final int width, final int height){

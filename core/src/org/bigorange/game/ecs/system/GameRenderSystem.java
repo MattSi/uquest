@@ -52,7 +52,6 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
         TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
         mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE, spriteBatch);
         layersToRender = tiledMap.getLayers().getByType(TiledMapTileLayer.class);
-        viewport.update(1280,720);
     }
 
     @Override
@@ -70,7 +69,6 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
             mapRenderer.renderTileLayer(layer);
         }
         spriteBatch.end();
-        Gdx.app.debug(TAG, "Game Render System");
     }
 
     private void updateCamera(float alpha){

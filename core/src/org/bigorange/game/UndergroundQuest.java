@@ -67,60 +67,10 @@ public class UndergroundQuest extends ApplicationAdapter {
 	@Override
 	public void render () {
 		game.process();
-//		ScreenUtils.clear(0, 0, 0, 1);
-//		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-//		updateCamera();
-//
-//		spriteBatch.begin();
-//		AnimatedTiledMapTile.updateAnimationBaseTime();
-//		mapRenderer.setView(camera);
-//		for (TiledMapTileLayer layer : layersToRender) {
-//			mapRenderer.renderTileLayer(layer);
-//		}
-//		spriteBatch.end();
 
 	}
 
 
-	private void updateCamera(){
-		direction.set(0.0f, 0.0f);
-
-		int mouseX = Gdx.input.getX();
-		int mouseY = Gdx.input.getY();
-		int width = Gdx.graphics.getWidth();
-		int height = Gdx.graphics.getHeight();
-
-		if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || (Gdx.input.isTouched() && mouseX < width * 0.25f)) {
-			direction.x = -1;
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || (Gdx.input.isTouched() && mouseX > width * 0.75f)) {
-			direction.x = 1;
-		}
-
-		if (Gdx.input.isKeyPressed(Input.Keys.UP) || (Gdx.input.isTouched() && mouseY < height * 0.25f)) {
-			direction.y = 1;
-		}
-		else if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || (Gdx.input.isTouched() && mouseY > height * 0.75f)) {
-			direction.y = -1;
-		}
-
-		direction.nor().scl(10.0f * Gdx.graphics.getDeltaTime());;
-
-		camera.position.x += direction.x;
-		camera.position.y += direction.y;
-
-		TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
-
-		float cameraMinX = viewport.getWorldWidth() * 0.5f;
-		float cameraMinY = viewport.getWorldHeight() * 0.5f;
-		float cameraMaxX = layer.getWidth() * layer.getTileWidth() * UNIT_SCALE - cameraMinX;
-		float cameraMaxY = layer.getHeight() * layer.getTileHeight() * UNIT_SCALE - cameraMinY;
-
-		camera.position.x = MathUtils.clamp(camera.position.x, cameraMinX, cameraMaxX);
-		camera.position.y= MathUtils.clamp(camera.position.y, cameraMinY, cameraMaxY);
-
-		camera.update();
-	}
 
 
 	@Override
@@ -133,19 +83,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	@Override
 	public void resize(final int width, final int height) {
-		viewport.update(width, height, false);
-
-		TiledMapTileLayer layer = (TiledMapTileLayer)tiledMap.getLayers().get(0);
-
-		float cameraMinX = viewport.getWorldWidth() * 0.5f;
-		float cameraMinY = viewport.getWorldHeight() * 0.5f;
-		float cameraMaxX = layer.getWidth() * layer.getTileWidth() * UNIT_SCALE - cameraMinX;
-		float cameraMaxY = layer.getHeight() * layer.getTileHeight() * UNIT_SCALE - cameraMinY;
-
-		camera.position.x = MathUtils.clamp(camera.position.x, cameraMinX, cameraMaxX);
-		camera.position.y= MathUtils.clamp(camera.position.y, cameraMinY, cameraMaxY);
-
-		camera.update();
+		game.resize(width, height);
 	}
 
 	public ResourceManager getResourceManager() {

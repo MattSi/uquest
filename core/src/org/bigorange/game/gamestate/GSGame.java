@@ -3,6 +3,7 @@ package org.bigorange.game.gamestate;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.system.GameRenderSystem;
+import org.bigorange.game.ecs.system.UserMovementSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.TTFSkin;
@@ -21,6 +22,8 @@ public class GSGame extends GameState<GameUI>  {
 
         // TODO init entity component system
         this.ecsEngine = new ECSEngine(new OrthographicCamera());
+        this.ecsEngine.createTmpEntity();
+
     }
 
     @Override
@@ -33,6 +36,7 @@ public class GSGame extends GameState<GameUI>  {
     public void activate() {
         super.activate();
        // Utils.getInputManager().addKeyInputListener(ecsEngine.getRenderSystem());
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(UserMovementSystem.class));
     }
 
     @Override
@@ -40,6 +44,11 @@ public class GSGame extends GameState<GameUI>  {
         ecsEngine.dispose();
     }
 
+    @Override
+    public void resize(int width, int height) {
+        ecsEngine.resize(width, height);
+        super.resize(width, height);
+    }
 
     @Override
     public void step(float fixedTimeStep) {

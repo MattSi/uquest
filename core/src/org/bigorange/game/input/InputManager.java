@@ -41,6 +41,10 @@ public class InputManager implements InputProcessor {
         return true;
     }
 
+    public boolean isKeyDown(final EKey key){
+        return keyState[key.ordinal()];
+    }
+
     @Override
     public boolean keyUp(final int keycode) {
         final EKey key = keyMapping[keycode];
