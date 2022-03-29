@@ -39,19 +39,19 @@ public class UserMovementSystem extends IteratingSystem implements KeyInputListe
         switch (key) {
             case LEFT:
                 directionChange = true;
-                xFactor = -1;
+                xFactor = -2;
                 break;
             case RIGHT:
                 directionChange = true;
-                xFactor = 1;
+                xFactor = 2;
                 break;
             case UP:
                 directionChange = true;
-                yFactor = 1;
+                yFactor = 2;
                 break;
             case DOWN:
                 directionChange = true;
-                yFactor = -1;
+                yFactor = -2;
                 break;
             default:
                 // nothing to do

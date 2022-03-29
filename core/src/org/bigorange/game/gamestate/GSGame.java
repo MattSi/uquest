@@ -6,6 +6,7 @@ import org.bigorange.game.ecs.system.GameRenderSystem;
 import org.bigorange.game.ecs.system.UserMovementSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
+import org.bigorange.game.map.MapManager;
 import org.bigorange.game.ui.TTFSkin;
 import org.bigorange.game.ui.GameUI;
 import org.bigorange.game.utils.Utils;
@@ -23,6 +24,9 @@ public class GSGame extends GameState<GameUI>  {
         // TODO init entity component system
         this.ecsEngine = new ECSEngine(new OrthographicCamera());
         this.ecsEngine.createTmpEntity();
+        final MapManager mapManager = Utils.getMapManager();
+        mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
+
 
     }
 

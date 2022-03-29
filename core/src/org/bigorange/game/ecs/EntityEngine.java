@@ -42,7 +42,6 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
         for (RenderSystem renderSystem : renderSystems) {
             renderSystem.resize(width, height);
         }
-
     }
 
     @Override
@@ -51,6 +50,5 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
         for (final RenderSystem renderSystem : renderSystems) {
             renderSystem.dispose();
         }
-
     }
 }

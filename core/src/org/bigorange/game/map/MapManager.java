@@ -1,6 +1,8 @@
 package org.bigorange.game.map;
 
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -11,6 +13,8 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.ResourceManager;
+import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.utils.Utils;
 
 /**
@@ -55,6 +59,28 @@ public class MapManager {
         for (final GameObject gameObj : currentMap.getGameObjects()) {
             getAnimation(gameObj);
         }
+
+    }
+
+    public void spawnGameObjects(final ECSEngine ecsEngine, final ImmutableArray<Entity> gameObjects){
+        /**
+         *  1. Clear existing gameobjects.
+         *  2. Spawn gameobjects from the current loaded map.
+         */
+        for (Entity gameObj : gameObjects) {
+            gameObj.add(ecsEngine.createComponent(RemoveComponent.class));
+        }
+
+        if(currentMap == null){
+            Gdx.app.error(TAG, "Cannot spawn game objects from a null map.");
+            return;
+        }
+
+        // 只适合单一动画场景，对于NPC这种复杂的GameObject不适用了
+        for (GameObject gameObj : currentMap.getGameObjects()) {
+            ecsEngine.addGameObject(gameObj, getAnimation(gameObj));
+        }
+
 
     }
 

@@ -1,8 +1,13 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.Entity;
+import com.badlogic.ashley.core.Family;
+import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
@@ -16,6 +21,10 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.ResourceManager;
+import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.component.GameObjectComponent;
+import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.KeyInputListener;
@@ -27,7 +36,7 @@ import org.bigorange.game.map.MapListener;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
-public class GameRenderSystem implements RenderSystem, MapListener, KeyInputListener {
+public class GameRenderSystem implements RenderSystem, MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
 
 
@@ -37,16 +46,19 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera gameCamera;
     private final Vector3 tmpVec3;
-    private Vector2 direction;
+
+    private final ImmutableArray<Entity> gameObjectsForRender;
 
 
 
-    public GameRenderSystem( final OrthographicCamera camera) {
+    public GameRenderSystem(final EntityEngine entityEngine, final OrthographicCamera camera) {
+        this.gameObjectsForRender = entityEngine.
+                getEntitiesFor(Family.all(AnimationComponent.class, GameObjectComponent.class).
+                        exclude(RemoveComponent.class).get());
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
         this.spriteBatch = Utils.getSpriteBatch();
         tmpVec3 = new Vector3();
-        direction = new Vector2();
 
         ResourceManager resourceManager = Utils.getResourceManager();
         TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
@@ -57,7 +69,7 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
     @Override
     public void render(float alpha) {
 
-        ScreenUtils.clear(1, 0, 0, 1);
+        ScreenUtils.clear(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 
@@ -68,14 +80,27 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
         for (TiledMapTileLayer layer : layersToRender) {
             mapRenderer.renderTileLayer(layer);
         }
+
+        for (final Entity entity : gameObjectsForRender) {
+            renderEntity(entity, alpha);
+        }
+
         spriteBatch.end();
     }
 
-    private void updateCamera(float alpha){
-        direction.nor().scl(8f * alpha);
+    private void renderEntity(Entity entity, float alpha) {
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        if(aniCmp.animation == null){
+            return;
+        }
 
-        gameCamera.position.x += direction.x;
-        gameCamera.position.y += direction.y;
+        final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
+        keyFrame.setColor(Color.WHITE);
+        keyFrame.setOriginCenter();
+        keyFrame.draw(spriteBatch);
+    }
+
+    private void updateCamera(float alpha){
 
         TiledMapTileLayer layer = layersToRender.get(0);
 
@@ -87,7 +112,6 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
         gameCamera.position.x = MathUtils.clamp(gameCamera.position.x, cameraMinX, cameraMaxX);
         gameCamera.position.y = MathUtils.clamp(gameCamera.position.y, cameraMinY, cameraMaxY);
         gameCamera.update();
-        direction.set(0,0);
     }
 
     @Override
@@ -122,18 +146,5 @@ public class GameRenderSystem implements RenderSystem, MapListener, KeyInputList
         layersToRender = map.getTiledMap().getLayers().getByType(TiledMapTileLayer.class);
     }
 
-    @Override
-    public void keyDown(InputManager manager, EKey key) {
-        switch (key){
-            case LEFT -> direction.x = -1f;
-            case RIGHT -> direction.x = 1f;
-            case UP -> direction.y = 1f;
-            case DOWN -> direction.y = -1f;
-        }
-    }
 
-    @Override
-    public void keyUP(InputManager manager, EKey key) {
-
-    }
 }

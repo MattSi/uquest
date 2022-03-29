@@ -16,7 +16,7 @@ public class GameObject {
     private final float animationInterval;
     private final GameObjectType type;
 
-    GameObject(final TiledMapTileMapObject tileMapObject) {
+    public GameObject(final TiledMapTileMapObject tileMapObject) {
         final MapProperties props = tileMapObject.getProperties();
         final MapProperties tileProps = tileMapObject.getTile().getProperties();
 
