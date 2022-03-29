@@ -10,7 +10,7 @@ import com.badlogic.gdx.utils.ObjectMap;
 
 public class TTFSkin extends Skin {
 
-    TTFSkin(final TextureAtlas atlas){
+    TTFSkin(final TextureAtlas atlas) {
         super(atlas);
 
         Colors.put("Highlight", new Color(0xff7f50ff));
@@ -26,7 +26,7 @@ public class TTFSkin extends Skin {
         // enable markup for all fonts to use the Color of the constructor
         // when creating texts
         final ObjectMap<String, BitmapFont> allFonts = this.getAll(BitmapFont.class);
-        if(allFonts == null){
+        if (allFonts == null) {
             return;
         }
         for (final BitmapFont font : allFonts.values()) {
@@ -37,7 +37,7 @@ public class TTFSkin extends Skin {
     @Override
     public void dispose() {
         ObjectMap<String, BitmapFont> fonts = this.getAll(BitmapFont.class);
-        if(fonts != null){
+        if (fonts != null) {
             for (String bitmapFontKey : fonts.keys()) {
                 remove(bitmapFontKey, BitmapFont.class);
             }

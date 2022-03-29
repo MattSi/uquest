@@ -67,7 +67,6 @@ public class AssetExistsExampleTest {
 
     @Test
     public void gameInputEKeyTest(){
-
         final EKey eKey = app.geteKey();
         System.err.println(eKey.ordinal());
     }
