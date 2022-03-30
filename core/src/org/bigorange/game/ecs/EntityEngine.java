@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.system.AnimationSystem;
 import org.bigorange.game.ecs.system.RemoveSystem;
 
@@ -14,6 +15,9 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
 
     public static final ComponentMapper<AnimationComponent> aniCmpMapper =
             ComponentMapper.getFor(AnimationComponent.class);
+
+    public static final ComponentMapper<Box2DComponent> b2dCmpMapper =
+            ComponentMapper.getFor(Box2DComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {

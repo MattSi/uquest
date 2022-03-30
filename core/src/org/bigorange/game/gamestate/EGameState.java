@@ -1,18 +1,17 @@
 package org.bigorange.game.gamestate;
 
-import org.bigorange.game.gamestate.GSGame;
-
 public enum EGameState {
-    GAME(GSGame.class);
+    GAME(GSGame.class),
+    LOADING(GSLoading.class);
 
 
-    private final Class<? extends GSGame> gsClass;
+    private final Class<? extends GameState> gsClass;
 
-    EGameState(final Class<? extends GSGame> gsClass){
+    EGameState(final Class<? extends GameState> gsClass){
         this.gsClass = gsClass;
     }
 
-    public Class<? extends GSGame> getGameStateType() {
+    public Class<? extends GameState> getGameStateType() {
         return gsClass;
     }
 }

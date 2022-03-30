@@ -11,6 +11,15 @@ import com.badlogic.gdx.utils.Array;
 
 /**
  * Parse map, get gameObjects, collide area, etc
+ *
+ * 地图类，生成地图信息， 包括
+ * 1） 游戏对象（地图）
+ * 2） 碰撞区域
+ * 3） 起始点，怪物再生点
+ *
+ * ============================
+ *  不参与MapRenderer的渲染工作
+ *
  */
 public class Map {
     public static final String TAG = Map.class.getSimpleName();

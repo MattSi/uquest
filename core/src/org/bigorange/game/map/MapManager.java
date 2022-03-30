@@ -81,7 +81,6 @@ public class MapManager {
             ecsEngine.addGameObject(gameObj, getAnimation(gameObj));
         }
 
-
     }
 
     private Animation<Sprite> getAnimation(final GameObject gameObj) {

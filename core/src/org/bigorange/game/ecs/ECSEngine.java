@@ -9,10 +9,10 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 import org.bigorange.game.ecs.component.UserMovementComponent;
 import org.bigorange.game.ecs.system.GameRenderSystem;
-import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerCameraSystem;
 import org.bigorange.game.ecs.system.UserMovementSystem;
 import org.bigorange.game.map.GameObject;
@@ -33,7 +33,7 @@ public class ECSEngine extends EntityEngine {
 
     }
 
-    public void createTmpEntity(){
+    public void createUserMovementCamera(){
         final Entity user = createEntity();
         final UserMovementComponent usrMoveCmp = createComponent(UserMovementComponent.class);
         user.add(usrMoveCmp);
@@ -55,6 +55,13 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.id = gameObj.getId();
         gameObjCmp.type = gameObj.getType();
         gameObjEntity.add(gameObjCmp);
+
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        b2dCmp.x = gameObj.getBoundaries().x;
+        b2dCmp.y = gameObj.getBoundaries().y;
+        b2dCmp.width = gameObj.getBoundaries().width;
+        b2dCmp.height = gameObj.getBoundaries().height;
+        gameObjEntity.add(b2dCmp);
 
         addEntity(gameObjEntity);
     }

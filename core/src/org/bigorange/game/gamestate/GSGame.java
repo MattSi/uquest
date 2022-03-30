@@ -1,12 +1,14 @@
 package org.bigorange.game.gamestate;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.system.GameRenderSystem;
 import org.bigorange.game.ecs.system.UserMovementSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
+import org.bigorange.game.ui.HUD;
 import org.bigorange.game.ui.TTFSkin;
 import org.bigorange.game.ui.GameUI;
 import org.bigorange.game.utils.Utils;
@@ -14,8 +16,8 @@ import org.bigorange.game.utils.Utils;
 public class GSGame extends GameState<GameUI>  {
     private final ECSEngine ecsEngine;
 
-    public GSGame(final EGameState type) {
-        super(type);
+    public GSGame(final EGameState type, final HUD hud) {
+        super(type, hud);
 
         // TODO init box2d
 
@@ -23,11 +25,18 @@ public class GSGame extends GameState<GameUI>  {
 
         // TODO init entity component system
         this.ecsEngine = new ECSEngine(new OrthographicCamera());
-        this.ecsEngine.createTmpEntity();
+        this.ecsEngine.createUserMovementCamera();
         final MapManager mapManager = Utils.getMapManager();
+        final ResourceManager resourceManager = Utils.getResourceManager();
+        final TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
+        mapManager.loadMap(tiledMap);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 
+    }
 
+    @Override
+    protected GameUI createHUD(HUD hud, TTFSkin skin) {
+        return new GameUI(skin);
     }
 
     @Override

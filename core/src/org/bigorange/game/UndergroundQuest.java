@@ -25,58 +25,35 @@ import org.bigorange.game.map.MapManager;
 public class UndergroundQuest extends ApplicationAdapter {
 
 	public static final String TAG = UndergroundQuest.class.getSimpleName();
-	public static final float UNIT_SCALE = 1 / 64f;
+	public static final float UNIT_SCALE = 1 / 96f;
 
 
 	private OrthographicCamera camera;
-	private Viewport viewport;
 	private ResourceManager resourceManager;
 	private MapManager mapManager;
-	private OrthogonalTiledMapRenderer mapRenderer;
-	private Array<TiledMapTileLayer> layersToRender;
-	private Vector2 direction;
-	TiledMap tiledMap;
 	private SpriteBatch spriteBatch;
-	Texture img;
-	final Vector3 tmpVec3 = new Vector3();
 	private Game game;
 
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
-		viewport = new FitViewport(12.80f, 7.20f, camera);
 		spriteBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
 
-		resourceManager.load("map/battle1.tmx", TiledMap.class);
-		resourceManager.finishLoading();
-		tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-		mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE, spriteBatch);
-		layersToRender = tiledMap.getLayers().getByType(TiledMapTileLayer.class);
-		img = new Texture("badlogic.jpg");
-
-
-
-		direction = new Vector2();
-
 		Gdx.input.setInputProcessor(new InputManager());
-		this.game = new Game(EGameState.GAME);
+		this.game = new Game(EGameState.LOADING);
 	}
 
 	@Override
 	public void render () {
 		game.process();
-
 	}
-
-
 
 
 	@Override
 	public void dispose () {
 		spriteBatch.dispose();
-		img.dispose();
 		resourceManager.dispose();
 	}
 

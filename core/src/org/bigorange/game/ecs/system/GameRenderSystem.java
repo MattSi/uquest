@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.input.EKey;
@@ -60,10 +61,9 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.spriteBatch = Utils.getSpriteBatch();
         tmpVec3 = new Vector3();
 
-        ResourceManager resourceManager = Utils.getResourceManager();
-        TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-        mapRenderer = new OrthogonalTiledMapRenderer(tiledMap, UNIT_SCALE, spriteBatch);
-        layersToRender = tiledMap.getLayers().getByType(TiledMapTileLayer.class);
+        mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
+
+        Utils.getMapManager().addMapListener(this);
     }
 
     @Override
@@ -90,6 +90,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     private void renderEntity(Entity entity, float alpha) {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+
         if(aniCmp.animation == null){
             return;
         }
@@ -97,6 +99,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
         keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
+        keyFrame.setBounds(b2dCmp.x, b2dCmp.y, b2dCmp.width, b2dCmp.height);
         keyFrame.draw(spriteBatch);
     }
 

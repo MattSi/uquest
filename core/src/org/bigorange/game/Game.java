@@ -10,14 +10,16 @@ import com.badlogic.gdx.utils.reflect.ReflectionException;
 import org.bigorange.game.gamestate.EGameState;
 import org.bigorange.game.gamestate.GameState;
 import org.bigorange.game.input.InputManager;
+import org.bigorange.game.ui.HUD;
 
 import java.util.EnumMap;
 import java.util.Map;
 
 public class Game implements Disposable {
     private static final String TAG = Game.class.getSimpleName();
-    private static final float TARGET_FRAME_TIME = 1/ 60f;
+    public static final float TARGET_FRAME_TIME = 1/ 60f;
 
+    private final HUD hud;
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
 
@@ -26,12 +28,13 @@ public class Game implements Disposable {
         gameStateCache = new EnumMap<EGameState, GameState>(EGameState.class);
         accumulator = 0f;
 
+        hud = new HUD();
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
 
         setGameState(initialStage, true);
     }
 
-    private void setGameState(final EGameState gameStateType, boolean disposeActive) {
+    public void setGameState(final EGameState gameStateType, boolean disposeActive) {
         /**
          * 1. 已有的gameState做deactivate处理
          * 2. 根据给定的参数，判断gameState需不需要dispose
@@ -55,7 +58,7 @@ public class Game implements Disposable {
             Gdx.app.debug(TAG, "Creating new gamestate: " + gameStateType);
             try {
                 activeState = (GameState) ClassReflection.getConstructor(gameStateType.getGameStateType(),
-                        EGameState.class).newInstance(gameStateType);
+                        EGameState.class, HUD.class).newInstance(gameStateType, hud);
                 gameStateCache.put(gameStateType, activeState);
             } catch (ReflectionException e) {
                 throw new GdxRuntimeException("Could not create gamestate of type: " + gameStateType, e);

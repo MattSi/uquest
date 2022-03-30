@@ -9,6 +9,18 @@ import org.bigorange.game.ecs.component.GameObjectType;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
+/**
+ * 游戏对象定义，这些游戏对象由地图生成，包含以下元素
+ * 1) Tiled ID
+ * 2) 实际地图对象的引用
+ * 3）对象的边界，这些边界由地图对象组成
+ * 4）动画时长，由地图编辑器生成
+ * 5）游戏对象类型，在地图编辑器中添加特定的属性生成
+ *
+ *
+ * ===============================
+ * 该类只有属性，没有方法。目的是获取Tiled Map中Objects层的游戏对象
+ */
 public class GameObject {
     private final int id;
     private final TiledMapTileMapObject tileMapObjectRef;
