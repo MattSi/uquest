@@ -59,7 +59,7 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.height = 0.5f;
         b2dCmp.width = 0.5f;
 
-        playerCmp.maxSpeed = 1f;
+        playerCmp.maxSpeed = 2f;
 
         player.add(b2dCmp);
         player.add(playerCmp);

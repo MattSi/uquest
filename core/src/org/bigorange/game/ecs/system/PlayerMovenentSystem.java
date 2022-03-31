@@ -49,19 +49,19 @@ public class PlayerMovenentSystem extends IteratingSystem implements KeyInputLis
         switch (key) {
             case LEFT:
                 directionChange = true;
-                xFactor = -2;
+                xFactor = -1;
                 break;
             case RIGHT:
                 directionChange = true;
-                xFactor = 2;
+                xFactor = 1;
                 break;
             case UP:
                 directionChange = true;
-                yFactor = 2;
+                yFactor = 1;
                 break;
             case DOWN:
                 directionChange = true;
-                yFactor = -2;
+                yFactor = -1;
                 break;
             default:
                 // nothing to do
