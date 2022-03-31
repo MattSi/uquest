@@ -5,37 +5,47 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.component.UserMovementComponent;
+import org.bigorange.game.ecs.component.Box2DComponent;
+import org.bigorange.game.ecs.component.PlayerComponent;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.KeyInputListener;
 
 import static org.bigorange.game.input.EKey.*;
 
-public class UserMovementSystem extends IteratingSystem implements KeyInputListener {
-    private static final String TAG = UserMovementComponent.class.getSimpleName();
+public class PlayerMovenentSystem extends IteratingSystem implements KeyInputListener {
+    public static final String TAG = PlayerMovenentSystem.class.getSimpleName();
     private boolean directionChange;
     private int xFactor;
     private int yFactor;
 
-    public UserMovementSystem() {
-        super(Family.all(UserMovementComponent.class).get());
-        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
+    public PlayerMovenentSystem() {
+        super(Family.all(PlayerComponent.class).get());
+        directionChange = false;
+        xFactor = 0;
+        yFactor = 0;
+        Gdx.app.debug(TAG,  " instantiated.");
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        final UserMovementComponent usrMoveCmp = ECSEngine.usrMoveCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
 
         if(directionChange){
             directionChange = false;
-            usrMoveCmp.position.x = xFactor;
-            usrMoveCmp.position.y = yFactor;
+            playerCmp.speed.x = xFactor * playerCmp.maxSpeed;
+            playerCmp.speed.y = yFactor * playerCmp.maxSpeed;
+
+
         }
+        b2dCmp.x += playerCmp.speed.x * deltaTime;
+        b2dCmp.y += playerCmp.speed.y * deltaTime;
     }
 
     @Override
     public void keyDown(InputManager manager, EKey key) {
+        Gdx.app.debug(TAG, "Key Down.");
         switch (key) {
             case LEFT:
                 directionChange = true;
@@ -82,10 +92,5 @@ public class UserMovementSystem extends IteratingSystem implements KeyInputListe
                 // nothing to do
                 break;
         }
-    }
-
-    public void reset(){
-        xFactor = yFactor = 0;
-        directionChange = false;
     }
 }

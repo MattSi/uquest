@@ -6,14 +6,15 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.component.UserMovementComponent;
+import org.bigorange.game.ecs.component.Box2DComponent;
+import org.bigorange.game.ecs.component.PlayerComponent;
 
 public class PlayerCameraSystem extends IteratingSystem {
     private static final String TAG = PlayerCameraSystem.class.getSimpleName();
     private final OrthographicCamera gameCamera;
 
     public PlayerCameraSystem(final OrthographicCamera gameCamera){
-        super(Family.all(UserMovementComponent.class).get());
+        super(Family.all(PlayerComponent.class, Box2DComponent.class).get());
 
         this.gameCamera = gameCamera;
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
@@ -21,10 +22,11 @@ public class PlayerCameraSystem extends IteratingSystem {
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        final UserMovementComponent usrMoveCmp = ECSEngine.usrMoveCmpMapper.get(entity);
+        //final UserMovementComponent usrMoveCmp = ECSEngine.usrMoveCmpMapper.get(entity);
+        final Box2DComponent box2DComponent = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerComponent = ECSEngine.playerCmpMapper.get(entity);
 
-        gameCamera.position.x += usrMoveCmp.position.x * deltaTime;
-        gameCamera.position.y += usrMoveCmp.position.y * deltaTime;
-        Gdx.app.debug(TAG, " " + gameCamera.position);
+        gameCamera.position.x = box2DComponent.x ;
+        gameCamera.position.y = box2DComponent.y ;
     }
 }

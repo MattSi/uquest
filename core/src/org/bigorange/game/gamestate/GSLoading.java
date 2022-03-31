@@ -1,5 +1,6 @@
 package org.bigorange.game.gamestate;
 
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.input.EKey;
@@ -19,6 +20,7 @@ public class GSLoading extends GameState<LoadingUI> {
         super(type, hud);
 
         resourceManager = Utils.getResourceManager();
+        resourceManager.load("characters/characters.atlas", TextureAtlas.class);
         resourceManager.load("map/battle1.tmx", TiledMap.class);
     }
 

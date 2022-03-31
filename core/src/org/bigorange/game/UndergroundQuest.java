@@ -23,9 +23,8 @@ import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 
 public class UndergroundQuest extends ApplicationAdapter {
-
 	public static final String TAG = UndergroundQuest.class.getSimpleName();
-	public static final float UNIT_SCALE = 1 / 96f;
+	public static final float UNIT_SCALE = 1 / 64f;
 
 
 	private OrthographicCamera camera;
@@ -49,7 +48,6 @@ public class UndergroundQuest extends ApplicationAdapter {
 	public void render () {
 		game.process();
 	}
-
 
 	@Override
 	public void dispose () {

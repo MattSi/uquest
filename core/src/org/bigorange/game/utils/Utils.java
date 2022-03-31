@@ -18,7 +18,6 @@ public class Utils {
     }
 
     public static InputManager getInputManager(){
-        //return (InputManager)((InputMultiplexer)Gdx.input.getInputProcessor())[0];
         return (InputManager)((InputMultiplexer)Gdx.input.getInputProcessor()).getProcessors().get(0);
     }
 

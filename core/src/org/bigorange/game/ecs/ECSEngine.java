@@ -8,14 +8,15 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
-import org.bigorange.game.ecs.component.AnimationComponent;
-import org.bigorange.game.ecs.component.Box2DComponent;
-import org.bigorange.game.ecs.component.GameObjectComponent;
-import org.bigorange.game.ecs.component.UserMovementComponent;
+import com.badlogic.gdx.math.Vector2;
+import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.GameRenderSystem;
+import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerCameraSystem;
-import org.bigorange.game.ecs.system.UserMovementSystem;
+import org.bigorange.game.ecs.system.PlayerMovenentSystem;
 import org.bigorange.game.map.GameObject;
+
+import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
 public class ECSEngine extends EntityEngine {
     private static final String TAG = ECSEngine.class.getSimpleName();
@@ -23,12 +24,18 @@ public class ECSEngine extends EntityEngine {
     public static final ComponentMapper<UserMovementComponent> usrMoveCmpMapper =
             ComponentMapper.getFor(UserMovementComponent.class);
 
+    public static final ComponentMapper<PlayerComponent> playerCmpMapper =
+            ComponentMapper.getFor(PlayerComponent.class);
+
+
     private final ImmutableArray<Entity> gameObjEntities;
 
     public ECSEngine(final OrthographicCamera gameCamera){
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
-        addSystem(new UserMovementSystem());
+
+        addSystem(new PlayerAnimationSystem());
         addSystem(new PlayerCameraSystem(gameCamera));
+        addSystem(new PlayerMovenentSystem());
         addRenderSystem(new GameRenderSystem(this, gameCamera));
 
     }
@@ -39,6 +46,26 @@ public class ECSEngine extends EntityEngine {
         user.add(usrMoveCmp);
 
         addEntity(user);
+    }
+
+    public void addPlayer(Vector2 spawnLocation) {
+        final Entity player = createEntity();
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
+        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+
+        b2dCmp.x = spawnLocation.x * UNIT_SCALE;
+        b2dCmp.y = spawnLocation.y * UNIT_SCALE;
+        b2dCmp.height = 0.5f;
+        b2dCmp.width = 0.5f;
+
+        playerCmp.maxSpeed = 1f;
+
+        player.add(b2dCmp);
+        player.add(playerCmp);
+        player.add(aniCmp);
+
+        addEntity(player);
     }
 
     public void addGameObject(GameObject gameObj, final Animation<Sprite> animation){

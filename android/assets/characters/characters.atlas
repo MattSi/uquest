@@ -1,0 +1,97 @@
+
+characters.png
+size: 512, 512
+format: RGBA8888
+filter: Nearest, Nearest
+repeat: none
+Enemy 21
+  rotate: false
+  xy: 198, 2
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy02
+  rotate: false
+  xy: 198, 262
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy03
+  rotate: false
+  xy: 2, 262
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy04
+  rotate: false
+  xy: 198, 132
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy05
+  rotate: false
+  xy: 2, 2
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy07
+  rotate: false
+  xy: 100, 2
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy10
+  rotate: false
+  xy: 100, 132
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1
+enemy15
+  rotate: false
+  xy: 296, 262
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: 1
+enemy15
+  rotate: false
+  xy: 296, 2
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: 3
+enemy16
+  rotate: false
+  xy: 100, 262
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: 2
+enemy16
+  rotate: false
+  xy: 394, 262
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: 3
+enemy17
+  rotate: false
+  xy: 296, 132
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: 3
+hero
+  rotate: false
+  xy: 2, 132
+  size: 96, 128
+  orig: 96, 128
+  offset: 0, 0
+  index: -1

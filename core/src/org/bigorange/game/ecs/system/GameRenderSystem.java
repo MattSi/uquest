@@ -22,10 +22,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.component.AnimationComponent;
-import org.bigorange.game.ecs.component.Box2DComponent;
-import org.bigorange.game.ecs.component.GameObjectComponent;
-import org.bigorange.game.ecs.component.RemoveComponent;
+import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.KeyInputListener;
@@ -49,6 +46,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private final Vector3 tmpVec3;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
+    private final ImmutableArray<Entity> charactersForRender;
 
 
 
@@ -56,6 +54,11 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.gameObjectsForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent.class, GameObjectComponent.class).
                         exclude(RemoveComponent.class).get());
+
+        this.charactersForRender = entityEngine.
+                getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).
+                        exclude(RemoveComponent.class).get());
+
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
         this.spriteBatch = Utils.getSpriteBatch();
@@ -82,6 +85,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         }
 
         for (final Entity entity : gameObjectsForRender) {
+            renderEntity(entity, alpha);
+        }
+
+        for (final Entity entity : charactersForRender) {
             renderEntity(entity, alpha);
         }
 

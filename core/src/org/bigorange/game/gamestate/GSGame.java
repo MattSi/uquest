@@ -2,11 +2,14 @@ package org.bigorange.game.gamestate;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.system.UserMovementSystem;
+import org.bigorange.game.ecs.system.PlayerMovenentSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
+import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.ui.HUD;
 import org.bigorange.game.ui.TTFSkin;
@@ -19,19 +22,26 @@ public class GSGame extends GameState<GameUI>  {
     public GSGame(final EGameState type, final HUD hud) {
         super(type, hud);
 
+        final MapManager mapManager = Utils.getMapManager();
+        final ResourceManager resourceManager = Utils.getResourceManager();
         // TODO init box2d
 
         // TODO init player light
 
         // TODO init entity component system
+
         this.ecsEngine = new ECSEngine(new OrthographicCamera());
         this.ecsEngine.createUserMovementCamera();
-        final MapManager mapManager = Utils.getMapManager();
-        final ResourceManager resourceManager = Utils.getResourceManager();
+
+
+
         final TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
         mapManager.loadMap(tiledMap);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 
+        final Map currentMap = mapManager.getCurrentMap();
+        final Array<Vector2> playerStartLocations = currentMap.getPlayerStartLocations();
+        this.ecsEngine.addPlayer(playerStartLocations.get(0));
     }
 
     @Override
@@ -49,7 +59,7 @@ public class GSGame extends GameState<GameUI>  {
     public void activate() {
         super.activate();
        // Utils.getInputManager().addKeyInputListener(ecsEngine.getRenderSystem());
-        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(UserMovementSystem.class));
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovenentSystem.class));
     }
 
     @Override
