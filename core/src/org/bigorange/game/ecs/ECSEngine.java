@@ -17,7 +17,7 @@ import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.GameRenderSystem;
 import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerCameraSystem;
-import org.bigorange.game.ecs.system.PlayerMovenentSystem;
+import org.bigorange.game.ecs.system.PlayerMovementSystem;
 import org.bigorange.game.map.GameObject;
 
 import static org.bigorange.game.UndergroundQuest.*;
@@ -44,7 +44,7 @@ public class ECSEngine extends EntityEngine {
 
         addSystem(new PlayerAnimationSystem());
         addSystem(new PlayerCameraSystem(gameCamera));
-        addSystem(new PlayerMovenentSystem());
+        addSystem(new PlayerMovementSystem());
         addRenderSystem(new GameRenderSystem(this, gameCamera));
 
     }
@@ -56,10 +56,10 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.height = 0.5f;
         b2dCmp.width = 0.5f;
         // body
-        bodyDef.gravityScale = 0;
+        bodyDef.gravityScale = 1;
         bodyDef.position.set(spawnLocation.x * UNIT_SCALE, spawnLocation.y * UNIT_SCALE);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         b2dCmp.body = world.createBody(bodyDef);
         b2dCmp.body.setUserData(player);
 

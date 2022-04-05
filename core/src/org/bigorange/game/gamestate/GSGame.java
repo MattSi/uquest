@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.system.PlayerMovenentSystem;
+import org.bigorange.game.ecs.system.PlayerMovementSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.Map;
@@ -65,7 +65,7 @@ public class GSGame extends GameState<GameUI>  {
     public void activate() {
         super.activate();
        // Utils.getInputManager().addKeyInputListener(ecsEngine.getRenderSystem());
-        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovenentSystem.class));
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
     }
 
     @Override
@@ -82,6 +82,7 @@ public class GSGame extends GameState<GameUI>  {
     @Override
     public void step(float fixedTimeStep) {
         ecsEngine.update(fixedTimeStep);
+        world.step(fixedTimeStep, 6, 2);
         super.step(fixedTimeStep);
     }
 

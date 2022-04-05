@@ -14,13 +14,13 @@ import org.bigorange.game.input.KeyInputListener;
 
 import static org.bigorange.game.input.EKey.*;
 
-public class PlayerMovenentSystem extends IteratingSystem implements KeyInputListener {
-    public static final String TAG = PlayerMovenentSystem.class.getSimpleName();
+public class PlayerMovementSystem extends IteratingSystem implements KeyInputListener {
+    public static final String TAG = PlayerMovementSystem.class.getSimpleName();
     private boolean directionChange;
     private int xFactor;
     private int yFactor;
 
-    public PlayerMovenentSystem() {
+    public PlayerMovementSystem() {
         super(Family.all(PlayerComponent.class).get());
         directionChange = false;
         xFactor = 0;
@@ -38,18 +38,20 @@ public class PlayerMovenentSystem extends IteratingSystem implements KeyInputLis
             directionChange = false;
             playerCmp.speed.x = xFactor * playerCmp.maxSpeed;
             playerCmp.speed.y = yFactor * playerCmp.maxSpeed;
-
-
         }
+
         final Vector2 worldCenter = b2dCmp.body.getWorldCenter();
-        b2dCmp.body.applyLinearImpulse((playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
-                (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
+        b2dCmp.body.applyLinearImpulse(
+                (playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
+                (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
+        //Gdx.app.debug(TAG, "getLinearVelocity: " + String.valueOf(b2dCmp.body.getLinearVelocity()));
+        Gdx.app.debug(TAG, "Position: " + String.valueOf(b2dCmp.body.getPosition()));
     }
 
     @Override
     public void keyDown(InputManager manager, EKey key) {
-        Gdx.app.debug(TAG, "Key Down.");
+        //Gdx.app.debug(TAG, "Key Down.");
         switch (key) {
             case LEFT:
                 directionChange = true;
