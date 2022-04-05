@@ -34,7 +34,7 @@ public class ECSEngine extends EntityEngine {
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
 
-    public ECSEngine(final World world, final OrthographicCamera gameCamera){
+    public ECSEngine(final World world, final OrthographicCamera gameCamera) {
         super();
         this.world = world;
 
@@ -65,10 +65,10 @@ public class ECSEngine extends EntityEngine {
 
         // fixture
         final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(b2dCmp.width*0.5f, b2dCmp.height*0.5f);
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits =    BIT_PLAYER;
+        fixtureDef.filter.categoryBits = BIT_PLAYER;
         fixtureDef.filter.maskBits = BIT_WORLD | BIT_GAME_OBJECT;
 
         b2dCmp.body.createFixture(fixtureDef);
@@ -87,7 +87,7 @@ public class ECSEngine extends EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(GameObject gameObj, final Animation<Sprite> animation){
+    public void addGameObject(GameObject gameObj, final Animation<Sprite> animation) {
         final Entity gameObjEntity = createEntity();
         final Rectangle boundaries = gameObj.getBoundaries();
 
@@ -106,11 +106,11 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.body.setUserData(gameObjEntity);
         // fixtures
         final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(b2dCmp.width*0.5f, b2dCmp.height*0.5f);
-        fixtureDef.isSensor=false;
-        fixtureDef.shape=shape;
-        fixtureDef.filter.categoryBits=BIT_GAME_OBJECT;
-        fixtureDef.filter.maskBits=BIT_PLAYER;
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
+        fixtureDef.filter.maskBits = BIT_PLAYER;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         gameObjEntity.add(b2dCmp);
@@ -126,7 +126,6 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.id = gameObj.getId();
         gameObjCmp.type = gameObj.getType();
         gameObjEntity.add(gameObjCmp);
-
 
 
         addEntity(gameObjEntity);

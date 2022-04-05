@@ -117,7 +117,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         final Vector2 position = b2dCmp.body.getPosition();
         if(playerCmp != null){
             shapeDrawer.filledEllipse(position.x, position.y - aniCmp.width/2, aniCmp.width /4, aniCmp.height/6
-                    ,0f, Color.RED, Color.GRAY);
+                    ,0f, Color.BLACK, Color.GRAY);
         }
 
 
