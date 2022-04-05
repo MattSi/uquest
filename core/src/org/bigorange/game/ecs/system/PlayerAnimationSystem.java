@@ -53,8 +53,8 @@ public class PlayerAnimationSystem extends IteratingSystem {
 
         if (aniCmp.animation == null) {
             aniCmp.animation = aniDown;
-            aniCmp.width = 48 * UNIT_SCALE;
-            aniCmp.height = 48 * UNIT_SCALE;
+            aniCmp.width = 32 * UNIT_SCALE;
+            aniCmp.height = 32 * UNIT_SCALE;
         }
 
         if (playerCmp.speed.equals(Vector2.Zero) ) {

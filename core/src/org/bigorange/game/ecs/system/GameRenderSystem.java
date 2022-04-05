@@ -4,16 +4,17 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
@@ -31,6 +32,7 @@ import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.RenderSystem;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapListener;
+import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
@@ -44,11 +46,12 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private final SpriteBatch spriteBatch;
     private final OrthographicCamera gameCamera;
     private final Vector3 tmpVec3;
+    private final ShapeDrawer shapeDrawer;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
 
-
+    Texture tmpTexture;
 
     public GameRenderSystem(final EntityEngine entityEngine, final OrthographicCamera camera) {
         this.gameObjectsForRender = entityEngine.
@@ -65,6 +68,13 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         tmpVec3 = new Vector3();
 
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
+
+        Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.WHITE);
+        pixmap.drawPixel(0,0);
+        tmpTexture = new Texture(pixmap);
+        pixmap.dispose();
+        shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(tmpTexture, 0,0,1,1));
 
         Utils.getMapManager().addMapListener(this);
         Gdx.app.log(TAG, "instantiated.");
@@ -99,12 +109,18 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private void renderEntity(Entity entity, float alpha) {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             return;
         }
-
         final Vector2 position = b2dCmp.body.getPosition();
+        if(playerCmp != null){
+            shapeDrawer.filledEllipse(position.x, position.y - aniCmp.width/2, aniCmp.width /4, aniCmp.height/6
+                    ,0f, Color.RED, Color.GRAY);
+        }
+
+
         final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
         keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
@@ -114,6 +130,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 aniCmp.width, aniCmp.height);
 
         keyFrame.draw(spriteBatch);
+
+
     }
 
     private void updateCamera(float alpha){
@@ -153,7 +171,9 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     @Override
     public void dispose() {
-
+        if(tmpTexture != null){
+            tmpTexture.dispose();
+        }
     }
 
     @Override

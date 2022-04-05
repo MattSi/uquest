@@ -45,13 +45,11 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 (playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
                 (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
-        //Gdx.app.debug(TAG, "getLinearVelocity: " + String.valueOf(b2dCmp.body.getLinearVelocity()));
-        Gdx.app.debug(TAG, "Position: " + String.valueOf(b2dCmp.body.getPosition()));
     }
 
     @Override
     public void keyDown(InputManager manager, EKey key) {
-        //Gdx.app.debug(TAG, "Key Down.");
+        Gdx.app.debug(TAG, "Key Down.");
         switch (key) {
             case LEFT:
                 directionChange = true;

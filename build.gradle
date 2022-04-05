@@ -28,6 +28,8 @@ allprojects {
         gdxControllersVersion = '2.2.1'
         junitVersion = '4.13.2'
         mockitoVersion = '4.4.0'
+        shapedrawerVersion = '2.5.0'
+
     }
 
     repositories {
@@ -37,6 +39,7 @@ allprojects {
         gradlePluginPortal()
         maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
         maven { url "https://oss.sonatype.org/content/repositories/releases/" }
+        maven { url 'https://jitpack.io' }
     }
 }
 
@@ -99,6 +102,7 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.ashley:ashley:$ashleyVersion"
         api "com.badlogicgames.box2dlights:box2dlights:$box2DLightsVersion"
+        api "space.earlygrey:shapedrawer:$shapedrawerVersion"
 
     }
 }

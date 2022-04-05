@@ -53,8 +53,8 @@ public class ECSEngine extends EntityEngine {
         final Entity player = createEntity();
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.height = 0.5f;
-        b2dCmp.width = 0.5f;
+        b2dCmp.height = 0.2f;
+        b2dCmp.width = 0.2f;
         // body
         bodyDef.gravityScale = 1;
         bodyDef.position.set(spawnLocation.x * UNIT_SCALE, spawnLocation.y * UNIT_SCALE);
