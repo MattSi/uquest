@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.UndergroundQuest;
+import org.bigorange.game.WorldContactManager;
 import org.bigorange.game.gamestate.EGameState;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
@@ -27,6 +28,10 @@ public class Utils {
 
     public static MapManager getMapManager(){
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getMapManager();
+    }
+
+    public static WorldContactManager getWorldContactManager(){
+        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getWorldContactManager();
     }
 
     public static void setGameState(final EGameState gameStateType, final boolean disposeActive){

@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.input.EKey;
@@ -58,9 +60,9 @@ public class AssetExistsExampleTest {
     @Test
     public void gameAnimationTest(){
         final TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-
+        final World world = new World(new Vector2(0,0),false);
         MapManager mapManager = app.getMapManager();
-        mapManager.loadMap(tiledMap);
+        mapManager.loadMap(tiledMap, world);
         final IntMap<Animation<Sprite>> gameObjectAnimationCache = mapManager.getGameObjectAnimationCache();
         Assert.assertNotNull(gameObjectAnimationCache);
     }

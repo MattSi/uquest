@@ -67,6 +67,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
 
         Utils.getMapManager().addMapListener(this);
+        Gdx.app.log(TAG, "instantiated.");
     }
 
     @Override
@@ -99,14 +100,19 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
 
-        if(aniCmp.animation == null){
+        if (aniCmp.animation == null) {
             return;
         }
 
+        final Vector2 position = b2dCmp.body.getPosition();
         final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
         keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
-        keyFrame.setBounds(b2dCmp.x, b2dCmp.y, b2dCmp.width, b2dCmp.height);
+        keyFrame.setBounds(
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f),
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
+                aniCmp.width, aniCmp.height);
+
         keyFrame.draw(spriteBatch);
     }
 

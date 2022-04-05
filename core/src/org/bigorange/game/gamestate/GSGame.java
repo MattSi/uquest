@@ -3,6 +3,8 @@ package org.bigorange.game.gamestate;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2D;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
@@ -18,6 +20,7 @@ import org.bigorange.game.utils.Utils;
 
 public class GSGame extends GameState<GameUI>  {
     private final ECSEngine ecsEngine;
+    private final World world;
 
     public GSGame(final EGameState type, final HUD hud) {
         super(type, hud);
@@ -25,18 +28,21 @@ public class GSGame extends GameState<GameUI>  {
         final MapManager mapManager = Utils.getMapManager();
         final ResourceManager resourceManager = Utils.getResourceManager();
         // TODO init box2d
+        Box2D.init();
+        world = new World(new Vector2(0,0), true);
+        world.setContactListener(Utils.getWorldContactManager());
+        world.setContinuousPhysics(true);
 
         // TODO init player light
 
         // TODO init entity component system
 
-        this.ecsEngine = new ECSEngine(new OrthographicCamera());
-        this.ecsEngine.createUserMovementCamera();
+        this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
 
 
 
         final TiledMap tiledMap = resourceManager.get("map/battle1.tmx", TiledMap.class);
-        mapManager.loadMap(tiledMap);
+        mapManager.loadMap(tiledMap, world);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 
         final Map currentMap = mapManager.getCurrentMap();

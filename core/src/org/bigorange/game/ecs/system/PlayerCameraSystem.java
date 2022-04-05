@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
@@ -26,7 +27,7 @@ public class PlayerCameraSystem extends IteratingSystem {
         final Box2DComponent box2DComponent = ECSEngine.b2dCmpMapper.get(entity);
         final PlayerComponent playerComponent = ECSEngine.playerCmpMapper.get(entity);
 
-        gameCamera.position.x = box2DComponent.x ;
-        gameCamera.position.y = box2DComponent.y ;
+        gameCamera.position.x = box2DComponent.positionBeforeUpdate.x;
+        gameCamera.position.y = box2DComponent.positionBeforeUpdate.y;
     }
 }
