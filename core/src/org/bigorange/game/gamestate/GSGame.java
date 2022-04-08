@@ -1,6 +1,11 @@
 package org.bigorange.game.gamestate;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
@@ -48,6 +53,7 @@ public class GSGame extends GameState<GameUI>  {
         final Map currentMap = mapManager.getCurrentMap();
         final Array<Vector2> playerStartLocations = currentMap.getPlayerStartLocations();
         this.ecsEngine.addPlayer(playerStartLocations.get(0));
+        setCursor();
     }
 
     @Override
@@ -96,4 +102,26 @@ public class GSGame extends GameState<GameUI>  {
 
     }
 
+    private void setCursor(){
+        final ResourceManager resourceManager = Utils.getResourceManager();
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
+                TextureAtlas.class).findRegion("crosshair");
+
+        final TextureData textureData = atlasRegion.getTexture().getTextureData();
+        if(!textureData.isPrepared()){
+            textureData.prepare();
+        }
+        Pixmap pixmap = new Pixmap(atlasRegion.getRegionWidth(), atlasRegion.getRegionHeight(), textureData.getFormat());
+        pixmap.drawPixmap(
+                textureData.consumePixmap(),
+                0,
+                0,
+                atlasRegion.getRegionX(),
+                atlasRegion.getRegionY(),
+                atlasRegion.getRegionWidth(),
+                atlasRegion.getRegionHeight()
+        );
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, 0,0));
+        pixmap.dispose();
+    }
 }

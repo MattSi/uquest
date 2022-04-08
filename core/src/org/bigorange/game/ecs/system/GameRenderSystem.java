@@ -17,6 +17,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -47,13 +49,16 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private final OrthographicCamera gameCamera;
     private final Vector3 tmpVec3;
     private final ShapeDrawer shapeDrawer;
+    private final World world;
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
 
+    private final Box2DDebugRenderer b2dRenderer;
+
     Texture tmpTexture;
 
-    public GameRenderSystem(final EntityEngine entityEngine, final OrthographicCamera camera) {
+    public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera camera) {
         this.gameObjectsForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent.class, GameObjectComponent.class).
                         exclude(RemoveComponent.class).get());
@@ -61,13 +66,14 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.charactersForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).
                         exclude(RemoveComponent.class).get());
-
+        this.world = world;
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
         this.spriteBatch = Utils.getSpriteBatch();
         tmpVec3 = new Vector3();
 
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
+        b2dRenderer = new Box2DDebugRenderer();
 
         Pixmap pixmap = new Pixmap(1,1, Pixmap.Format.RGBA8888);
         pixmap.setColor(Color.WHITE);
@@ -104,6 +110,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         }
 
         spriteBatch.end();
+
+        b2dRenderer.render(world, gameCamera.combined);
     }
 
     private void renderEntity(Entity entity, float alpha) {
@@ -181,6 +189,5 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         mapRenderer.setMap(map.getTiledMap());
         layersToRender = map.getTiledMap().getLayers().getByType(TiledMapTileLayer.class);
     }
-
 
 }

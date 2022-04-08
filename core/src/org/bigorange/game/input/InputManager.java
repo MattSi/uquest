@@ -1,9 +1,13 @@
 package org.bigorange.game.input;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Array;
 
 public class InputManager implements InputProcessor {
+    private static final String TAG = InputManager.class.getSimpleName();
     private final EKey[] keyMapping;
     private final boolean[] keyState;
     private final Array<KeyInputListener> listeners;
@@ -81,11 +85,16 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY +
+                ", Pointer: " + pointer + ", Button:" + button);
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY +
+                ", Pointer: " + pointer + ", Button:" + button);
+
         return false;
     }
 
@@ -96,6 +105,7 @@ public class InputManager implements InputProcessor {
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
+        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY);
         return false;
     }
 

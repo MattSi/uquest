@@ -6,92 +6,106 @@ filter: Nearest, Nearest
 repeat: none
 Enemy 21
   rotate: false
-  xy: 198, 2
+  xy: 198, 39
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
+crosshair
+  rotate: false
+  xy: 394, 281
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
 enemy02
   rotate: false
-  xy: 198, 262
+  xy: 198, 299
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy03
   rotate: false
-  xy: 2, 262
+  xy: 2, 299
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy04
   rotate: false
-  xy: 198, 132
+  xy: 198, 169
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy05
   rotate: false
-  xy: 2, 2
+  xy: 2, 39
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy07
   rotate: false
-  xy: 100, 2
+  xy: 100, 39
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy10
   rotate: false
-  xy: 100, 132
+  xy: 100, 169
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy15
   rotate: false
-  xy: 296, 262
+  xy: 296, 299
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 1
 enemy15
   rotate: false
-  xy: 296, 2
+  xy: 296, 39
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 3
 enemy16
   rotate: false
-  xy: 100, 262
+  xy: 100, 299
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 2
 enemy16
   rotate: false
-  xy: 394, 262
+  xy: 394, 299
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 3
 enemy17
   rotate: false
-  xy: 296, 132
+  xy: 296, 169
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 3
 hero
   rotate: false
-  xy: 2, 132
+  xy: 2, 169
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
+spaceMissiles
+  rotate: false
+  xy: 2, 2
+  size: 20, 35
+  orig: 20, 35
+  offset: 0, 0
+  index: 1

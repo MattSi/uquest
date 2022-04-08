@@ -38,6 +38,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 		Gdx.input.setInputProcessor(new InputManager());
 		this.game = new Game(EGameState.LOADING);
+		Gdx.graphics.setVSync(true);
 	}
 
 	@Override

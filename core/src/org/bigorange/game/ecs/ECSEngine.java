@@ -14,11 +14,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import org.bigorange.game.ecs.component.*;
-import org.bigorange.game.ecs.system.GameRenderSystem;
-import org.bigorange.game.ecs.system.PlayerAnimationSystem;
-import org.bigorange.game.ecs.system.PlayerCameraSystem;
-import org.bigorange.game.ecs.system.PlayerMovementSystem;
-import org.bigorange.game.map.GameObject;
+import org.bigorange.game.ecs.system.*;
+import org.bigorange.game.map.MapGameObject;
 
 import static org.bigorange.game.UndergroundQuest.*;
 
@@ -27,6 +24,9 @@ public class ECSEngine extends EntityEngine {
 
     public static final ComponentMapper<PlayerComponent> playerCmpMapper =
             ComponentMapper.getFor(PlayerComponent.class);
+
+    public static final ComponentMapper<BulletComponent> bulletCmpMapper =
+            ComponentMapper.getFor(BulletComponent.class);
 
 
     private final ImmutableArray<Entity> gameObjEntities;
@@ -44,8 +44,51 @@ public class ECSEngine extends EntityEngine {
 
         addSystem(new PlayerAnimationSystem());
         addSystem(new PlayerCameraSystem(gameCamera));
-        addSystem(new PlayerMovementSystem());
-        addRenderSystem(new GameRenderSystem(this, gameCamera));
+        addSystem(new PlayerMovementSystem(this));
+        addSystem(new BulletMovementSystem(this));
+        addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
+
+
+    }
+
+    // 生成子弹
+    public void addBullet(Vector2 start, Vector2 target) {
+        final Entity bullet = createEntity();
+
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        b2dCmp.height = 0.2f;
+        b2dCmp.width = 0.2f;
+
+        // body
+        bodyDef.gravityScale = 1;
+        bodyDef.position.set(start);
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        bodyDef.linearVelocity.set(2,3);
+        b2dCmp.positionBeforeUpdate.set(bodyDef.position);
+        b2dCmp.body = world.createBody(bodyDef);
+        b2dCmp.body.setUserData(bullet);
+
+        // fixture
+        final PolygonShape shape = new PolygonShape();
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = BIT_PLAYER;
+        fixtureDef.filter.maskBits = BIT_WORLD | BIT_GAME_OBJECT;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        shape.dispose();
+        bullet.add(b2dCmp);
+
+
+        final BulletComponent bulletCmp = createComponent(BulletComponent.class);
+        bulletCmp.startTime = System.currentTimeMillis();
+        bulletCmp.maxSpeed = 4;
+
+        bullet.add(bulletCmp);
+
+        addEntity(bullet);
 
     }
 
@@ -60,8 +103,10 @@ public class ECSEngine extends EntityEngine {
         bodyDef.position.set(spawnLocation.x * UNIT_SCALE, spawnLocation.y * UNIT_SCALE);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.linearVelocity.set(1,2);
         b2dCmp.body = world.createBody(bodyDef);
         b2dCmp.body.setUserData(player);
+
 
         // fixture
         final PolygonShape shape = new PolygonShape();
@@ -87,7 +132,7 @@ public class ECSEngine extends EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(GameObject gameObj, final Animation<Sprite> animation) {
+    public void addGameObject(MapGameObject gameObj, final Animation<Sprite> animation) {
         final Entity gameObjEntity = createEntity();
         final Rectangle boundaries = gameObj.getBoundaries();
 

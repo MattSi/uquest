@@ -19,9 +19,11 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
     private boolean directionChange;
     private int xFactor;
     private int yFactor;
+    private final ECSEngine ecsEngine;
 
-    public PlayerMovementSystem() {
+    public PlayerMovementSystem(ECSEngine ecsEngine) {
         super(Family.all(PlayerComponent.class).get());
+        this.ecsEngine = ecsEngine;
         directionChange = false;
         xFactor = 0;
         yFactor = 0;
@@ -45,6 +47,7 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 (playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
                 (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
+       // Gdx.app.debug(TAG, b2dCmp.body.getLinearVelocity().toString());
     }
 
     @Override
@@ -67,6 +70,8 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 directionChange = true;
                 yFactor = -1;
                 break;
+            case SELECT:
+                ecsEngine.addBullet(new Vector2(1,1), new Vector2(8,8));
             default:
                 // nothing to do
                 break;

@@ -21,14 +21,14 @@ import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
  * ===============================
  * 该类只有属性，没有方法。目的是获取Tiled Map中Objects层的游戏对象
  */
-public class GameObject {
+public class MapGameObject {
     private final int id;
     private final TiledMapTileMapObject tileMapObjectRef;
     private final Rectangle boundaries;
     private final float animationInterval;
     private final GameObjectComponent.GameObjectType type;
 
-    public GameObject(final TiledMapTileMapObject tileMapObject) {
+    public MapGameObject(final TiledMapTileMapObject tileMapObject) {
         final MapProperties props = tileMapObject.getProperties();
         final MapProperties tileProps = tileMapObject.getTile().getProperties();
 
