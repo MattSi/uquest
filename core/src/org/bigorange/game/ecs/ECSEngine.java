@@ -44,10 +44,9 @@ public class ECSEngine extends EntityEngine {
 
         addSystem(new PlayerAnimationSystem());
         addSystem(new PlayerCameraSystem(gameCamera));
-        addSystem(new PlayerMovementSystem(this));
+        addSystem(new PlayerMovementSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
-
 
     }
 

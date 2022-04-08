@@ -1,38 +1,49 @@
 package org.bigorange.game.input;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 
 public class InputManager implements InputProcessor {
     private static final String TAG = InputManager.class.getSimpleName();
     private final EKey[] keyMapping;
     private final boolean[] keyState;
-    private final Array<KeyInputListener> listeners;
+
+    private final EMouse[] mouseMapping;
+    private final boolean[] buttonState;
+    private final Array<KeyInputListener> keyInputListeners;
+    private final Array<MouseInputListener> mouseInputListeners;
 
     public InputManager() {
         this.keyMapping = new EKey[256];
+        this.mouseMapping = new EMouse[5];
 
         for (EKey key : EKey.values()) {
             for (int keyCode : key.keyCode) {
                 keyMapping[keyCode] = key;
             }
         }
+
+        for (EMouse key : EMouse.values()) {
+            mouseMapping[key.mouseCode] = key;
+        }
+
         this.keyState = new boolean[EKey.values().length];
-        listeners = new Array<>();
+        this.buttonState = new boolean[EMouse.values().length]; // number of static final fields in class Buttons is 5 (com.badlogic.gdx.Input.Buttons)
+        keyInputListeners = new Array<>();
+        mouseInputListeners = new Array<>();
 
     }
 
     public void addKeyInputListener(KeyInputListener listener) {
-        if(!listeners.contains(listener, true)){
-            listeners.add(listener);
+        if(!keyInputListeners.contains(listener, true)){
+            keyInputListeners.add(listener);
         }
     }
 
     public void removeKeyInputListener(KeyInputListener listener){
-        listeners.removeValue(listener, true);
+        keyInputListeners.removeValue(listener, true);
     }
 
     @Override
@@ -63,7 +74,7 @@ public class InputManager implements InputProcessor {
 
     public void notifyKeyDown(final EKey key){
         keyState[key.ordinal()] = true;
-        for (final KeyInputListener listener : listeners) {
+        for (final KeyInputListener listener : keyInputListeners) {
             listener.keyDown(this, key);
         }
 
@@ -71,9 +82,45 @@ public class InputManager implements InputProcessor {
 
     public void notifyKeyUp(final EKey key) {
         keyState[key.ordinal()] = false;
-        for (final KeyInputListener listener : listeners) {
+        for (final KeyInputListener listener : keyInputListeners) {
             listener.keyUP(this, key);
         }
+    }
+
+    public void addMouseInputListener(MouseInputListener listener){
+        if(mouseInputListeners.contains(listener,true))
+            return;
+        mouseInputListeners.add(listener);
+    }
+
+    public void removeMouseInputListener(MouseInputListener listener){
+        mouseInputListeners.removeValue(listener, true);
+    }
+
+    public boolean isMouseDown(EMouse mouse) {
+        return buttonState[mouse.ordinal()];
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        buttonState[button] = true;
+        EMouse mouse = mouseMapping[button];
+        for (final MouseInputListener listener : mouseInputListeners) {
+            listener.buttonDown(this, mouse, new Vector2(screenX, screenY));
+            Gdx.app.debug(TAG, "Click: " + listener);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        buttonState[button] = false;
+        EMouse mouse = mouseMapping[button];
+        for (final MouseInputListener listener : mouseInputListeners) {
+            listener.buttonUp(this, mouse, new Vector2(screenX, screenY));
+
+        }
+        return false;
     }
 
 
@@ -84,28 +131,12 @@ public class InputManager implements InputProcessor {
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY +
-                ", Pointer: " + pointer + ", Button:" + button);
-        return false;
-    }
-
-    @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY +
-                ", Pointer: " + pointer + ", Button:" + button);
-
-        return false;
-    }
-
-    @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         return false;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        Gdx.app.debug(TAG, "ScreenX: " + screenX + ", ScreenY: " + screenY);
         return false;
     }
 

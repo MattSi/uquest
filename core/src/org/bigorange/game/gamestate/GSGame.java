@@ -72,6 +72,7 @@ public class GSGame extends GameState<GameUI>  {
         super.activate();
        // Utils.getInputManager().addKeyInputListener(ecsEngine.getRenderSystem());
         Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
     }
 
     @Override

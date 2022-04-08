@@ -21,7 +21,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 
 
-	private OrthographicCamera camera;
+	//private OrthographicCamera camera;
 	private ResourceManager resourceManager;
 	private MapManager mapManager;
 	private SpriteBatch spriteBatch;
@@ -30,7 +30,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	@Override
 	public void create () {
-		camera = new OrthographicCamera();
+		//camera = new OrthographicCamera();
 		spriteBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
