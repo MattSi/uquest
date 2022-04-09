@@ -1,96 +1,96 @@
 
 characters.png
-size: 512, 512
+size: 1024, 512
 format: RGBA8888
 filter: Nearest, Nearest
 repeat: none
 Enemy 21
   rotate: false
-  xy: 198, 39
+  xy: 490, 199
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 crosshair
   rotate: false
-  xy: 394, 281
+  xy: 100, 151
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 enemy02
   rotate: false
-  xy: 198, 299
+  xy: 294, 199
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy03
   rotate: false
-  xy: 2, 299
+  xy: 2, 39
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy04
   rotate: false
-  xy: 198, 169
+  xy: 392, 199
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy05
   rotate: false
-  xy: 2, 39
+  xy: 196, 199
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy07
   rotate: false
-  xy: 100, 39
+  xy: 392, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy10
   rotate: false
-  xy: 100, 169
+  xy: 294, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: -1
 enemy15
   rotate: false
-  xy: 296, 299
+  xy: 490, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 1
 enemy15
   rotate: false
-  xy: 296, 39
+  xy: 686, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 3
 enemy16
   rotate: false
-  xy: 100, 299
+  xy: 196, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 2
 enemy16
   rotate: false
-  xy: 394, 299
+  xy: 588, 199
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
   index: 3
 enemy17
   rotate: false
-  xy: 296, 169
+  xy: 588, 329
   size: 96, 128
   orig: 96, 128
   offset: 0, 0
@@ -98,8 +98,8 @@ enemy17
 hero
   rotate: false
   xy: 2, 169
-  size: 96, 128
-  orig: 96, 128
+  size: 192, 288
+  orig: 192, 288
   offset: 0, 0
   index: -1
 spaceMissiles

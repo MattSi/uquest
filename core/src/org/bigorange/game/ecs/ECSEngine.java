@@ -41,7 +41,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef = new FixtureDef();
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
 
-        addSystem(new PlayerAnimationSystem());
+        addSystem(new PlayerAnimationSystem(gameCamera));
         addSystem(new PlayerCameraSystem(gameCamera));
         addSystem(new PlayerMovementSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
@@ -84,7 +84,6 @@ public class ECSEngine extends EntityEngine {
         final BulletComponent bulletCmp = createComponent(BulletComponent.class);
         bulletCmp.startTime = System.currentTimeMillis();
         bulletCmp.maxSpeed = 8;
-        bulletCmp.target.set(target);
 
         float rad = MathUtils.atan2((target.y - start.y), (target.x - start.x));
 
@@ -123,10 +122,8 @@ public class ECSEngine extends EntityEngine {
         shape.dispose();
         player.add(b2dCmp);
 
-
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
-
 
         playerCmp.maxSpeed = 2f;
         player.add(playerCmp);

@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
 import org.bigorange.game.input.*;
@@ -24,7 +25,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
     private final ECSEngine ecsEngine;
 
     private boolean isShooting;
-    private Vector3 target;
+    private Vector3 shootingTarget;
+
+
 
 
     public PlayerMovementSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
@@ -34,6 +37,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
         directionChange = false;
         xFactor = 0;
         yFactor = 0;
+        shootingTarget = new Vector3(0,0,0);
+
+
         Gdx.app.debug(TAG,  " instantiated.");
     }
 
@@ -41,6 +47,7 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
     protected void processEntity(Entity entity, float deltaTime) {
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (directionChange) {
@@ -57,17 +64,25 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
         if(isShooting){
             isShooting = false;
-            ecsEngine.addBullet(b2dCmp.body.getPosition(), new Vector2(target.x, target.y));
-            //Gdx.app.debug(TAG, "Body: "+b2dCmp.body.getPosition() + " Target: " + target.toString());
+            ecsEngine.addBullet(b2dCmp.body.getPosition(), new Vector2(shootingTarget.x, shootingTarget.y));
         }
+
+    }
+
+
+    @Override
+    public void mouseMoved(InputManager manager, Vector2 screenPoint) {
+
     }
 
     @Override
-    public void buttonDown(InputManager manager, EMouse mouse, Vector2 vector2) {
+    public void buttonDown(InputManager manager, EMouse mouse, Vector2 screenPoint) {
         switch (mouse){
             case LEFT -> {
                 isShooting = true;
-                target = camera.unproject(new Vector3(vector2.x, vector2.y, 0));
+                shootingTarget.set(screenPoint.x, screenPoint.y, 0);
+                camera.unproject(shootingTarget);
+                //shootingTarget = camera.unproject(new Vector3(screenPoint.x, screenPoint.y, 0));
             }
         }
     }
@@ -126,7 +141,8 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
 
     @Override
-    public void buttonUp(InputManager manager, EMouse mouse, Vector2 vector2) {
+    public void buttonUp(InputManager manager, EMouse mouse, Vector2 screenPoint) {
 
     }
+
 }

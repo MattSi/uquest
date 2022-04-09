@@ -14,10 +14,12 @@ public class InputManager implements InputProcessor {
     private final boolean[] buttonState;
     private final Array<KeyInputListener> keyInputListeners;
     private final Array<MouseInputListener> mouseInputListeners;
+    private final Vector2 screenPoint;
 
     public InputManager() {
         this.keyMapping = new EKey[256];
         this.mouseMapping = new EMouse[5];
+        this.screenPoint = new Vector2(0,0);
 
         for (EKey key : EKey.values()) {
             for (int keyCode : key.keyCode) {
@@ -118,12 +120,18 @@ public class InputManager implements InputProcessor {
         EMouse mouse = mouseMapping[button];
         for (final MouseInputListener listener : mouseInputListeners) {
             listener.buttonUp(this, mouse, new Vector2(screenX, screenY));
-
         }
-        return false;
+        return true;
     }
 
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        for (final MouseInputListener listener : mouseInputListeners) {
+            listener.mouseMoved(this, this.screenPoint.set(screenX, screenY));
+        }
 
+        return true;
+    }
     //////////////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean keyTyped(char character) {
@@ -135,10 +143,7 @@ public class InputManager implements InputProcessor {
         return false;
     }
 
-    @Override
-    public boolean mouseMoved(int screenX, int screenY) {
-        return false;
-    }
+
 
     @Override
     public boolean scrolled(float amountX, float amountY) {
