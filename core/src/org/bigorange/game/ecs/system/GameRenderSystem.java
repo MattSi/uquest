@@ -53,6 +53,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
+    private final ImmutableArray<Entity> bulletsForRender;
 
     private final Box2DDebugRenderer b2dRenderer;
 
@@ -65,6 +66,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
         this.charactersForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).
+                        exclude(RemoveComponent.class).get());
+
+        this.bulletsForRender = entityEngine.
+                getEntitiesFor(Family.all(BulletComponent.class, Box2DComponent.class).
                         exclude(RemoveComponent.class).get());
         this.world = world;
         this.gameCamera = camera;
@@ -112,6 +117,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         spriteBatch.end();
 
         b2dRenderer.render(world, gameCamera.combined);
+        //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
     }
 
     private void renderEntity(Entity entity, float alpha) {

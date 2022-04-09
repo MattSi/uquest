@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.IntMap;
@@ -71,5 +72,12 @@ public class AssetExistsExampleTest {
     public void gameInputEKeyTest(){
         final EKey eKey = app.geteKey();
         System.err.println(eKey.ordinal());
+    }
+
+    @Test
+    public void testFoobar(){
+        float x= 2.1f-2.1f;
+
+        Assert.assertTrue(MathUtils.isZero(x));
     }
 }

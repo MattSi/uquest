@@ -58,7 +58,7 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
         if(isShooting){
             isShooting = false;
             ecsEngine.addBullet(b2dCmp.body.getPosition(), new Vector2(target.x, target.y));
-            Gdx.app.debug(TAG, "Body: "+b2dCmp.body.getPosition() + " Target: " + target.toString());
+            //Gdx.app.debug(TAG, "Body: "+b2dCmp.body.getPosition() + " Target: " + target.toString());
         }
     }
 

@@ -4,15 +4,14 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.*;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.MapGameObject;
@@ -59,22 +58,23 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.width = 0.2f;
 
         // body
-        bodyDef.gravityScale = 1;
+        bodyDef.gravityScale = 0;
         bodyDef.position.set(start);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        bodyDef.linearVelocity.set(2,3);
+        //bodyDef.linearVelocity.set(2,1);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         b2dCmp.body = world.createBody(bodyDef);
         b2dCmp.body.setUserData(bullet);
 
         // fixture
-        final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+        final CircleShape shape = new CircleShape();
+        shape.setRadius(b2dCmp.width * 0.5f);
+
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_WORLD | BIT_GAME_OBJECT;
+        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
+        fixtureDef.filter.maskBits = BIT_WORLD  ;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -83,12 +83,16 @@ public class ECSEngine extends EntityEngine {
 
         final BulletComponent bulletCmp = createComponent(BulletComponent.class);
         bulletCmp.startTime = System.currentTimeMillis();
-        bulletCmp.maxSpeed = 4;
+        bulletCmp.maxSpeed = 8;
+        bulletCmp.target.set(target);
 
+        float rad = MathUtils.atan2((target.y - start.y), (target.x - start.x));
+
+        bulletCmp.speed.x = bulletCmp.maxSpeed * MathUtils.cos(rad);
+        bulletCmp.speed.y = bulletCmp.maxSpeed * MathUtils.sin(rad);
         bullet.add(bulletCmp);
 
         addEntity(bullet);
-
     }
 
     public void addPlayer(Vector2 spawnLocation) {
