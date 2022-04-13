@@ -25,7 +25,7 @@ public class GSLoading extends GameState<LoadingUI> {
     }
 
     @Override
-    protected LoadingUI createHUD(HUD hud, TTFSkin skin) {
+    protected LoadingUI createGameStateUI(HUD hud, TTFSkin skin) {
         return new LoadingUI(hud, skin);
     }
 
@@ -34,13 +34,13 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager.update();
 
         // Set resource loading progress.
-        gameStateHUD.setProgress(resourceManager.getProgress());
+        gameStateUI.setProgress(resourceManager.getProgress());
         super.step(fixedTimeStep);
     }
 
     @Override
     public void dispose() {
-        hud.removeGameStateHUD(gameStateHUD);
+        hud.removeGameStateHUD(gameStateUI);
     }
 
     @Override

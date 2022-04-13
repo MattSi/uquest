@@ -1,5 +1,6 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
@@ -37,7 +39,7 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
     private Vector3 mouseMovingTarget;
 
     public PlayerAnimationSystem(OrthographicCamera camera) {
-        super(Family.all(AnimationComponent.class, PlayerComponent.class).get());
+        super(Family.all(AnimationComponent.class, PlayerComponent.class, Box2DComponent.class).get());
         this.camera = camera;
         mouseMovingTarget = new Vector3(0,0,0);
 
@@ -62,9 +64,9 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
+        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             aniCmp.animation = aniDown;
@@ -72,37 +74,37 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
             aniCmp.height = 72 * UNIT_SCALE * 0.6f;
         }
 
-//        if (playerCmp.speed.equals(Vector2.Zero) ) {
-//            aniCmp.aniTimer = 0f;
-//        } else if (playerCmp.speed.x > 0) {
-//            aniCmp.animation = aniRight;
-//        } else if (playerCmp.speed.x < 0) {
-//            aniCmp.animation = aniLeft;
-//        } else if (playerCmp.speed.y > 0) {
-//            aniCmp.animation = aniUp;
-//        } else if (playerCmp.speed.y < 0) {
-//            aniCmp.animation = aniDown;
-//        }
-
-        if (playerCmp.speed.equals(Vector2.Zero)) {
+        if (playerCmp.speed.equals(Vector2.Zero) ) {
             aniCmp.aniTimer = 0f;
-        } else {
-
-        }
-        final Vector2 position = b2dCmp.body.getPosition();
-        float rad = MathUtils.atan2(mouseMovingTarget.y - position.y, mouseMovingTarget.x - position.x) ;
-
-        if(rad < PI * -0.75f){
-            aniCmp.animation = aniLeft;
-        } else if(rad < PI * -0.25f){
-            aniCmp.animation = aniDown;
-        } else if(rad < PI * 0.25f){
+        } else if (playerCmp.speed.x > 0) {
             aniCmp.animation = aniRight;
-        } else if(rad < PI * 0.75f){
-            aniCmp.animation = aniUp;
-        } else {
+        } else if (playerCmp.speed.x < 0) {
             aniCmp.animation = aniLeft;
+        } else if (playerCmp.speed.y > 0) {
+            aniCmp.animation = aniUp;
+        } else if (playerCmp.speed.y < 0) {
+            aniCmp.animation = aniDown;
         }
+
+//        if (playerCmp.speed.equals(Vector2.Zero)) {
+//            aniCmp.aniTimer = 0f;
+//        } else {
+//
+//        }
+//        final Vector2 position = b2dCmp.body.getPosition();
+//        float rad = MathUtils.atan2(mouseMovingTarget.y - position.y, mouseMovingTarget.x - position.x) ;
+//
+//        if(rad < PI * -0.75f){
+//            aniCmp.animation = aniLeft;
+//        } else if(rad < PI * -0.25f){
+//            aniCmp.animation = aniDown;
+//        } else if(rad < PI * 0.25f){
+//            aniCmp.animation = aniRight;
+//        } else if(rad < PI * 0.75f){
+//            aniCmp.animation = aniUp;
+//        } else {
+//            aniCmp.animation = aniLeft;
+//        }
 
     }
 

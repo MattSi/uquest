@@ -21,17 +21,12 @@ import static org.bigorange.game.UndergroundQuest.*;
 public class ECSEngine extends EntityEngine {
     private static final String TAG = ECSEngine.class.getSimpleName();
 
-    public static final ComponentMapper<PlayerComponent> playerCmpMapper =
-            ComponentMapper.getFor(PlayerComponent.class);
-
-    public static final ComponentMapper<BulletComponent> bulletCmpMapper =
-            ComponentMapper.getFor(BulletComponent.class);
-
 
     private final ImmutableArray<Entity> gameObjEntities;
     private final World world;
     private final BodyDef bodyDef;
     private final FixtureDef fixtureDef;
+
 
     public ECSEngine(final World world, final OrthographicCamera gameCamera) {
         super();
@@ -45,6 +40,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new PlayerCameraSystem(gameCamera));
         addSystem(new PlayerMovementSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
+        addSystem(new PlayerContactSystem());
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
 
     }

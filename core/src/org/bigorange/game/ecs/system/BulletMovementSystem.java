@@ -1,5 +1,6 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -15,8 +16,9 @@ public class BulletMovementSystem extends IteratingSystem {
 
     private final ECSEngine ecsEngine;
 
+
     public BulletMovementSystem(ECSEngine ecsEngine) {
-        super(Family.all(BulletComponent.class).get());
+        super(Family.all(BulletComponent.class, Box2DComponent.class).get());
         this.ecsEngine = ecsEngine;
     }
 
@@ -28,7 +30,6 @@ public class BulletMovementSystem extends IteratingSystem {
         final long currentTimeMillis = System.currentTimeMillis();
 
         final Vector2 worldCenter = b2dCmp.body.getWorldCenter();
-        // b2dCmp.body.applyForce(1f / bulletCmp.gradient, 1f * bulletCmp.gradient , worldCenter.x, worldCenter.y, true);
         b2dCmp.body.applyLinearImpulse(
                 (bulletCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
                 (bulletCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
@@ -37,5 +38,7 @@ public class BulletMovementSystem extends IteratingSystem {
         if (currentTimeMillis - bulletCmp.startTime > 4000l) {
             entity.add(ecsEngine.createComponent(RemoveComponent.class));
         }
+
+
     }
 }

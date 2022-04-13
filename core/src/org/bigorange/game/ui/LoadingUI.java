@@ -25,6 +25,7 @@ public class LoadingUI extends Table {
         add(pressAnyButtonInfo).expand().fillX().center().row();
         add(new TextButton("Loading...", skin, "normal")).expand().fillX().bottom().row();
         add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
+        //debugAll();
     }
 
     public void setProgress(final float progress){

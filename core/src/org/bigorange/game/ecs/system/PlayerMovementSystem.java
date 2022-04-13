@@ -1,5 +1,6 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
@@ -27,11 +29,8 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
     private boolean isShooting;
     private Vector3 shootingTarget;
 
-
-
-
     public PlayerMovementSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
-        super(Family.all(PlayerComponent.class).get());
+        super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent.class).get());
         this.ecsEngine = ecsEngine;
         this.camera = camera;
         directionChange = false;
@@ -45,9 +44,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
+        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (directionChange) {

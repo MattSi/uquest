@@ -17,13 +17,14 @@ import java.util.Map;
 
 public class Game implements Disposable {
     private static final String TAG = Game.class.getSimpleName();
-    public static final float TARGET_FRAME_TIME = 1/ 60f;
+    public static final float TARGET_FRAME_TIME = 1 / 60f;
 
     private final HUD hud;
     private final EnumMap<EGameState, GameState> gameStateCache;
     private GameState activeState;
 
     private float accumulator;
+
     public Game(final EGameState initialStage) {
         gameStateCache = new EnumMap<EGameState, GameState>(EGameState.class);
         accumulator = 0f;
@@ -43,18 +44,18 @@ public class Game implements Disposable {
          *   (ClassReflection.getConstructor)
          * 4. EnumMap类的使用
          */
-        if(activeState != null){
+        if (activeState != null) {
             Gdx.app.debug(TAG, "Deactivating gamestate " + (disposeActive ? " and disposing" : "")
                     + " " + activeState.getType());
             activeState.deactivate();
-            if(disposeActive){
+            if (disposeActive) {
                 gameStateCache.remove(activeState);
                 activeState.dispose();
             }
         }
 
         activeState = gameStateCache.get(gameStateType);
-        if(activeState == null){
+        if (activeState == null) {
             Gdx.app.debug(TAG, "Creating new gamestate: " + gameStateType);
             try {
                 activeState = (GameState) ClassReflection.getConstructor(gameStateType.getGameStateType(),
@@ -74,17 +75,17 @@ public class Game implements Disposable {
         final float deltaTime = Gdx.graphics.getDeltaTime();
         accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
 
-        while(accumulator >= TARGET_FRAME_TIME){
+        while (accumulator >= TARGET_FRAME_TIME) {
             activeState.step(TARGET_FRAME_TIME);
             accumulator -= TARGET_FRAME_TIME;
         }
 
-        Gdx.gl.glClearColor(0,0,0,1);
+        Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         activeState.render(accumulator / TARGET_FRAME_TIME);
     }
 
-    public void resize(final int width, final int height){
+    public void resize(final int width, final int height) {
         activeState.resize(width, height);
     }
 

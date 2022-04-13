@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.system.PlayerAnimationSystem;
+import org.bigorange.game.ecs.system.PlayerContactSystem;
 import org.bigorange.game.ecs.system.PlayerMovementSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
@@ -24,7 +25,7 @@ import org.bigorange.game.ui.TTFSkin;
 import org.bigorange.game.ui.GameUI;
 import org.bigorange.game.utils.Utils;
 
-public class GSGame extends GameState<GameUI>  {
+public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;
     private final World world;
 
@@ -44,6 +45,7 @@ public class GSGame extends GameState<GameUI>  {
         // TODO init entity component system
 
         this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
+        this.ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
 
 
@@ -58,7 +60,7 @@ public class GSGame extends GameState<GameUI>  {
     }
 
     @Override
-    protected GameUI createHUD(HUD hud, TTFSkin skin) {
+    protected GameUI createGameStateUI(HUD hud, TTFSkin skin) {
         return new GameUI(skin);
     }
 
@@ -125,5 +127,15 @@ public class GSGame extends GameState<GameUI>  {
         );
         Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, 0,0));
         pixmap.dispose();
+    }
+
+    @Override
+    public void wallContact() {
+        /**
+         * 1. 暂停游戏
+         * 2. 显示对话框
+         * 3. 按住空格，对话框消失，恢复游戏
+         */
+        gameStateUI.showInfoMessage("Fuck", 2.0f);
     }
 }

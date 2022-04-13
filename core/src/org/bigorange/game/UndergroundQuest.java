@@ -20,25 +20,22 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 
 
-
-	//private OrthographicCamera camera;
 	private ResourceManager resourceManager;
 	private MapManager mapManager;
 	private SpriteBatch spriteBatch;
 	private Game game;
 	private WorldContactManager worldContactManager;
 
+
 	@Override
 	public void create () {
-		//camera = new OrthographicCamera();
 		spriteBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
 		worldContactManager = new WorldContactManager();
 
-		Gdx.input.setInputProcessor(new InputManager());
 		this.game = new Game(EGameState.LOADING);
-		Gdx.graphics.setVSync(true);
+		Gdx.app.debug(TAG, "Create=================================");
 	}
 
 	@Override

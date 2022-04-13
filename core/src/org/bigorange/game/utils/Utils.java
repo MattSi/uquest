@@ -1,5 +1,6 @@
 package org.bigorange.game.utils;
 
+import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,7 +16,9 @@ public class Utils {
     }
 
     public static ResourceManager getResourceManager(){
-        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getResourceManager();
+        ApplicationListener app = Gdx.app.getApplicationListener();
+        return ((UndergroundQuest)app).getResourceManager();
+
     }
 
     public static InputManager getInputManager(){
@@ -23,11 +26,14 @@ public class Utils {
     }
 
     public static SpriteBatch getSpriteBatch(){
-        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getSpriteBatch();
+        ApplicationListener app = Gdx.app.getApplicationListener();
+        return ((UndergroundQuest)app).getSpriteBatch();
+
     }
 
     public static MapManager getMapManager(){
-        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getMapManager();
+        ApplicationListener app = Gdx.app.getApplicationListener();
+        return ((UndergroundQuest)app).getMapManager();
     }
 
     public static WorldContactManager getWorldContactManager(){

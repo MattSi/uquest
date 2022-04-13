@@ -10,19 +10,19 @@ import org.bigorange.game.input.KeyInputListener;
 public abstract class GameState <T extends Table> implements Disposable, KeyInputListener {
     private final EGameState type;
     protected final HUD hud;
-    protected final T gameStateHUD;
+    protected final T gameStateUI;
 
 
     protected GameState(final EGameState type, final HUD hud){
         this.type = type;
         this.hud = hud;
 
-        gameStateHUD = createHUD(hud, hud.getSkin());
-        hud.addGameStateHUD(gameStateHUD);
-        gameStateHUD.setVisible(false);
+        gameStateUI = createGameStateUI(hud, hud.getSkin());
+        hud.addGameStateHUD(gameStateUI);
+        gameStateUI.setVisible(false);
     }
 
-    protected abstract T createHUD(final HUD hud, final TTFSkin skin);
+    protected abstract T createGameStateUI(final HUD hud, final TTFSkin skin);
     public EGameState getType() {
         return type;
     }
@@ -33,12 +33,12 @@ public abstract class GameState <T extends Table> implements Disposable, KeyInpu
          * 2. set gameStateHUD visible
          */
         Utils.getInputManager().addKeyInputListener(this);
-        gameStateHUD.setVisible(true);
+        gameStateUI.setVisible(true);
     }
 
     public void deactivate(){
         Utils.getInputManager().removeKeyInputListener(this);
-        gameStateHUD.setVisible(false);
+        gameStateUI.setVisible(false);
     }
 
     public void step(final float fixedTimeStep){

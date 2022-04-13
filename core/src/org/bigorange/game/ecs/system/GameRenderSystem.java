@@ -1,5 +1,6 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
@@ -57,6 +58,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     private final Box2DDebugRenderer b2dRenderer;
 
+
     Texture tmpTexture;
 
     public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera camera) {
@@ -94,10 +96,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     @Override
     public void render(float alpha) {
 
-        ScreenUtils.clear(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        //ScreenUtils.clear(0, 0, 0, 1);
+        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-
+        viewport.apply();
         updateCamera(alpha);
         spriteBatch.begin();
         AnimatedTiledMapTile.updateAnimationBaseTime();
@@ -114,6 +116,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             renderEntity(entity, alpha);
         }
 
+        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.end();
 
         b2dRenderer.render(world, gameCamera.combined);
@@ -121,9 +124,9 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     }
 
     private void renderEntity(Entity entity, float alpha) {
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
-        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             return;

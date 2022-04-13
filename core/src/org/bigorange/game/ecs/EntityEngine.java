@@ -5,19 +5,18 @@ import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
-import org.bigorange.game.ecs.component.AnimationComponent;
-import org.bigorange.game.ecs.component.Box2DComponent;
+import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.AnimationSystem;
 import org.bigorange.game.ecs.system.RemoveSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
 
-    public static final ComponentMapper<AnimationComponent> aniCmpMapper =
-            ComponentMapper.getFor(AnimationComponent.class);
-
-    public static final ComponentMapper<Box2DComponent> b2dCmpMapper =
-            ComponentMapper.getFor(Box2DComponent.class);
+    public static ComponentMapper<PlayerComponent> playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
+    public static ComponentMapper<AnimationComponent> aniCmpMapper = ComponentMapper.getFor(AnimationComponent.class);
+    public static ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
+    public static ComponentMapper<BulletComponent> bulletCmpMapper = ComponentMapper.getFor(BulletComponent.class);
+    public static ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {
@@ -26,7 +25,6 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
 
         addSystem(new RemoveSystem());
         addSystem(new AnimationSystem());
-
     }
 
     public void addRenderSystem(final RenderSystem renderSystem) {
