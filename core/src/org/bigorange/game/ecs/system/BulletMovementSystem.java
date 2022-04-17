@@ -25,6 +25,7 @@ public class BulletMovementSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
 
+
         final BulletComponent bulletCmp = ECSEngine.bulletCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final long currentTimeMillis = System.currentTimeMillis();

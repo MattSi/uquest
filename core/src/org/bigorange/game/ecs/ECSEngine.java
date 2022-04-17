@@ -41,7 +41,9 @@ public class ECSEngine extends EntityEngine {
         addSystem(new PlayerMovementSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
         addSystem(new PlayerContactSystem());
+
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
+        addSystem(new PhysiceDebugSystem(world, gameCamera));
 
     }
 
@@ -90,6 +92,42 @@ public class ECSEngine extends EntityEngine {
         addEntity(bullet);
     }
 
+    public void addEnemy(Vector2 spawnLocation) {
+        final Entity enemy = createEntity();
+
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        b2dCmp.height = 0.8f;
+        b2dCmp.width = 0.8f;
+
+        // body
+        bodyDef.gravityScale = 0;
+        bodyDef.position.set(spawnLocation);
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.linearVelocity.set(0,0);
+
+        //bodyDef.linearVelocity.set(2,1);
+        b2dCmp.positionBeforeUpdate.set(spawnLocation);
+        b2dCmp.body = world.createBody(bodyDef);
+        b2dCmp.body.setUserData(enemy);
+
+        // fixture
+        final PolygonShape shape = new PolygonShape();
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+        //shape.setRadius(b2dCmp.height * 0.5f);
+
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = shape;
+        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
+        fixtureDef.filter.maskBits = BIT_WORLD | BIT_PLAYER;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        shape.dispose();
+        enemy.add(b2dCmp);
+
+        addEntity(enemy);
+
+    }
+
     public void addPlayer(Vector2 spawnLocation) {
         final Entity player = createEntity();
 
@@ -97,11 +135,11 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.height = 0.2f;
         b2dCmp.width = 0.2f;
         // body
-        bodyDef.gravityScale = 1;
-        bodyDef.position.set(spawnLocation.x * UNIT_SCALE, spawnLocation.y * UNIT_SCALE);
+        bodyDef.gravityScale = 0;
+        bodyDef.position.set(spawnLocation.x, spawnLocation.y);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearVelocity.set(1,2);
+        bodyDef.linearVelocity.set(1, 2);
         b2dCmp.body = world.createBody(bodyDef);
         b2dCmp.body.setUserData(player);
 

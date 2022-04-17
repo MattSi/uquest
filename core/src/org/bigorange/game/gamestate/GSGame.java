@@ -57,6 +57,8 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         final Array<Vector2> playerStartLocations = currentMap.getPlayerStartLocations();
         this.ecsEngine.addPlayer(playerStartLocations.get(0));
         setCursor();
+        addEnemies();
+
     }
 
     @Override
@@ -137,5 +139,15 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
          * 3. 按住空格，对话框消失，恢复游戏
          */
         gameStateUI.showInfoMessage("Fuck", 2.0f);
+    }
+
+    public void addEnemies(){
+        MapManager mapManager = Utils.getMapManager();
+        Map currentMap = mapManager.getCurrentMap();
+
+        for (Vector2 location : currentMap.getEnemyStartLocations()) {
+            ecsEngine.addEnemy(location);
+        }
+
     }
 }

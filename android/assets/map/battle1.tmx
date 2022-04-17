@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="28">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="34">
  <tileset firstgid="1" name="ProjectUtumno_full" tilewidth="32" tileheight="32" tilecount="6080" columns="64">
   <image source="ProjectUtumno_full.png" width="2048" height="3040"/>
   <tile id="1">
@@ -137,24 +137,34 @@
   <object id="5" gid="6135" x="930.667" y="1536" width="32" height="32"/>
   <object id="6" gid="6135" x="1026.67" y="1536" width="32" height="32"/>
  </objectgroup>
- <objectgroup id="9" name="Spawn" visible="0">
+ <objectgroup id="9" name="Spawn">
   <object id="10" x="566.667" y="1850.67" width="44" height="22.6667">
    <properties>
-    <property name="spawnType" value="player"/>
+    <property name="spawnType" value="PLAYER"/>
    </properties>
   </object>
-  <object id="11" x="1262.67" y="1405.33" width="42.6667" height="24">
+  <object id="11" x="1513.67" y="1213.33" width="42.6667" height="24">
    <properties>
-    <property name="spawnType" value="npc"/>
+    <property name="spawnType" value="NPC"/>
    </properties>
   </object>
   <object id="13" x="1410.67" y="1660" width="42.6667" height="24">
    <properties>
-    <property name="spawnType" value="npc"/>
+    <property name="spawnType" value="NPC"/>
+   </properties>
+  </object>
+  <object id="30" x="361" y="1749" width="40" height="41">
+   <properties>
+    <property name="spawnType" value="ENEMY"/>
+   </properties>
+  </object>
+  <object id="32" x="747.5" y="1747" width="72" height="44">
+   <properties>
+    <property name="spawnType" value="ENEMY"/>
    </properties>
   </object>
  </objectgroup>
- <objectgroup id="11" name="Collision">
+ <objectgroup id="11" name="Collision" visible="0">
   <object id="18" x="952" y="1472">
    <polygon points="0,0 -245.333,0 -246,413 4,413 6,386 -216,385 -218,29 5,28"/>
   </object>

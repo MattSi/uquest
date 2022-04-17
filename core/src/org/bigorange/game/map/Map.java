@@ -16,6 +16,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.component.SpawnType;
 
+import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
+
 /**
  * Parse map, get gameObjects, collide area, etc
  *
@@ -35,6 +37,8 @@ public class Map {
     private final Array<MapGameObject> gameObjects;
     private final Array<CollisionArea> collisionAreas;
     private final Array<Vector2> playerStartLocations;
+
+    private final Array<Vector2> enemyStartLocations;
     private final Array<Vector2> npcStartLocations;
 
 
@@ -46,6 +50,7 @@ public class Map {
 
         this.playerStartLocations = new Array<>();
         this.npcStartLocations = new Array<>();
+        this.enemyStartLocations = new Array<>();
 
         parseGameObjects();
         parseCollision();
@@ -117,28 +122,33 @@ public class Map {
         }
     }
 
-    private void parseSpawnLocations(){
+    private void parseSpawnLocations() {
         final MapLayer spawnLayer = tiledMap.getLayers().get("Spawn");
-        if(spawnLayer == null){
+        if (spawnLayer == null) {
             Gdx.app.error(TAG, "Map does not has a layer called 'Spawn'.");
             return;
         }
 
         for (MapObject item : spawnLayer.getObjects()) {
-            if(item instanceof  RectangleMapObject rectangleMapObject){
+            if (item instanceof RectangleMapObject rectangleMapObject) {
                 SpawnType type;
                 String spawnType = "spawnType";
                 final MapProperties props = rectangleMapObject.getProperties();
-                if(props.containsKey(spawnType)) {
+                if (props.containsKey(spawnType)) {
                     type = SpawnType.valueOf(props.get(spawnType, String.class).toUpperCase());
                 } else {
                     type = SpawnType.NPC;
                 }
 
-                if(type == SpawnType.PLAYER){
-                    playerStartLocations.add(new Vector2(rectangleMapObject.getRectangle().x, rectangleMapObject.getRectangle().y));
+
+                Vector2 location = new Vector2(UNIT_SCALE, UNIT_SCALE);
+                if (type == SpawnType.PLAYER) {
+
+                    playerStartLocations.add(location.scl(rectangleMapObject.getRectangle().x, rectangleMapObject.getRectangle().y));
+                } else if (type == SpawnType.ENEMY) {
+                    enemyStartLocations.add(location.scl(rectangleMapObject.getRectangle().x, rectangleMapObject.getRectangle().y));
                 } else {
-                    npcStartLocations.add(new Vector2(new Vector2(rectangleMapObject.getRectangle().x, rectangleMapObject.getRectangle().y)));
+                    npcStartLocations.add(location.scl(rectangleMapObject.getRectangle().x, rectangleMapObject.getRectangle().y));
                 }
             }
         }
@@ -163,5 +173,9 @@ public class Map {
 
     public Array<CollisionArea> getCollisionAreas() {
         return collisionAreas;
+    }
+
+    public Array<Vector2> getEnemyStartLocations() {
+        return enemyStartLocations;
     }
 }
