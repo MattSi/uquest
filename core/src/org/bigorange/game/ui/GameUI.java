@@ -24,7 +24,7 @@ public class GameUI extends Table {
 
 
         add(progressBar).left().pad(5,5,5,5).row();
-        add(infoBox).expand().fillX().bottom().pad(5, 5, 5, 5).bottom();
+        add(infoBox).expand().pad(5, 5, 5, 5).bottom();
         //debugAll();
     }
 
