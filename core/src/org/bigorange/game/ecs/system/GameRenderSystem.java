@@ -56,6 +56,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private final ImmutableArray<Entity> charactersForRender;
     private final ImmutableArray<Entity> bulletsForRender;
 
+    private final ImmutableArray<Entity> enemiesForRender;
+
     private final Box2DDebugRenderer b2dRenderer;
 
 
@@ -63,16 +65,30 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera camera) {
         this.gameObjectsForRender = entityEngine.
-                getEntitiesFor(Family.all(AnimationComponent.class, GameObjectComponent.class).
+                getEntitiesFor(Family.all(AnimationComponent.class,
+                                GameObjectComponent.class,
+                                Box2DComponent.class).
                         exclude(RemoveComponent.class).get());
 
         this.charactersForRender = entityEngine.
-                getEntitiesFor(Family.all(AnimationComponent.class, Box2DComponent.class, PlayerComponent.class).
+                getEntitiesFor(Family.all(AnimationComponent.class,
+                                Box2DComponent.class,
+                                PlayerComponent.class,
+                                SpeedComponent.class).
                         exclude(RemoveComponent.class).get());
 
         this.bulletsForRender = entityEngine.
-                getEntitiesFor(Family.all(BulletComponent.class, Box2DComponent.class).
+                getEntitiesFor(Family.all(BulletComponent.class,
+                                Box2DComponent.class,
+                                SpeedComponent.class).
                         exclude(RemoveComponent.class).get());
+
+        this.enemiesForRender = entityEngine.getEntitiesFor(Family.all(EnemyComponent.class,
+                AnimationComponent.class,
+                Animation4DirectionsComponent.class,
+                SpeedComponent.class,
+                Box2DComponent.class).exclude(RemoveComponent.class).get());
+
         this.world = world;
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
@@ -109,6 +125,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         }
 
         for (final Entity entity : gameObjectsForRender) {
+            renderEntity(entity, alpha);
+        }
+
+        for (Entity entity : enemiesForRender) {
             renderEntity(entity, alpha);
         }
 

@@ -146,7 +146,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         Map currentMap = mapManager.getCurrentMap();
 
         for (Vector2 location : currentMap.getEnemyStartLocations()) {
-            ecsEngine.addEnemy(location);
+            ecsEngine.addEnemy(location, "enemy03");
         }
 
     }

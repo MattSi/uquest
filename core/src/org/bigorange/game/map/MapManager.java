@@ -18,8 +18,8 @@ import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.utils.Utils;
 
-import static org.bigorange.game.UndergroundQuest.BIT_PLAYER;
-import static org.bigorange.game.UndergroundQuest.BIT_WORLD;
+import static org.bigorange.game.UndergroundQuest.CATEGORY_PLAYER;
+import static org.bigorange.game.UndergroundQuest.CATEGORY_WORLD;
 
 /**
  * 1. Load a map from resource manager
@@ -90,8 +90,8 @@ public class MapManager {
             fixtureDef.shape = shape;
             fixtureDef.friction = 0;
             fixtureDef.isSensor=false;
-            fixtureDef.filter.categoryBits = BIT_WORLD;
-            fixtureDef.filter.maskBits = BIT_PLAYER;
+            fixtureDef.filter.categoryBits = CATEGORY_WORLD;
+            fixtureDef.filter.maskBits = CATEGORY_PLAYER;
             body.createFixture(fixtureDef);
             shape.dispose();
         }

@@ -1,20 +1,22 @@
 package org.bigorange.game.ecs;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.MapGameObject;
+import org.bigorange.game.utils.Utils;
 
 import static org.bigorange.game.UndergroundQuest.*;
 
@@ -40,10 +42,10 @@ public class ECSEngine extends EntityEngine {
         addSystem(new PlayerCameraSystem(gameCamera));
         addSystem(new PlayerMovementSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
+        addSystem(new EnemyAnimationSystem());
         addSystem(new PlayerContactSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
-        addSystem(new PhysiceDebugSystem(world, gameCamera));
 
     }
 
@@ -71,8 +73,8 @@ public class ECSEngine extends EntityEngine {
 
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
-        fixtureDef.filter.maskBits = BIT_WORLD  ;
+        fixtureDef.filter.categoryBits = CATEGORY_BULLET;
+        fixtureDef.filter.maskBits = MASK_BULLET ;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -82,18 +84,50 @@ public class ECSEngine extends EntityEngine {
         final BulletComponent bulletCmp = createComponent(BulletComponent.class);
         bulletCmp.startTime = System.currentTimeMillis();
         bulletCmp.maxSpeed = 8;
+        bullet.add(bulletCmp);
 
         float rad = MathUtils.atan2((target.y - start.y), (target.x - start.x));
-
-        bulletCmp.speed.x = bulletCmp.maxSpeed * MathUtils.cos(rad);
-        bulletCmp.speed.y = bulletCmp.maxSpeed * MathUtils.sin(rad);
-        bullet.add(bulletCmp);
+        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+        speedCmp.velocity.x = bulletCmp.maxSpeed * MathUtils.cos(rad);
+        speedCmp.velocity.y = bulletCmp.maxSpeed * MathUtils.sin(rad);
+        bullet.add(speedCmp);
 
         addEntity(bullet);
     }
 
-    public void addEnemy(Vector2 spawnLocation) {
+    private Array<Sprite> getKeyFrames(final TextureRegion[] textureRegions) {
+        final Array<Sprite> keyFrames = new Array<>();
+
+        for (final TextureRegion region : textureRegions) {
+            keyFrames.add(new Sprite(region));
+        }
+        return keyFrames;
+    }
+    public void addEnemy(Vector2 spawnLocation, String enemyId) {
         final Entity enemy = createEntity();
+
+        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
+        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+        enemyCmp.maxSpeed = 2f;
+        enemy.add(enemyCmp);
+
+        final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
+                TextureAtlas.class).findRegion(enemyId);
+        final TextureRegion[][] textureRegions = atlasRegion.split(32, 32);
+        ani4dCmp.aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniLeft = new Animation<>(0.1f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniRight = new Animation<>(0.1f, getKeyFrames(textureRegions[2]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniUp = new Animation<>(0.1f, getKeyFrames(textureRegions[3]), Animation.PlayMode.LOOP);
+
+        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        aniCmp.height = aniCmp.width = 32;
+
+        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+        enemy.add(ani4dCmp);
+        enemy.add(aniCmp);
+        enemy.add(speedCmp);
+
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.height = 0.8f;
@@ -103,7 +137,9 @@ public class ECSEngine extends EntityEngine {
         bodyDef.gravityScale = 0;
         bodyDef.position.set(spawnLocation);
         bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.linearVelocity.set(0,0);
+        bodyDef.fixedRotation = true;
+        bodyDef.angle = 0;
+        bodyDef.linearVelocity.set(0, 0);
 
         //bodyDef.linearVelocity.set(2,1);
         b2dCmp.positionBeforeUpdate.set(spawnLocation);
@@ -117,13 +153,28 @@ public class ECSEngine extends EntityEngine {
 
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
-        fixtureDef.filter.maskBits = BIT_WORLD | BIT_PLAYER;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.8f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
+        fixtureDef.filter.maskBits = MASK_ENEMY;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
-        enemy.add(b2dCmp);
 
+
+        // create sensor
+        final CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(2f);
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
+        fixtureDef.filter.maskBits = MASK_SENSOR;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        circleShape.dispose();
+
+        enemy.add(b2dCmp);
         addEntity(enemy);
 
     }
@@ -149,8 +200,8 @@ public class ECSEngine extends EntityEngine {
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = BIT_PLAYER;
-        fixtureDef.filter.maskBits = BIT_WORLD | BIT_GAME_OBJECT;
+        fixtureDef.filter.categoryBits = CATEGORY_PLAYER;
+        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -158,10 +209,12 @@ public class ECSEngine extends EntityEngine {
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        final SpeedComponent speedComponent = createComponent(SpeedComponent.class);
 
         playerCmp.maxSpeed = 2f;
         player.add(playerCmp);
         player.add(aniCmp);
+        player.add(speedComponent);
 
         addEntity(player);
     }
@@ -188,8 +241,8 @@ public class ECSEngine extends EntityEngine {
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = BIT_GAME_OBJECT;
-        fixtureDef.filter.maskBits = BIT_PLAYER;
+        fixtureDef.filter.categoryBits = CATEGORY_TILEMAP_OBJECT;
+        fixtureDef.filter.maskBits = MASK_GROUND;
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
         gameObjEntity.add(b2dCmp);

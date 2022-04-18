@@ -1,6 +1,5 @@
 package org.bigorange.game.ecs.system;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
@@ -13,6 +12,7 @@ import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
+import org.bigorange.game.ecs.component.SpeedComponent;
 import org.bigorange.game.input.*;
 
 import static org.bigorange.game.input.EKey.*;
@@ -47,18 +47,19 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
         final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
         final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
         final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
+        final SpeedComponent velocityCmp = EntityEngine.speedCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (directionChange) {
             directionChange = false;
-            playerCmp.speed.x = xFactor * playerCmp.maxSpeed;
-            playerCmp.speed.y = yFactor * playerCmp.maxSpeed;
+            velocityCmp.velocity.x = xFactor * playerCmp.maxSpeed;
+            velocityCmp.velocity.y = yFactor * playerCmp.maxSpeed;
         }
 
         final Vector2 worldCenter = b2dCmp.body.getWorldCenter();
         b2dCmp.body.applyLinearImpulse(
-                (playerCmp.speed.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
-                (playerCmp.speed.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
+                (velocityCmp.velocity.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
+                (velocityCmp.velocity.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
 
         if(isShooting){

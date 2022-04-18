@@ -22,7 +22,7 @@ public class PhysiceDebugSystem extends IteratingSystem {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-       // dbgRender.render(world, camera.combined);
+        dbgRender.render(world, camera.combined);
     }
 
     @Override

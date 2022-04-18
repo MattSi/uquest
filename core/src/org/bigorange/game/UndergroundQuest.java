@@ -2,23 +2,32 @@ package org.bigorange.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.gamestate.EGameState;
-import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
-
-import java.security.PublicKey;
 
 public class UndergroundQuest extends ApplicationAdapter {
 	public static final String TAG = UndergroundQuest.class.getSimpleName();
 	public static final float UNIT_SCALE = 1 / 64f;
 
-	public static final short BIT_WORLD = 1<<0;
-	public static final short BIT_PLAYER = 1<<1;
-	public static final short BIT_GAME_OBJECT = 1<<2;
+
+	public static final short CATEGORY_PLAYER = 1<<0; // 玩家
+
+	public static final short CATEGORY_ENEMY = 1<<1; // 敌人
+
+	public static final short CATEGORY_BULLET = 1<<2; //子弹
+	public static final short CATEGORY_TILEMAP_OBJECT = 1<<3; // TileMap生成的对象
+
+	public static final short CATEGORY_SENSOR = 1<<9;// SENSOR
+	public static final short CATEGORY_WORLD = 1<<10; // 碰撞区域, 碰撞多边形, 世界
 
 
+	public static final short MASK_PLAYER = ~CATEGORY_PLAYER; // 不能和Player碰撞
+	public static final short MASK_TILEMAP_OBJECT = ~CATEGORY_TILEMAP_OBJECT; //不能和TILEMAP OBJECT碰撞
+	public static final short MASK_ENEMY = ~CATEGORY_ENEMY; //不能和ENEMY 碰撞
+	public static final short MASK_SENSOR = CATEGORY_PLAYER; // 只能和PLAYER碰撞
+	public static final short MASK_BULLET = ~CATEGORY_BULLET;
+	public static final short MASK_GROUND = -1;// 可以和任何物体碰撞
 
 	private ResourceManager resourceManager;
 	private MapManager mapManager;

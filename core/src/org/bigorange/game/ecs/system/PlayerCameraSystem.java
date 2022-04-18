@@ -28,7 +28,6 @@ public class PlayerCameraSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         final Box2DComponent box2DComponent = EntityEngine.b2dCmpMapper.get(entity);
-        final PlayerComponent playerComponent = EntityEngine.playerCmpMapper.get(entity);
 
         gameCamera.position.x = box2DComponent.positionBeforeUpdate.x;
         gameCamera.position.y = box2DComponent.positionBeforeUpdate.y;

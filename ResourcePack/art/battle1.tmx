@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="34">
+<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="36">
  <tileset firstgid="1" name="ProjectUtumno_full" tilewidth="32" tileheight="32" tilecount="6080" columns="64">
   <image source="ProjectUtumno_full.png" width="2048" height="3040"/>
+  <tile id="0">
+   <animation>
+    <frame tileid="5101" duration="200"/>
+    <frame tileid="5102" duration="200"/>
+   </animation>
+  </tile>
   <tile id="1">
    <animation>
     <frame tileid="1" duration="200"/>
@@ -136,6 +142,7 @@
   <object id="4" gid="6082" x="1008" y="1711.34" width="32" height="32"/>
   <object id="5" gid="6135" x="930.667" y="1536" width="32" height="32"/>
   <object id="6" gid="6135" x="1026.67" y="1536" width="32" height="32"/>
+  <object id="34" gid="10055" x="992" y="1372" width="87" height="79"/>
  </objectgroup>
  <objectgroup id="9" name="Spawn">
   <object id="10" x="566.667" y="1850.67" width="44" height="22.6667">
@@ -153,7 +160,7 @@
     <property name="spawnType" value="NPC"/>
    </properties>
   </object>
-  <object id="30" x="361" y="1749" width="40" height="41">
+  <object id="30" x="350" y="1710" width="40" height="41">
    <properties>
     <property name="spawnType" value="ENEMY"/>
    </properties>

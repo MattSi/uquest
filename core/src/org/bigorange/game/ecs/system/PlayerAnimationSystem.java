@@ -1,32 +1,26 @@
 package org.bigorange.game.ecs.system;
 
-import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
+import org.bigorange.game.ecs.component.SpeedComponent;
 import org.bigorange.game.input.EMouse;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.MouseInputListener;
 import org.bigorange.game.utils.Utils;
 
-import static com.badlogic.gdx.math.MathUtils.PI;
-import static com.badlogic.gdx.math.MathUtils.radDeg;
-import static org.bigorange.game.UndergroundQuest.TAG;
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
 public class PlayerAnimationSystem extends IteratingSystem implements MouseInputListener {
@@ -67,6 +61,7 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
         final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
         final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
+        final SpeedComponent speedCmp = EntityEngine.speedCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             aniCmp.animation = aniDown;
@@ -74,15 +69,15 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
             aniCmp.height = 72 * UNIT_SCALE * 0.6f;
         }
 
-        if (playerCmp.speed.equals(Vector2.Zero) ) {
+        if (speedCmp.velocity.equals(Vector2.Zero) ) {
             aniCmp.aniTimer = 0f;
-        } else if (playerCmp.speed.x > 0) {
+        } else if (speedCmp.velocity.x > 0) {
             aniCmp.animation = aniRight;
-        } else if (playerCmp.speed.x < 0) {
+        } else if (speedCmp.velocity.x < 0) {
             aniCmp.animation = aniLeft;
-        } else if (playerCmp.speed.y > 0) {
+        } else if (speedCmp.velocity.y > 0) {
             aniCmp.animation = aniUp;
-        } else if (playerCmp.speed.y < 0) {
+        } else if (speedCmp.velocity.y < 0) {
             aniCmp.animation = aniDown;
         }
 
