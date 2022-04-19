@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
-import org.bigorange.game.ecs.component.GameObjectComponent;
+import org.bigorange.game.ashley.component.GameObjectComponent;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 

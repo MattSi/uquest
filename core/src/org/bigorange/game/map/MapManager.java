@@ -14,8 +14,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.ResourceManager;
-import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.component.RemoveComponent;
+import org.bigorange.game.ashley.ECSEngine;
+import org.bigorange.game.ashley.component.RemoveComponent;
 import org.bigorange.game.utils.Utils;
 
 import static org.bigorange.game.UndergroundQuest.CATEGORY_PLAYER;

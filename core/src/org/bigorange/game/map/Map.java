@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Polyline;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.ecs.component.SpawnType;
+import org.bigorange.game.ashley.component.SpawnType;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
