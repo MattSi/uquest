@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.input.EKey;
-import org.bigorange.game.map.MapGameObject;
+import org.bigorange.game.map.GameObject;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.tests.framework.GdxTestRunner;
@@ -53,8 +53,8 @@ public class AssetExistsExampleTest {
         Map map = new Map(tiledMap);
         Assert.assertNotNull(map);
         Assert.assertNotNull(map.getGameObjects());
-        for (MapGameObject mapGameObject : map.getGameObjects()) {
-            System.err.println(mapGameObject.toString());
+        for (GameObject gameObject : map.getGameObjects()) {
+            System.err.println(gameObject.toString());
         }
     }
 

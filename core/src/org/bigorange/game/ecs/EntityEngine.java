@@ -18,8 +18,7 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     public static ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
     public static ComponentMapper<BulletComponent> bulletCmpMapper = ComponentMapper.getFor(BulletComponent.class);
     public static ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
-
-
+    public static ComponentMapper<EnemyComponent> enemyCmpMapper = ComponentMapper.getFor(EnemyComponent.class);
 
     public static ComponentMapper<SpeedComponent> speedCmpMapper = ComponentMapper.getFor(SpeedComponent.class);
 

@@ -66,7 +66,7 @@ public class MapManager {
             mapListener.mapChanged(currentMap);
         }
 
-        for (final MapGameObject gameObj : currentMap.getGameObjects()) {
+        for (final GameObject gameObj : currentMap.getGameObjects()) {
             getAnimation(gameObj);
         }
         spawnCollisionAreas(world);
@@ -114,13 +114,13 @@ public class MapManager {
         }
 
         // 只适合单一动画场景，对于NPC这种复杂的GameObject不适用了
-        for (MapGameObject gameObj : currentMap.getGameObjects()) {
+        for (GameObject gameObj : currentMap.getGameObjects()) {
             ecsEngine.addGameObject(gameObj, getAnimation(gameObj));
         }
 
     }
 
-    private Animation<Sprite> getAnimation(final MapGameObject gameObj) {
+    private Animation<Sprite> getAnimation(final GameObject gameObj) {
         final TiledMapTile tile = gameObj.getTile();
         Animation<Sprite> animation = gameObjectAnimationCache.get(tile.getId());
         if (animation != null) {

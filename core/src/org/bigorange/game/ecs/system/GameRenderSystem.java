@@ -128,15 +128,15 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             renderEntity(entity, alpha);
         }
 
-        for (Entity entity : enemiesForRender) {
-            renderEntity(entity, alpha);
-        }
+//        for (Entity entity : enemiesForRender) {
+//            //renderEnemy(entity, alpha);
+//        }
 
         for (final Entity entity : charactersForRender) {
             renderEntity(entity, alpha);
         }
 
-        spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.end();
 
         b2dRenderer.render(world, gameCamera.combined);
@@ -144,9 +144,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     }
 
     private void renderEntity(Entity entity, float alpha) {
-        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
-        final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             return;
@@ -159,18 +160,50 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
 
         final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
-        keyFrame.setColor(Color.WHITE);
+        //keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
         keyFrame.setBounds(
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f),
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
                 aniCmp.width, aniCmp.height);
 
-        keyFrame.draw(spriteBatch);
-
-
+        if(enemyCmp!= null && enemyCmp.findPlayer){
+            final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
+            keyFrame.setColor(Color.RED);
+            keyFrame.draw(spriteBatch);
+            keyFrame.setColor(defaultColor);
+        } else {
+            keyFrame.draw(spriteBatch);
+        }
     }
 
+    private void renderEnemy(Entity entity, float alpha){
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(entity);
+
+        if (aniCmp.animation == null) {
+            return;
+        }
+        final Vector2 position = b2dCmp.body.getPosition();
+
+        final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
+        //keyFrame.setColor(Color.WHITE);
+        keyFrame.setOriginCenter();
+        keyFrame.setBounds(
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f),
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
+                aniCmp.width, aniCmp.height);
+        if(enemyCmp.findPlayer){
+            final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
+            spriteBatch.setColor(Color.RED);
+            keyFrame.draw(spriteBatch);
+            spriteBatch.setColor(defaultColor);
+        } else {
+            keyFrame.draw(spriteBatch);
+        }
+
+    }
     private void updateCamera(float alpha){
 
         TiledMapTileLayer layer = layersToRender.get(0);

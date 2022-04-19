@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.WorldContactManager;
 import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.component.EnemyComponent;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
 import org.bigorange.game.utils.Utils;
@@ -26,19 +27,39 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     }
 
     @Override
-    public void beginContact(Entity player, Entity gameObject) {
+    public void beginContact(Entity player, Entity gameObject, boolean isSensor) {
         Gdx.app.debug(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(player);
+        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
 
-        switch (gameObjCmp.type){
+        switch (gameObjCmp.type) {
             case NOT_DEFINED -> {
             }
             case WALL -> {
                 wallInteract(playerCmp, gameObjCmp);
             }
+            case ENEMY -> {
+                if (isSensor) {
+                    enemyCmp.findPlayer = true;
+                }
+            }
         }
+    }
 
+    @Override
+    public void endContact(Entity player, Entity gameObject, boolean isSensor) {
+        Gdx.app.debug(TAG, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+        final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
+        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
+
+        switch (gameObjCmp.type) {
+            case ENEMY -> {
+                if (isSensor) {
+                    enemyCmp.findPlayer = false;
+                }
+            }
+        }
     }
 
     private void wallInteract(PlayerComponent playerCmp, GameObjectComponent gameObjCmp) {

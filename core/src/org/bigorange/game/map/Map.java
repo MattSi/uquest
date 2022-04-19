@@ -34,7 +34,7 @@ public class Map {
     public static final String TAG = Map.class.getSimpleName();
 
     private final TiledMap tiledMap;
-    private final Array<MapGameObject> gameObjects;
+    private final Array<GameObject> gameObjects;
     private final Array<CollisionArea> collisionAreas;
     private final Array<Vector2> playerStartLocations;
 
@@ -70,8 +70,8 @@ public class Map {
 
         for (MapObject item : objLayer.getObjects()) {
             if(item instanceof TiledMapTileMapObject tiledMapObject){
-                MapGameObject mapGameObject = new MapGameObject(tiledMapObject);
-                gameObjects.add(mapGameObject);
+                GameObject gameObject = new GameObject(tiledMapObject);
+                gameObjects.add(gameObject);
             } else {
                 Gdx.app.log(TAG, "Unsupported mapObject for objects layer: " + item);
             }
@@ -155,7 +155,7 @@ public class Map {
 
     }
 
-    public Array<MapGameObject> getGameObjects() {
+    public Array<GameObject> getGameObjects() {
         return gameObjects;
     }
 

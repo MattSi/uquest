@@ -2,13 +2,14 @@ package org.bigorange.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Manifold;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
+
+import static org.bigorange.game.UndergroundQuest.TAG;
 
 public class WorldContactManager implements ContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
@@ -16,6 +17,7 @@ public class WorldContactManager implements ContactListener {
     private final Array<WorldContactListener> listeners;
     private Entity player;
     private Entity gameObj;
+    private boolean isSensor;
 
     public WorldContactManager(){
         playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
@@ -23,6 +25,7 @@ public class WorldContactManager implements ContactListener {
         listeners = new Array<>();
         player = null;
         gameObj = null;
+        isSensor = false;
 
     }
     public void addWorldContactListener(WorldContactListener listener){
@@ -34,9 +37,13 @@ public class WorldContactManager implements ContactListener {
     private boolean prepareContactData(final Contact contact) {
         player = null;
         gameObj = null;
+        isSensor = false;
 
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
+
+        final Fixture fixtureA = contact.getFixtureA();
+        final Fixture fixtureB = contact.getFixtureB();
 
         if (!(userDataA instanceof Entity) || !(userDataB instanceof Entity)) {
             return false;
@@ -50,10 +57,16 @@ public class WorldContactManager implements ContactListener {
             return false;
         }
 
-        if(gameObjectCmpMapper.get((Entity) userDataA) != null){
+        if (gameObjectCmpMapper.get((Entity) userDataA) != null) {
             gameObj = (Entity) userDataA;
-        } else if(gameObjectCmpMapper.get((Entity) userDataB) != null){
+            if (fixtureA.isSensor()) {
+                isSensor = true;
+            }
+        } else if (gameObjectCmpMapper.get((Entity) userDataB) != null) {
             gameObj = (Entity) userDataB;
+            if (fixtureB.isSensor()) {
+                isSensor = true;
+            }
         } else {
             return false;
         }
@@ -67,13 +80,19 @@ public class WorldContactManager implements ContactListener {
             return;
 
         for (final WorldContactListener listener : listeners) {
-            listener.beginContact(player, gameObj);
+            listener.beginContact(player, gameObj, isSensor);
         }
 
     }
 
     @Override
     public void endContact(Contact contact) {
+        if(!prepareContactData(contact))
+            return;
+
+        for (final WorldContactListener listener : listeners) {
+            listener.endContact(player, gameObj, isSensor);
+        }
 
     }
 
@@ -88,6 +107,8 @@ public class WorldContactManager implements ContactListener {
     }
 
     public interface WorldContactListener {
-        void beginContact(final Entity player, final Entity gameObject);
+        void beginContact(final Entity player, final Entity gameObject, boolean isSensor);
+
+        void endContact(final Entity player, final Entity gameObject, boolean isSensor);
     }
 }

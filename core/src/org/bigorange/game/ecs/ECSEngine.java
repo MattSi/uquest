@@ -15,7 +15,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
-import org.bigorange.game.map.MapGameObject;
+import org.bigorange.game.map.GameObject;
 import org.bigorange.game.utils.Utils;
 
 import static org.bigorange.game.UndergroundQuest.*;
@@ -124,9 +124,15 @@ public class ECSEngine extends EntityEngine {
         aniCmp.height = aniCmp.width = 32;
 
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+
+        final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
+        gameObjCmp.id = MathUtils.random(10000,99999);
+        gameObjCmp.type = GameObjectComponent.GameObjectType.ENEMY;
+
         enemy.add(ani4dCmp);
         enemy.add(aniCmp);
         enemy.add(speedCmp);
+        enemy.add(gameObjCmp);
 
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -157,7 +163,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.friction = 0.8f;
         fixtureDef.restitution = 0f;
         fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
-        fixtureDef.filter.maskBits = MASK_ENEMY;
+        fixtureDef.filter.maskBits = MASK_PLAYER;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -169,7 +175,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = true;
         fixtureDef.shape = circleShape;
         fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        fixtureDef.filter.maskBits = MASK_SENSOR;
+        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
 
         b2dCmp.body.createFixture(fixtureDef);
         circleShape.dispose();
@@ -201,7 +207,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = CATEGORY_PLAYER;
-        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT;
+        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_SENSOR | MASK_GROUND;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -219,7 +225,7 @@ public class ECSEngine extends EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(MapGameObject gameObj, final Animation<Sprite> animation) {
+    public void addGameObject(GameObject gameObj, final Animation<Sprite> animation) {
         final Entity gameObjEntity = createEntity();
         final Rectangle boundaries = gameObj.getBoundaries();
 
