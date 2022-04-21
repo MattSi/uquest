@@ -4,8 +4,9 @@ import com.badlogic.gdx.ai.steer.Steerable;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Box2DSteeringAdapter implements Steerable<Vector2> {
+public class Box2DSteeringAdapter implements Steerable<Vector2>, Disposable {
     public Body body;
     public float boundingRadius;
     public float maxLinearSpeed;
@@ -117,6 +118,17 @@ public class Box2DSteeringAdapter implements Steerable<Vector2> {
     @Override
     public Location<Vector2> newLocation() {
         return null;
+    }
+
+    @Override
+    public void dispose() {
+        body = null;
+        boundingRadius = 0f;
+        maxLinearAcceleration = 0f;
+        maxLinearSpeed = 0f;
+        maxAngularAcceleration = 0f;
+        maxAngularSpeed = 0f;
+        tagged = false;
     }
 
 }

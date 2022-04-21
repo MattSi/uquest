@@ -58,6 +58,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.gameObjectsForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent.class,
                                 GameObjectComponent.class,
+                                MapGeneratedComponent.class,
                                 Box2DComponent.class).
                         exclude(RemoveComponent.class).get());
 
@@ -119,9 +120,9 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             renderEntity(entity, alpha);
         }
 
-//        for (Entity entity : enemiesForRender) {
-//            //renderEnemy(entity, alpha);
-//        }
+        for (Entity entity : enemiesForRender) {
+            renderEnemy(entity, alpha);
+        }
 
         for (final Entity entity : charactersForRender) {
             renderEntity(entity, alpha);
@@ -138,7 +139,6 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
-        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             return;
@@ -158,14 +158,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
                 aniCmp.width, aniCmp.height);
 
-        if(enemyCmp!= null && enemyCmp.findPlayer){
-            final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
-            keyFrame.setColor(Color.RED);
-            keyFrame.draw(spriteBatch);
-            keyFrame.setColor(defaultColor);
-        } else {
-            keyFrame.draw(spriteBatch);
-        }
+        keyFrame.draw(spriteBatch);
+
     }
 
     private void renderEnemy(Entity entity, float alpha){
@@ -185,15 +179,15 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f),
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
                 aniCmp.width, aniCmp.height);
+
         if(enemyCmp.findPlayer){
             final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
-            spriteBatch.setColor(Color.RED);
+            keyFrame.setColor(Color.RED);
             keyFrame.draw(spriteBatch);
-            spriteBatch.setColor(defaultColor);
+            keyFrame.setColor(defaultColor);
         } else {
             keyFrame.draw(spriteBatch);
         }
-
     }
     private void updateCamera(float alpha){
 

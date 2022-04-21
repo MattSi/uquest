@@ -10,16 +10,19 @@ import org.bigorange.game.ai.steering.Box2DSteeringAdapter;
 public class SteeringComponent extends Box2DSteeringAdapter implements Component, Pool.Poolable{
 
     public SteeringBehavior<Vector2> steeringBehavior;
-    public SteeringAcceleration<Vector2> steeringOutput;
+    public SteeringAcceleration<Vector2> steeringOutput = new SteeringAcceleration<>(new Vector2());
     public boolean independentFacing;
     public float boundingRadius;
 
 
     @Override
     public void reset() {
+        super.dispose();
         steeringBehavior = null;
         steeringOutput = null;
         independentFacing = false;
         boundingRadius = 0f;
+        steeringOutput.linear.set(Vector2.Zero);
+        steeringOutput.angular = 0f;
     }
 }

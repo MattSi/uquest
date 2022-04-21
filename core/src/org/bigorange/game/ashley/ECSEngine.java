@@ -50,6 +50,7 @@ public class ECSEngine extends EntityEngine {
 
     }
 
+
     // 生成子弹
     public void addBullet(Vector2 start, Vector2 target) {
         final Entity bullet = createEntity();
@@ -75,7 +76,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = CATEGORY_BULLET;
-        fixtureDef.filter.maskBits = MASK_BULLET ;
+        fixtureDef.filter.maskBits = MASK_BULLET | CATEGORY_ENEMY | CATEGORY_TILEMAP_OBJECT;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -130,6 +131,7 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.id = MathUtils.random(10000,99999);
         gameObjCmp.type = GameObjectComponent.GameObjectType.ENEMY;
 
+
         enemy.add(ani4dCmp);
         enemy.add(aniCmp);
         enemy.add(speedCmp);
@@ -143,7 +145,7 @@ public class ECSEngine extends EntityEngine {
         // body
         bodyDef.gravityScale = 0;
         bodyDef.position.set(spawnLocation);
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.angle = 0;
         bodyDef.linearVelocity.set(0, 0);
@@ -182,6 +184,14 @@ public class ECSEngine extends EntityEngine {
         circleShape.dispose();
 
         enemy.add(b2dCmp);
+
+        final SteeringComponent steeringCmp = createComponent(SteeringComponent.class);
+        steeringCmp.body = b2dCmp.body;
+        steeringCmp.setMaxLinearSpeed(5);
+        steeringCmp.setMaxLinearAcceleration(10);
+        steeringCmp.setMaxAngularAcceleration(100);
+        enemy.add(steeringCmp);
+
         addEntity(enemy);
 
     }
@@ -208,7 +218,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = CATEGORY_PLAYER;
-        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_SENSOR | MASK_GROUND;
+        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_SENSOR ;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -216,12 +226,16 @@ public class ECSEngine extends EntityEngine {
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
-        final SpeedComponent speedComponent = createComponent(SpeedComponent.class);
+        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+        final SteeringLocationComponent stLocationCmp = createComponent(SteeringLocationComponent.class);
+        stLocationCmp.body = b2dCmp.body;
 
         playerCmp.maxSpeed = 2f;
         player.add(playerCmp);
         player.add(aniCmp);
-        player.add(speedComponent);
+        player.add(speedCmp);
+        player.add(stLocationCmp);
+
 
         addEntity(player);
     }
@@ -266,6 +280,8 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.type = gameObj.getType();
         gameObjEntity.add(gameObjCmp);
 
+        final MapGeneratedComponent mapCmp = createComponent(MapGeneratedComponent.class);
+        gameObjEntity.add(mapCmp);
 
         addEntity(gameObjEntity);
     }

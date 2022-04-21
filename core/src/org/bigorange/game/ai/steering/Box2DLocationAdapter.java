@@ -3,8 +3,9 @@ package org.bigorange.game.ai.steering;
 import com.badlogic.gdx.ai.utils.Location;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Disposable;
 
-public class Box2DLocationAdapter implements Location<Vector2> {
+public class Box2DLocationAdapter implements Location<Vector2>, Disposable {
     public Body body;
 
     public Box2DLocationAdapter(Body body){
@@ -41,5 +42,10 @@ public class Box2DLocationAdapter implements Location<Vector2> {
     @Override
     public Location<Vector2> newLocation() {
         return new Box2DLocationAdapter(this.body);
+    }
+
+    @Override
+    public void dispose() {
+        body = null;
     }
 }

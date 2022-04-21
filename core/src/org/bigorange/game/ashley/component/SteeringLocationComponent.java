@@ -9,6 +9,6 @@ public class SteeringLocationComponent extends Box2DLocationAdapter implements C
 
     @Override
     public void reset() {
-        this.body = null;
+        super.dispose();
     }
 }
