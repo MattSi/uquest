@@ -6,11 +6,13 @@ import com.badlogic.gdx.utils.Pool;
 public class EnemyComponent implements Component, Pool.Poolable {
     public EnemyState state = EnemyState.IDLE;
     public float maxSpeed;
+    public float angleWithPlayer;
     public boolean findPlayer;
 
     @Override
     public void reset() {
         maxSpeed = 0f;
+        angleWithPlayer = 0f;
         state = EnemyState.IDLE;
         findPlayer = false;
     }

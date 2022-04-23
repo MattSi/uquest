@@ -165,11 +165,6 @@
     <property name="spawnType" value="ENEMY"/>
    </properties>
   </object>
-  <object id="32" x="747.5" y="1747" width="72" height="44">
-   <properties>
-    <property name="spawnType" value="ENEMY"/>
-   </properties>
-  </object>
  </objectgroup>
  <objectgroup id="11" name="Collision" visible="0">
   <object id="18" x="952" y="1472">

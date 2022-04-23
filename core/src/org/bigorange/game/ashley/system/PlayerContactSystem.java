@@ -29,12 +29,9 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
 
     @Override
     public void beginContact(Entity player, Entity gameObject, boolean isSensor) {
-        Gdx.app.debug(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(player);
         final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
-        final Box2DComponent b2dCmpPlayer = ECSEngine.b2dCmpMapper.get(player);
-        final Box2DComponent b2dCmpObj = ECSEngine.b2dCmpMapper.get(gameObject);
         final SteeringComponent steeringCmp = ECSEngine.steerCmpMapper.get(gameObject);
         final SteeringLocationComponent stLocationCmp = ECSEngine.stLocationCmpMapper.get(player);
 
@@ -55,8 +52,8 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                             .setArrivalTolerance(0.001f)
                             .setDecelerationRadius(3);
                     //final Seek<Vector2> seekSB = new Seek<>(steeringCmp, stLocationCmp);
-
                     steeringCmp.steeringBehavior = arriveSB;
+                    steeringCmp.targetLocation = stLocationCmp;
                 }
             }
         }
@@ -64,7 +61,6 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
 
     @Override
     public void endContact(Entity player, Entity gameObject, boolean isSensor) {
-        Gdx.app.debug(TAG, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
         final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
 
@@ -74,7 +70,6 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 if (isSensor) {
                     enemyCmp.findPlayer = false;
                 }
-
             }
         }
     }

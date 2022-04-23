@@ -162,7 +162,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     }
 
-    private void renderEnemy(Entity entity, float alpha){
+    private void renderEnemy(Entity entity, float alpha) {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(entity);
@@ -176,11 +176,11 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         //keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
         keyFrame.setBounds(
-                MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.width * 0.5f),
-                MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.height * 0.5f),
+                position.x - (aniCmp.width * 0.5f),
+                position.y - (aniCmp.height * 0.5f),
                 aniCmp.width, aniCmp.height);
 
-        if(enemyCmp.findPlayer){
+        if (enemyCmp.findPlayer) {
             final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
             keyFrame.setColor(Color.RED);
             keyFrame.draw(spriteBatch);
@@ -189,6 +189,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             keyFrame.draw(spriteBatch);
         }
     }
+
     private void updateCamera(float alpha){
 
         TiledMapTileLayer layer = layersToRender.get(0);

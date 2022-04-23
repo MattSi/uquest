@@ -45,6 +45,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new EnemyAnimationSystem());
         addSystem(new PlayerContactSystem());
         addSystem(new SteeringArriveSystem());
+        addSystem(new TargetLostSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
 
@@ -139,8 +140,8 @@ public class ECSEngine extends EntityEngine {
 
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.height = 0.8f;
-        b2dCmp.width = 0.8f;
+        b2dCmp.height = 0.2f;
+        b2dCmp.width = 0.2f;
 
         // body
         bodyDef.gravityScale = 0;
@@ -158,7 +159,6 @@ public class ECSEngine extends EntityEngine {
         // fixture
         final PolygonShape shape = new PolygonShape();
         shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
-        //shape.setRadius(b2dCmp.height * 0.5f);
 
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
@@ -187,9 +187,9 @@ public class ECSEngine extends EntityEngine {
 
         final SteeringComponent steeringCmp = createComponent(SteeringComponent.class);
         steeringCmp.body = b2dCmp.body;
-        steeringCmp.setMaxLinearSpeed(5);
-        steeringCmp.setMaxLinearAcceleration(10);
-        steeringCmp.setMaxAngularAcceleration(100);
+        steeringCmp.setMaxLinearSpeed(4);
+        steeringCmp.setMaxLinearAcceleration(20);
+        steeringCmp.setMaxAngularAcceleration(20);
         enemy.add(steeringCmp);
 
         addEntity(enemy);

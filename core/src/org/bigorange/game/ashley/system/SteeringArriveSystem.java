@@ -22,26 +22,29 @@ public class SteeringArriveSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         final SteeringComponent steeringCmp = ECSEngine.steerCmpMapper.get(entity);
-        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
 
         if (steeringCmp.steeringBehavior != null) {
             steeringCmp.steeringBehavior.calculateSteering(steeringCmp.steeringOutput);
-            //Gdx.app.debug(TAG, "steeringOutput Linear: "+steeringCmp.steeringOutput.linear+ " Angular: "+ steeringCmp.steeringOutput.angular);
             applySteering(steeringCmp, deltaTime);
         }
-
     }
 
     private void applySteering(SteeringComponent steeringCmp, float deltaTime) {
         boolean anyAccelerations = false;
         final Body body = steeringCmp.body;
         final SteeringAcceleration<Vector2> steeringOutput = steeringCmp.steeringOutput;
+        final Vector2 worldCenter = steeringCmp.body.getWorldCenter();
+        final Vector2 lv = steeringCmp.body.getLinearVelocity();
+
 
 
         // Update position and Linear velocity
         if (!steeringOutput.linear.isZero()) {
             // this method internally scales the force by deltaTime
-            body.applyForceToCenter(steeringOutput.linear, true);
+            body.applyLinearImpulse(
+                    steeringOutput.linear.x *deltaTime * body.getMass(),
+                    steeringOutput.linear.y *deltaTime * body.getMass(),
+                    worldCenter.x, worldCenter.y, true);
             anyAccelerations = true;
         }
 
@@ -77,7 +80,5 @@ public class SteeringArriveSystem extends IteratingSystem {
                 body.setAngularVelocity(maxAngVelocity);
             }
         }
-
-        Gdx.app.debug(TAG, "LV: " + body.getLinearVelocity() + " AV: " + body.getAngularVelocity() + " Position: " + body.getPosition());
     }
 }
