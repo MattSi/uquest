@@ -57,6 +57,8 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         this.ecsEngine.addPlayer(playerStartLocations.get(0));
         setCursor();
         addEnemies();
+        addNpcs();
+
 
     }
 
@@ -147,6 +149,14 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         for (Vector2 location : currentMap.getEnemyStartLocations()) {
             ecsEngine.addEnemy(location, "enemy04");
         }
+    }
 
+    public void addNpcs(){
+        MapManager mapManager = Utils.getMapManager();
+        Map currentMap = mapManager.getCurrentMap();
+
+        for (Vector2 location : currentMap.getNpcStartLocations()) {
+            ecsEngine.addNpc(location, "enemy07");
+        }
     }
 }

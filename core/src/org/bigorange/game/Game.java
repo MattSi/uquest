@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
 import org.bigorange.game.gamestate.EGameState;
 import org.bigorange.game.gamestate.GameState;
+import org.bigorange.game.gamestate.State;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.HUD;
 
@@ -24,6 +25,8 @@ public class Game implements Disposable {
     private GameState activeState;
 
     private float accumulator;
+
+    private State state = State.RUNNING;
 
     public Game(final EGameState initialStage) {
         gameStateCache = new EnumMap<EGameState, GameState>(EGameState.class);

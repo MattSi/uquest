@@ -56,6 +56,11 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                     steeringCmp.targetLocation = stLocationCmp;
                 }
             }
+            case NPC -> {
+                if(isSensor){
+                    enemyCmp.findPlayer = true;
+                }
+            }
         }
     }
 
@@ -66,7 +71,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
 
 
         switch (gameObjCmp.type) {
-            case ENEMY -> {
+            case ENEMY, NPC -> {
                 if (isSensor) {
                     enemyCmp.findPlayer = false;
                 }

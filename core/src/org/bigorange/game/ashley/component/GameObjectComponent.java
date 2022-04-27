@@ -15,6 +15,6 @@ public class GameObjectComponent implements Component, Pool.Poolable {
     }
 
     public enum GameObjectType {
-        NOT_DEFINED, TREE, WALL, MISSILE, ENEMY
+        NOT_DEFINED, TREE, WALL, MISSILE, ENEMY, NPC
     }
 }

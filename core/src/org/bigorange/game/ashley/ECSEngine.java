@@ -106,6 +106,89 @@ public class ECSEngine extends EntityEngine {
         }
         return keyFrames;
     }
+
+
+    public void addNpc(Vector2 spawnLocation, String npcId){
+        final Entity npc = createEntity();
+
+        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
+        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+        enemyCmp.maxSpeed = 2f;
+        npc.add(enemyCmp);
+
+        final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
+                TextureAtlas.class).findRegion(npcId);
+        final TextureRegion[][] textureRegions = atlasRegion.split(32, 32);
+        ani4dCmp.aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniLeft = new Animation<>(0.1f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniRight = new Animation<>(0.1f, getKeyFrames(textureRegions[2]), Animation.PlayMode.LOOP);
+        ani4dCmp.aniUp = new Animation<>(0.1f, getKeyFrames(textureRegions[3]), Animation.PlayMode.LOOP);
+
+        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        aniCmp.height = aniCmp.width = 32;
+
+        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+
+        final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
+        gameObjCmp.id = MathUtils.random(10000,99999);
+        gameObjCmp.type = GameObjectComponent.GameObjectType.NPC;
+
+
+        npc.add(ani4dCmp);
+        npc.add(aniCmp);
+        npc.add(speedCmp);
+        npc.add(gameObjCmp);
+
+
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        b2dCmp.height = 0.2f;
+        b2dCmp.width = 0.2f;
+
+        // body
+        bodyDef.gravityScale = 0;
+        bodyDef.position.set(spawnLocation);
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.fixedRotation = true;
+        bodyDef.angle = 0;
+        bodyDef.linearVelocity.set(0, 0);
+
+        //bodyDef.linearVelocity.set(2,1);
+        b2dCmp.positionBeforeUpdate.set(spawnLocation);
+        b2dCmp.body = world.createBody(bodyDef);
+        b2dCmp.body.setUserData(npc);
+
+        // fixture
+        final PolygonShape shape = new PolygonShape();
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.8f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
+        fixtureDef.filter.maskBits = MASK_PLAYER;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        shape.dispose();
+
+
+        // create sensor
+        final CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(2f);
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
+        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        circleShape.dispose();
+
+        npc.add(b2dCmp);
+
+        addEntity(npc);
+    }
     public void addEnemy(Vector2 spawnLocation, String enemyId) {
         final Entity enemy = createEntity();
 
@@ -224,6 +307,13 @@ public class ECSEngine extends EntityEngine {
         shape.dispose();
         player.add(b2dCmp);
 
+        final CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(5f);
+        fixtureDef.isSensor = true;
+        fixtureDef.shape=circleShape;
+        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
+       // fixtureDef.filter.maskBits =
+
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
@@ -240,7 +330,13 @@ public class ECSEngine extends EntityEngine {
         addEntity(player);
     }
 
-    public void addGameObject(GameObject gameObj, final Animation<Sprite> animation) {
+
+    /**
+     * 添加地图对象
+     * @param gameObj
+     * @param animation
+     */
+    public void addMapGameObject(GameObject gameObj, final Animation<Sprite> animation) {
         final Entity gameObjEntity = createEntity();
         final Rectangle boundaries = gameObj.getBoundaries();
 

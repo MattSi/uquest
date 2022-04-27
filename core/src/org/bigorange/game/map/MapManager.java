@@ -115,7 +115,7 @@ public class MapManager {
 
         // 只适合单一动画场景，对于NPC这种复杂的GameObject不适用了
         for (GameObject gameObj : currentMap.getGameObjects()) {
-            ecsEngine.addGameObject(gameObj, getAnimation(gameObj));
+            ecsEngine.addMapGameObject(gameObj, getAnimation(gameObj));
         }
 
     }
