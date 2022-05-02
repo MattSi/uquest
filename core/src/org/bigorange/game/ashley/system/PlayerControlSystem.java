@@ -9,16 +9,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import org.bigorange.game.ashley.ECSEngine;
 import org.bigorange.game.ashley.EntityEngine;
-import org.bigorange.game.ashley.component.AnimationComponent;
-import org.bigorange.game.ashley.component.Box2DComponent;
-import org.bigorange.game.ashley.component.PlayerComponent;
-import org.bigorange.game.ashley.component.SpeedComponent;
+import org.bigorange.game.ashley.component.*;
 import org.bigorange.game.input.*;
 
 import static org.bigorange.game.input.EKey.*;
 
-public class PlayerMovementSystem extends IteratingSystem implements KeyInputListener, MouseInputListener {
-    public static final String TAG = PlayerMovementSystem.class.getSimpleName();
+public class PlayerControlSystem extends IteratingSystem implements KeyInputListener, MouseInputListener {
+    public static final String TAG = PlayerControlSystem.class.getSimpleName();
     private boolean directionChange;
     private int xFactor;
     private int yFactor;
@@ -28,8 +25,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
 
     private boolean isShooting;
     private Vector3 shootingTarget;
+    private boolean actionPressed = false;
 
-    public PlayerMovementSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
+    public PlayerControlSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
         super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent.class).get());
         this.ecsEngine = ecsEngine;
         this.camera = camera;
@@ -48,6 +46,7 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
         final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
         final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
         final SpeedComponent velocityCmp = EntityEngine.speedCmpMapper.get(entity);
+        final InteractComponent interactCmp = EntityEngine.interactCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (directionChange) {
@@ -62,9 +61,16 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
                 (velocityCmp.velocity.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
 
-        if(isShooting){
+        if (isShooting) {
             isShooting = false;
             ecsEngine.addBullet(b2dCmp.body.getPosition(), new Vector2(shootingTarget.x, shootingTarget.y));
+        }
+
+        // Process Action
+        if (actionPressed) {
+            actionPressed = false;
+
+            interactCmp.interact = true;
         }
     }
 
@@ -105,6 +111,9 @@ public class PlayerMovementSystem extends IteratingSystem implements KeyInputLis
             case DOWN:
                 directionChange = true;
                 yFactor = -1;
+                break;
+            case Action:
+                actionPressed = true;
                 break;
             default:
                 // nothing to do

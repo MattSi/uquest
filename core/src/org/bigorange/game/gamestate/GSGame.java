@@ -14,7 +14,7 @@ import org.bigorange.game.ResourceManager;
 import org.bigorange.game.ashley.ECSEngine;
 import org.bigorange.game.ashley.system.PlayerAnimationSystem;
 import org.bigorange.game.ashley.system.PlayerContactSystem;
-import org.bigorange.game.ashley.system.PlayerMovementSystem;
+import org.bigorange.game.ashley.system.PlayerControlSystem;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.Map;
@@ -76,8 +76,8 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
     @Override
     public void activate() {
         super.activate();
-        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
-        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerMovementSystem.class));
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
+        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
         Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
     }
 

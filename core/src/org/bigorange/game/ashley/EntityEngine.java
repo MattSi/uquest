@@ -1,6 +1,7 @@
 package org.bigorange.game.ashley;
 
 import com.badlogic.ashley.core.ComponentMapper;
+import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.PooledEngine;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
@@ -19,11 +20,10 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     public static ComponentMapper<BulletComponent> bulletCmpMapper = ComponentMapper.getFor(BulletComponent.class);
     public static ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
     public static ComponentMapper<EnemyComponent> enemyCmpMapper = ComponentMapper.getFor(EnemyComponent.class);
-
     public static ComponentMapper<SpeedComponent> speedCmpMapper = ComponentMapper.getFor(SpeedComponent.class);
-
     public static ComponentMapper<SteeringComponent> steerCmpMapper = ComponentMapper.getFor(SteeringComponent.class);
     public static ComponentMapper<SteeringLocationComponent> stLocationCmpMapper = ComponentMapper.getFor(SteeringLocationComponent.class);
+    public static ComponentMapper<InteractComponent> interactCmpMapper = ComponentMapper.getFor(InteractComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {

@@ -7,6 +7,7 @@ public enum EKey {
     LEFT(Input.Keys.A, Input.Keys.LEFT),
     UP(Input.Keys.W, Input.Keys.UP),
     DOWN(Input.Keys.S, Input.Keys.DOWN),
+    Action(Input.Keys.E),
     SELECT(Input.Keys.ENTER, Input.Keys.SPACE),
     BACK(Input.Keys.ESCAPE);
 

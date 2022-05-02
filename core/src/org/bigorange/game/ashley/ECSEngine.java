@@ -40,11 +40,12 @@ public class ECSEngine extends EntityEngine {
 
         addSystem(new PlayerAnimationSystem(gameCamera));
         addSystem(new PlayerCameraSystem(gameCamera));
-        addSystem(new PlayerMovementSystem(this, gameCamera));
+        addSystem(new PlayerControlSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
         addSystem(new EnemyAnimationSystem());
         addSystem(new PlayerContactSystem());
         addSystem(new SteeringArriveSystem());
+        addSystem(new InteractSystem());
         addSystem(new TargetLostSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
@@ -134,11 +135,14 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.id = MathUtils.random(10000,99999);
         gameObjCmp.type = GameObjectComponent.GameObjectType.NPC;
 
+        final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
+        actionCmp.type = ActionType.TALK;
 
         npc.add(ani4dCmp);
         npc.add(aniCmp);
         npc.add(speedCmp);
         npc.add(gameObjCmp);
+        npc.add(actionCmp);
 
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -315,16 +319,20 @@ public class ECSEngine extends EntityEngine {
        // fixtureDef.filter.maskBits =
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
+        playerCmp.maxSpeed = 2f;
+
         final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
         final SteeringLocationComponent stLocationCmp = createComponent(SteeringLocationComponent.class);
         stLocationCmp.body = b2dCmp.body;
 
-        playerCmp.maxSpeed = 2f;
+        final InteractComponent interactCmp = createComponent(InteractComponent.class);
+
         player.add(playerCmp);
         player.add(aniCmp);
         player.add(speedCmp);
         player.add(stLocationCmp);
+        player.add(interactCmp);
 
 
         addEntity(player);

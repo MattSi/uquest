@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class LoadingUI extends Table {
+public class LoadingUI extends AbstractUI {
     private final TextButton pressAnyButtonInfo;
     private final ProgressBar progressBar;
 

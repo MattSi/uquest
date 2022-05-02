@@ -34,6 +34,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
         final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
         final SteeringComponent steeringCmp = ECSEngine.steerCmpMapper.get(gameObject);
         final SteeringLocationComponent stLocationCmp = ECSEngine.stLocationCmpMapper.get(player);
+        final InteractComponent interactCmp = ECSEngine.interactCmpMapper.get(player);
 
 
         switch (gameObjCmp.type) {
@@ -59,6 +60,8 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
             case NPC -> {
                 if(isSensor){
                     enemyCmp.findPlayer = true;
+                    interactCmp.addInRangeEntity(gameObject);
+                    //interactCmp.interact = true;
                 }
             }
         }
@@ -68,12 +71,14 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     public void endContact(Entity player, Entity gameObject, boolean isSensor) {
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
         final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
+        final InteractComponent interactCmp = ECSEngine.interactCmpMapper.get(player);
 
 
         switch (gameObjCmp.type) {
             case ENEMY, NPC -> {
                 if (isSensor) {
                     enemyCmp.findPlayer = false;
+                    interactCmp.removeInRangeEntity(gameObject);
                 }
             }
         }
