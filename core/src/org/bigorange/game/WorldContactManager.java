@@ -4,8 +4,8 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.ashley.component.GameObjectComponent;
-import org.bigorange.game.ashley.component.PlayerComponent;
+import org.bigorange.game.ecs.component.GameObjectComponent;
+import org.bigorange.game.ecs.component.PlayerComponent;
 
 public class WorldContactManager implements ContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;

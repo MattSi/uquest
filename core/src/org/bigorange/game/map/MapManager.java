@@ -4,6 +4,9 @@ package org.bigorange.game.map;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.maps.tiled.TiledMap;
@@ -14,8 +17,9 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.ResourceManager;
-import org.bigorange.game.ashley.ECSEngine;
-import org.bigorange.game.ashley.component.RemoveComponent;
+import org.bigorange.game.ecs.ECSEngine;
+import org.bigorange.game.ecs.component.RemoveComponent;
+import org.bigorange.game.message.MessageType;
 import org.bigorange.game.utils.Utils;
 
 import static org.bigorange.game.UndergroundQuest.CATEGORY_PLAYER;
@@ -30,7 +34,7 @@ import static org.bigorange.game.UndergroundQuest.CATEGORY_WORLD;
  * 6. Generate and cache animated game objects
  *
  */
-public class MapManager {
+public class MapManager implements Telegraph {
     public static final String TAG = MapManager.class.getName();
     private Map currentMap;
 
@@ -47,6 +51,7 @@ public class MapManager {
         this.resourceManager = Utils.getResourceManager();
         this.bodyDef = new BodyDef();
         this.fixtureDef = new FixtureDef();
+        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_CHANGE_MAP);
     }
 
     public MapManager(ResourceManager resourceManager){
@@ -161,5 +166,14 @@ public class MapManager {
 
     public IntMap<Animation<Sprite>> getGameObjectAnimationCache() {
         return gameObjectAnimationCache;
+    }
+
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        Gdx.app.debug(TAG, ""+ (String) msg.extraInfo);
+//        final TiledMap tiledMap = resourceManager.get("map/battle2.tmx", TiledMap.class);
+//        mapManager.loadMap(tiledMap, world);
+//        mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
+        return true;
     }
 }

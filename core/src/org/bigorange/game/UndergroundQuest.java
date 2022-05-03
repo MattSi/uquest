@@ -2,6 +2,9 @@ package org.bigorange.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.DefaultTimepiece;
+import com.badlogic.gdx.ai.GdxAI;
+import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.gamestate.EGameState;
 import org.bigorange.game.map.MapManager;
@@ -38,6 +41,9 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+		MessageManager.getInstance().clear();
+		MessageManager.getInstance().setDebugEnabled(true);
+		GdxAI.setTimepiece(new DefaultTimepiece(0.2f));
 		spriteBatch = new SpriteBatch();
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
@@ -50,6 +56,8 @@ public class UndergroundQuest extends ApplicationAdapter {
 	@Override
 	public void render () {
 		game.process();
+		GdxAI.getTimepiece().update(Gdx.graphics.getDeltaTime());
+		MessageManager.getInstance().update();
 	}
 
 	@Override

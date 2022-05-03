@@ -2,6 +2,8 @@ package org.bigorange.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.ai.DefaultTimepiece;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Disposable;
@@ -33,7 +35,7 @@ public class Game implements Disposable {
         gameStateCache = new EnumMap<EGameState, GameState>(EGameState.class);
         accumulator = 0f;
 
-        MessageManager.getInstance().clear();
+
         hud = new HUD();
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
 
@@ -78,6 +80,7 @@ public class Game implements Disposable {
 
     public void process() {
         final float deltaTime = Gdx.graphics.getDeltaTime();
+
         accumulator += deltaTime > 0.25f ? 0.25f : deltaTime;
 
         while (accumulator >= TARGET_FRAME_TIME) {
@@ -89,7 +92,7 @@ public class Game implements Disposable {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         activeState.render(accumulator / TARGET_FRAME_TIME);
 
-        MessageManager.getInstance().update();
+
     }
 
     public void resize(final int width, final int height) {

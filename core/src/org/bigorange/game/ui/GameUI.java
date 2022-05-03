@@ -3,9 +3,8 @@ package org.bigorange.game.ui;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import org.bigorange.game.MessageType;
+import org.bigorange.game.message.MessageType;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 

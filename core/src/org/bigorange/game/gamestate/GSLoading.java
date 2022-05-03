@@ -22,6 +22,7 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager = Utils.getResourceManager();
         resourceManager.load("characters/characters.atlas", TextureAtlas.class);
         resourceManager.load("map/battle1.tmx", TiledMap.class);
+        resourceManager.load("map/battle2.tmx", TiledMap.class);
     }
 
     @Override
