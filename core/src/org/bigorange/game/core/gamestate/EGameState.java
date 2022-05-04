@@ -1,4 +1,7 @@
-package org.bigorange.game.gamestate;
+package org.bigorange.game.core.gamestate;
+
+import org.bigorange.game.gamestate.GSGame;
+import org.bigorange.game.gamestate.GSLoading;
 
 public enum EGameState {
     GAME(GSGame.class),

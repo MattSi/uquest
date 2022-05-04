@@ -2,16 +2,13 @@ package org.bigorange.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.ai.DefaultTimepiece;
-import com.badlogic.gdx.ai.GdxAI;
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.utils.Disposable;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.reflect.ClassReflection;
 import com.badlogic.gdx.utils.reflect.ReflectionException;
-import org.bigorange.game.gamestate.EGameState;
-import org.bigorange.game.gamestate.GameState;
+import org.bigorange.game.core.gamestate.EGameState;
+import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.gamestate.State;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.HUD;

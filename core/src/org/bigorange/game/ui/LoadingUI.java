@@ -2,17 +2,17 @@ package org.bigorange.game.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import org.bigorange.game.core.ui.BaseUI;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class LoadingUI extends AbstractUI {
+public class LoadingUI extends BaseUI {
     private final TextButton pressAnyButtonInfo;
     private final ProgressBar progressBar;
 
     public LoadingUI(final HUD hud, final TTFSkin skin){
-        super();
+        super(skin);
 
 
         progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");

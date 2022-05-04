@@ -1,4 +1,4 @@
-package org.bigorange.game.gamestate;
+package org.bigorange.game.core.gamestate;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;

@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ResourceManager;
+import org.bigorange.game.core.gamestate.EGameState;
+import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerContactSystem;

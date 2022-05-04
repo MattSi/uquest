@@ -3,6 +3,8 @@ package org.bigorange.game.gamestate;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.bigorange.game.ResourceManager;
+import org.bigorange.game.core.gamestate.EGameState;
+import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.HUD;

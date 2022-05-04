@@ -6,7 +6,7 @@ import com.badlogic.gdx.ai.DefaultTimepiece;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import org.bigorange.game.gamestate.EGameState;
+import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.map.MapManager;
 
 public class UndergroundQuest extends ApplicationAdapter {

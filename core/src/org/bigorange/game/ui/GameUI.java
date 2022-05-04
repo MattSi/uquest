@@ -4,19 +4,19 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import org.bigorange.game.core.ui.BaseUI;
 import org.bigorange.game.message.MessageType;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 
-public class GameUI extends AbstractUI {
+public class GameUI extends BaseUI {
     private final TextButton infoBox;
     private final ProgressBar progressBar;
 
-    private final TTFSkin skin;
+
 
     public GameUI( final TTFSkin skin){
-        super();
-        this.skin = skin;
+        super(skin);
 
         progressBar = new ProgressBar(0, 100, 1f, false, skin, "default");
         progressBar.setValue(50f);

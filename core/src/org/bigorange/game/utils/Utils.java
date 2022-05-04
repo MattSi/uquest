@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.UndergroundQuest;
 import org.bigorange.game.WorldContactManager;
-import org.bigorange.game.gamestate.EGameState;
+import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 
