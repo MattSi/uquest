@@ -20,13 +20,13 @@ public class LoadingUI extends BaseUI {
 
         progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");
 
-        pressAnyButtonInfo = new TextButton("测试Press any key...", skin, "huge");
+        pressAnyButtonInfo = new TextButton(hud.getLocalizedString("pressAnyKey"), skin, "huge");
         pressAnyButtonInfo.setVisible(false);
         pressAnyButtonInfo.getLabel().setWrap(true);
 
         add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
         add(pressAnyButtonInfo).expand().fillX().center().row();
-        add(new TextButton("装载...", skin, "normal")).expand().fillX().bottom().row();
+        add(new TextButton(hud.getLocalizedString("loading"), skin, "normal")).expand().fillX().bottom().row();
         add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
         //debugAll();
     }

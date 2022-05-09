@@ -7,12 +7,13 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.bigorange.game.ResourceManager;
+import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.KeyInputListener;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 import static org.bigorange.game.Game.TARGET_FRAME_TIME;
 
@@ -27,7 +28,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
 
     private final Stage stage;
     private final TTFSkin skin;
-    //private final I18NBundle i18NBundle;
+    private final I18NBundle i18NBundle;
     private final Stack gameStateHUDs;
 
 
@@ -44,8 +45,17 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
         this.stage.addActor(gameStateHUDs);
 
         final ResourceManager resourceManager = Utils.getResourceManager();
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simfang.ttf", 16, 20, 26, 32);
+        resourceManager.load("i18n/strings_zh_CN", I18NBundle.class);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simfang.ttf", 16, 20, 26,32);
+        i18NBundle = resourceManager.get("i18n/strings_zh_CN", I18NBundle.class);
+
+//        final FileHandle fi = Gdx.files.internal("i18n/strings");
+//        i18NBundle = I18NBundle.createBundle(fi, new Locale("zh", "CN"));
         stage.addListener(this);
+    }
+
+    public String getLocalizedString(final String key){
+        return i18NBundle.format(key);
     }
 
     public void addGameStateHUD(final Table table){
@@ -64,7 +74,6 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
         stage.act(alpha * TARGET_FRAME_TIME);
         stage.getViewport().apply();
         stage.draw();
-
     }
     public void resize(final int width, final int height){
         Gdx.app.debug(TAG, "Resize HUD to " + width + "x" + height);

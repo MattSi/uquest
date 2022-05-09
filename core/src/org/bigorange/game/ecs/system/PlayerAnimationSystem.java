@@ -19,7 +19,7 @@ import org.bigorange.game.ecs.component.SpeedComponent;
 import org.bigorange.game.input.EMouse;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.MouseInputListener;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 

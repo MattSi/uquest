@@ -8,7 +8,7 @@ import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.WorldContactManager;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 
 public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {

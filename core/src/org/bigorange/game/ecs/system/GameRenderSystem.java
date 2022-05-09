@@ -21,7 +21,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.RenderSystem;
 import org.bigorange.game.map.Map;

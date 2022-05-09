@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Disposable;
 import org.bigorange.game.ui.HUD;
 import org.bigorange.game.ui.TTFSkin;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.input.KeyInputListener;
 
 public abstract class GameState <T extends Table> implements Disposable, KeyInputListener {

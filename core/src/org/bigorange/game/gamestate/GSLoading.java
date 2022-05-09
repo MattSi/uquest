@@ -1,10 +1,10 @@
 package org.bigorange.game.gamestate;
 
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import org.bigorange.game.ResourceManager;
+import com.badlogic.gdx.Gdx;
+import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.assets.MapAssets;
 import org.bigorange.game.assets.TextureAtlasAssets;
+import org.bigorange.game.core.assets.LocaleAssets;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.input.EKey;
@@ -12,7 +12,7 @@ import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.HUD;
 import org.bigorange.game.ui.LoadingUI;
 import org.bigorange.game.ui.TTFSkin;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 /**
  * 装入所有的资源
@@ -35,6 +35,7 @@ public class GSLoading extends GameState<LoadingUI> {
             resourceManager.load(item.getLocation(), TextureAtlasAssets.klass);
         }
 
+        Gdx.app.debug("GSLoading", LocaleAssets.getLocales().toString());
     }
 
     @Override

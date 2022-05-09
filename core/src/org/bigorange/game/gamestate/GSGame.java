@@ -10,7 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.ResourceManager;
+import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.assets.MapAssets;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
@@ -25,7 +25,7 @@ import org.bigorange.game.map.MapManager;
 import org.bigorange.game.ui.HUD;
 import org.bigorange.game.ui.TTFSkin;
 import org.bigorange.game.ui.GameUI;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 public class GSGame extends GameState<GameUI> implements PlayerContactSystem.PlayerContactListener {
     private final ECSEngine ecsEngine;

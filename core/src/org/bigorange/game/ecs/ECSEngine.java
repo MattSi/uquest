@@ -17,7 +17,7 @@ import org.bigorange.game.core.ActionType;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.GameObject;
-import org.bigorange.game.utils.Utils;
+import org.bigorange.game.core.Utils;
 
 import static org.bigorange.game.UndergroundQuest.*;
 
