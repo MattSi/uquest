@@ -44,7 +44,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
         this.stage.addActor(gameStateHUDs);
 
         final ResourceManager resourceManager = Utils.getResourceManager();
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/font.ttf", 16, 20, 26, 32);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simfang.ttf", 16, 20, 26, 32);
         stage.addListener(this);
     }
 

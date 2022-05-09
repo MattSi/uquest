@@ -14,6 +14,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
+import static com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.DEFAULT_CHARS;
+
 public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.SkinParameter> {
 
     public SkinLoader(FileHandleResolver resolver) {
@@ -40,6 +42,9 @@ public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.Skin
 
             // create font according to density of target device display
             fontParam.fontParameters.size = fontSize;
+
+            // Add characters
+            fontParam.fontParameters.characters = DEFAULT_CHARS + "测试装载，。";
 
             dependencies.add(new AssetDescriptor("font" + fontSize + ".ttf", BitmapFont.class, fontParam));
         }

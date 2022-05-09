@@ -45,7 +45,9 @@ public class MenuUI extends BaseUI {
     }
 
     private Table createCreditsPage(HUD hud, TTFSkin skin) {
-        return null;
+        final Table content = new Table();
+
+        return content;
     }
 
     private void highlightCurrentItem(final boolean highlight) {
@@ -60,7 +62,7 @@ public class MenuUI extends BaseUI {
 
     private Table createMainPage(final HUD hud, final TTFSkin skin) {
         final Table content = new Table();
-        content.setBackground(skin.getDrawable("menu_background"));
+        //content.setBackground(skin.getDrawable("menu_background"));
         content.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
 
         menuItems.add(new TextButton("newGame", skin, "huge"));

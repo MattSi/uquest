@@ -3,6 +3,8 @@ package org.bigorange.game.gamestate;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import org.bigorange.game.ResourceManager;
+import org.bigorange.game.assets.MapAssets;
+import org.bigorange.game.assets.TextureAtlasAssets;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.input.EKey;
@@ -22,9 +24,17 @@ public class GSLoading extends GameState<LoadingUI> {
         super(type, hud);
 
         resourceManager = Utils.getResourceManager();
-        resourceManager.load("characters/characters.atlas", TextureAtlas.class);
-        resourceManager.load("map/battle1.tmx", TiledMap.class);
-        resourceManager.load("map/battle2.tmx", TiledMap.class);
+
+        // Load Map
+        for (MapAssets item : MapAssets.values()) {
+            resourceManager.load(item.getLocation(), MapAssets.klass);
+        }
+
+        // Load Texture atlas
+        for (TextureAtlasAssets item : TextureAtlasAssets.values()) {
+            resourceManager.load(item.getLocation(), TextureAtlasAssets.klass);
+        }
+
     }
 
     @Override
@@ -49,7 +59,7 @@ public class GSLoading extends GameState<LoadingUI> {
     @Override
     public void keyDown(InputManager manager, EKey key) {
         if(resourceManager.getProgress() == 1){
-            Utils.setGameState(EGameState.GAME, true);
+            Utils.setGameState(EGameState.MENU, true);
         }
     }
 

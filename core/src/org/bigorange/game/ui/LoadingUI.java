@@ -11,19 +11,22 @@ public class LoadingUI extends BaseUI {
     private final TextButton pressAnyButtonInfo;
     private final ProgressBar progressBar;
 
+
+
     public LoadingUI(final HUD hud, final TTFSkin skin){
         super(skin);
 
 
+
         progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");
 
-        pressAnyButtonInfo = new TextButton("Press Any Key", skin, "huge");
+        pressAnyButtonInfo = new TextButton("测试Press any key...", skin, "huge");
         pressAnyButtonInfo.setVisible(false);
         pressAnyButtonInfo.getLabel().setWrap(true);
 
         add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
         add(pressAnyButtonInfo).expand().fillX().center().row();
-        add(new TextButton("Loading...", skin, "normal")).expand().fillX().bottom().row();
+        add(new TextButton("装载...", skin, "normal")).expand().fillX().bottom().row();
         add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
         //debugAll();
     }
