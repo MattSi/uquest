@@ -2,8 +2,9 @@ package org.bigorange.game.gamestate;
 
 import com.badlogic.gdx.Gdx;
 import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.assets.MapAssets;
-import org.bigorange.game.assets.TextureAtlasAssets;
+import org.bigorange.game.core.assets.MapAsset;
+import org.bigorange.game.core.assets.MusicAsset;
+import org.bigorange.game.core.assets.TextureAtlasAssets;
 import org.bigorange.game.core.assets.LocaleAssets;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
@@ -26,14 +27,20 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager = Utils.getResourceManager();
 
         // Load Map
-        for (MapAssets item : MapAssets.values()) {
-            resourceManager.load(item.getLocation(), MapAssets.klass);
+        for (MapAsset item : MapAsset.values()) {
+            resourceManager.load(item.getFilePath(), MapAsset.klass);
         }
 
         // Load Texture atlas
         for (TextureAtlasAssets item : TextureAtlasAssets.values()) {
-            resourceManager.load(item.getLocation(), TextureAtlasAssets.klass);
+            resourceManager.load(item.getFilePath(), TextureAtlasAssets.klass);
         }
+
+        // Load Music
+        for (MusicAsset item : MusicAsset.values()) {
+            resourceManager.load(item.getFilePath(), MusicAsset.klass);
+        }
+
 
         Gdx.app.debug("GSLoading", LocaleAssets.getLocales().toString());
     }

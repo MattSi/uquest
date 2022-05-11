@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.assets.MapAssets;
+import org.bigorange.game.core.assets.MapAsset;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.ecs.ECSEngine;
@@ -50,7 +50,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         this.ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
 
-        final TiledMap tiledMap = resourceManager.get(MapAssets.LEVEL1.getLocation(), TiledMap.class);
+        final TiledMap tiledMap = resourceManager.get(MapAsset.LEVEL1.getFilePath(), TiledMap.class);
         mapManager.loadMap(tiledMap, world);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 

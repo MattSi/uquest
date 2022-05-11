@@ -1,6 +1,7 @@
 package org.bigorange.game.gamestate;
 
 import com.badlogic.gdx.Gdx;
+import org.bigorange.game.core.assets.MusicAsset;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.input.EKey;
@@ -26,8 +27,7 @@ public class GSMenu extends GameState<MenuUI> {
     @Override
     public void activate() {
         super.activate();
-        //gameStateUI.
-
+        Utils.getAudioManager().playMusic(MusicAsset.INTRO);
     }
 
     @Override
@@ -39,6 +39,7 @@ public class GSMenu extends GameState<MenuUI> {
             } else {
                 gameStateUI.moveSelectionLeft();
             }
+            Utils.getAudioManager().setVolume(gameStateUI.getVolume());
         }
     }
 

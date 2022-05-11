@@ -40,10 +40,15 @@ public class Utils {
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getWorldContactManager();
     }
 
+    public static AudioManager getAudioManager(){
+        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getAudioManager();
+    }
+
     public static void setGameState(final EGameState gameStateType ){
         setGameState(gameStateType, false);
     }
     public static void setGameState(final EGameState gameStateType, final boolean disposeActive){
         ((UndergroundQuest)Gdx.app.getApplicationListener()).getGame().setGameState(gameStateType, disposeActive);
     }
+
 }

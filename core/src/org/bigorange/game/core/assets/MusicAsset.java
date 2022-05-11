@@ -1,23 +1,23 @@
-package org.bigorange.game.assets;
+package org.bigorange.game.core.assets;
 
 
 import com.badlogic.gdx.audio.Music;
 
-public enum MusicAssets {
+public enum MusicAsset {
     INTRO("audio/bgm_theme.wav", 0.3f),
     TALKING("audio/castle_bgm_2.wav", 0.3f);
 
-    private final String location;
+    private final String filePath;
     private final float volume;
 
     public static final Class klass = Music.class;
-    MusicAssets(String location, float volume) {
-        this.location = location;
+    MusicAsset(String filePath, float volume) {
+        this.filePath = filePath;
         this.volume = volume;
     }
 
-    public String getMusicLocation() {
-        return location;
+    public String getFilePath() {
+        return filePath;
     }
 
     public float getVolume() {

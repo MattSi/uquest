@@ -157,5 +157,7 @@ public class MenuUI extends BaseUI {
         }
     }
 
-
+    public float getVolume(){
+        return  volumeSlider.getValue();
+    }
 }

@@ -6,6 +6,7 @@ import com.badlogic.gdx.ai.DefaultTimepiece;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.bigorange.game.core.AudioManager;
 import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.map.MapManager;
@@ -38,6 +39,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 	private SpriteBatch spriteBatch;
 	private Game game;
 	private WorldContactManager worldContactManager;
+	private AudioManager audioManager;
 
 
 	@Override
@@ -49,6 +51,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 		resourceManager = new ResourceManager();
 		mapManager = new MapManager();
 		worldContactManager = new WorldContactManager();
+		audioManager = new AudioManager();
 
 		this.game = new Game(EGameState.LOADING);
 		Gdx.app.debug(TAG, "Create=================================");
@@ -91,5 +94,9 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	public WorldContactManager getWorldContactManager() {
 		return worldContactManager;
+	}
+
+	public AudioManager getAudioManager() {
+		return audioManager;
 	}
 }
