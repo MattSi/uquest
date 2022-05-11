@@ -26,6 +26,9 @@ public class AudioManager {
         }
     }
 
+    public float getVolume() {
+        return volume;
+    }
     public void playSound(final SoundAsset soundAsset){
         final Sound sound = resourceManager.get(soundAsset.getFilePath(), Sound.class);
         sound.play(soundAsset.getVolume() * volume);

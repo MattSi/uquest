@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.core.assets.MapAsset;
+import org.bigorange.game.core.assets.MusicAsset;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.core.gamestate.GameState;
 import org.bigorange.game.ecs.ECSEngine;
@@ -43,8 +44,6 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         world.setContinuousPhysics(true);
 
         // TODO init player light
-
-        // TODO init entity component system
 
         this.ecsEngine = new ECSEngine(world, new OrthographicCamera());
         this.ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
@@ -81,6 +80,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
         Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
         Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
+        Utils.getAudioManager().playMusic(MusicAsset.TALKING);
     }
 
     @Override

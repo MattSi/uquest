@@ -20,9 +20,11 @@ import org.bigorange.game.core.Utils;
  */
 public class GSLoading extends GameState<LoadingUI> {
     private final ResourceManager resourceManager;
+    private boolean isMusicLoaded;
 
     public GSLoading(EGameState type, HUD hud) {
         super(type, hud);
+        isMusicLoaded = false;
 
         resourceManager = Utils.getResourceManager();
 
@@ -56,6 +58,12 @@ public class GSLoading extends GameState<LoadingUI> {
 
         // Set resource loading progress.
         gameStateUI.setProgress(resourceManager.getProgress());
+        if(!isMusicLoaded && resourceManager.isLoaded(MusicAsset.INTRO.getFilePath())){
+            isMusicLoaded = true;
+            Utils.getAudioManager().playMusic(MusicAsset.INTRO);
+        }
+
+
         super.step(fixedTimeStep);
     }
 

@@ -21,7 +21,7 @@ public class GSMenu extends GameState<MenuUI> {
 
     @Override
     protected MenuUI createGameStateUI(HUD hud, TTFSkin skin) {
-        return new MenuUI(hud, skin, 0);
+        return new MenuUI(hud, skin, Utils.getAudioManager().getVolume());
     }
 
     @Override
