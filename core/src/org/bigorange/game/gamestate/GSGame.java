@@ -141,7 +141,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
          * 2. 显示对话框
          * 3. 按住空格，对话框消失，恢复游戏
          */
-        gameStateUI.showInfoMessage("Fuck", 2.0f);
+        //gameStateUI.showInfoMessage("Fuck", 2.0f);
     }
 
     public void addEnemies(){

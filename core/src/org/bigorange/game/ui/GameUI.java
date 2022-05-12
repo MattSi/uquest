@@ -4,6 +4,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import org.bigorange.game.core.dialogue.TalkNode;
 import org.bigorange.game.core.ui.BaseUI;
 import org.bigorange.game.message.MessageType;
 
@@ -30,22 +31,36 @@ public class GameUI extends BaseUI {
 
         // Add Message listener
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
+        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
 
         //debugAll();
     }
 
-    public void showInfoMessage(final String message, final float displayTime) {
-        infoBox.setText(message);
-        infoBox.setVisible(true);
+    public void showInfoMessage(final String message, boolean isVisible) {
+        infoBox.setVisible(isVisible);
 
-        infoBox.addAction(sequence( delay(displayTime), hide()));
+        infoBox.setText(message);
+
     }
+
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        String message = (String) msg.extraInfo;
+        switch (msg.message){
+            case MessageType.MSG_PLAYER_TALK_TO_NPC->{
+                TalkNode talkNode = (TalkNode) msg.extraInfo;
 
-        showInfoMessage(message, 3f);
+                if(talkNode.getNodeType()== TalkNode.NodeType.END){
+                    showInfoMessage("", false);
+                } else {
+                    showInfoMessage(talkNode.getMessage(), true);
+                }
+            }
+            case MessageType.MSG_PLAYER_LEAVE_NPC -> {
+                showInfoMessage("",false);
+            }
+        }
+
         return true;
     }
 }

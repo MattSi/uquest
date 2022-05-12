@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.core.AudioManager;
 import org.bigorange.game.core.ResourceManager;
+import org.bigorange.game.core.dialogue.ConversationManager;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.map.MapManager;
 
@@ -40,6 +41,8 @@ public class UndergroundQuest extends ApplicationAdapter {
 	private Game game;
 	private WorldContactManager worldContactManager;
 	private AudioManager audioManager;
+	private ConversationManager conversationManager;
+
 
 
 	@Override
@@ -52,6 +55,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 		mapManager = new MapManager();
 		worldContactManager = new WorldContactManager();
 		audioManager = new AudioManager();
+		conversationManager = new ConversationManager();
 
 		this.game = new Game(EGameState.LOADING);
 		Gdx.app.debug(TAG, "Create=================================");
@@ -98,5 +102,9 @@ public class UndergroundQuest extends ApplicationAdapter {
 
 	public AudioManager getAudioManager() {
 		return audioManager;
+	}
+
+	public ConversationManager getConversationManager() {
+		return conversationManager;
 	}
 }

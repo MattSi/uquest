@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.UndergroundQuest;
 import org.bigorange.game.WorldContactManager;
+import org.bigorange.game.core.dialogue.ConversationManager;
 import org.bigorange.game.core.gamestate.EGameState;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
@@ -44,6 +45,9 @@ public class Utils {
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getAudioManager();
     }
 
+    public static ConversationManager getConversationManager(){
+        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getConversationManager();
+    }
     public static void setGameState(final EGameState gameStateType ){
         setGameState(gameStateType, false);
     }

@@ -10,6 +10,8 @@ import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.core.Utils;
+import org.bigorange.game.core.dialogue.ConversationManager;
+import org.bigorange.game.core.dialogue.TalkNode;
 import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.ActionableComponent;
@@ -46,8 +48,9 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
         switch (actionTypeCmp.type) {
             case TALK -> {
                 Gdx.app.debug(TAG, "Talk.....");
-                final String strConv = i18NBundle.format("npc.npc2.conversation");
-                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC, strConv);
+                final ConversationManager conversationManager = Utils.getConversationManager();
+                final TalkNode talkNode = conversationManager.getNextTalk(1);
+                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC, talkNode);
             }
             case UNDEFINED -> {
             }

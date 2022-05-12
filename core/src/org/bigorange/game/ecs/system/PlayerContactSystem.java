@@ -2,6 +2,9 @@ package org.bigorange.game.ecs.system;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.TelegramProvider;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
@@ -9,9 +12,10 @@ import org.bigorange.game.WorldContactManager;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.core.Utils;
+import org.bigorange.game.message.MessageType;
 
 
-public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener {
+public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener, TelegramProvider {
     public static final String TAG = PlayerContactSystem.class.getSimpleName();
     private final Array<PlayerContactListener> listeners;
 
@@ -19,6 +23,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     public PlayerContactSystem(){
         Utils.getWorldContactManager().addWorldContactListener(this);
         listeners = new Array<>();
+        MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_LEAVE_NPC);
     }
 
     public void addPlayerContactListener(final PlayerContactListener listener){
@@ -59,7 +64,6 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 if(isSensor){
                     enemyCmp.findPlayer = true;
                     interactCmp.addInRangeEntity(gameObject);
-                    //interactCmp.interact = true;
                 }
             }
         }
@@ -77,6 +81,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 if (isSensor) {
                     enemyCmp.findPlayer = false;
                     interactCmp.removeInRangeEntity(gameObject);
+                    MessageManager.getInstance().dispatchMessage(MessageType.MSG_PLAYER_LEAVE_NPC);
                 }
             }
         }
@@ -87,6 +92,11 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
             listener.wallContact();
         }
 
+    }
+
+    @Override
+    public Object provideMessageInfo(int msg, Telegraph receiver) {
+        return this;
     }
 
     public interface PlayerContactListener{
