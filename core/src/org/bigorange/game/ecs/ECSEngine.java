@@ -194,6 +194,7 @@ public class ECSEngine extends EntityEngine {
 
         addEntity(npc);
     }
+
     public void addEnemy(Vector2 spawnLocation, String enemyId) {
         final Entity enemy = createEntity();
 
@@ -387,6 +388,29 @@ public class ECSEngine extends EntityEngine {
 
         final MapGeneratedComponent mapCmp = createComponent(MapGeneratedComponent.class);
         gameObjEntity.add(mapCmp);
+
+
+        if(gameObj.isSensor()){
+            // create sensor
+            final CircleShape circleShape = new CircleShape();
+            circleShape.setRadius(1f);
+            fixtureDef.isSensor = true;
+            fixtureDef.shape = circleShape;
+            fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
+            fixtureDef.filter.maskBits = CATEGORY_PLAYER;
+
+            b2dCmp.body.createFixture(fixtureDef);
+            circleShape.dispose();
+
+            final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
+            actionCmp.type = ActionType.TALK;
+            gameObjEntity.add(actionCmp);
+        }
+
+        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
+        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+        enemyCmp.maxSpeed = 2f;
+        gameObjEntity.add(enemyCmp);
 
         addEntity(gameObjEntity);
     }

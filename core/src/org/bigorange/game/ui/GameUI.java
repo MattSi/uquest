@@ -21,13 +21,15 @@ public class GameUI extends BaseUI {
 
         progressBar = new ProgressBar(0, 100, 1f, false, skin, "default");
         progressBar.setValue(50f);
-        infoBox = new TextButton("XXXXXXXXXX", skin,"info_frame");
-        infoBox.getLabel().setWrap(true);
+        infoBox = new TextButton("", skin,"info_frame");
+
+        //infoBox.getLabel().setWrap(true);
         infoBox.setVisible(false);
 
 
         add(progressBar).left().pad(5,5,5,5).row();
-        add(infoBox).expand().pad(5, 5, 5, 5).bottom();
+       // add(infoBox).expand().pad(5, 5, 5, 5).bottom();
+        add(infoBox).expand().bottom();
 
         // Add Message listener
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_TALK_TO_NPC);

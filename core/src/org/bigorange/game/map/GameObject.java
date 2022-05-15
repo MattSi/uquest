@@ -28,6 +28,8 @@ public class GameObject {
     private final float animationInterval;
     private final GameObjectComponent.GameObjectType type;
 
+    private final boolean sensor;
+
     public GameObject(final TiledMapTileMapObject tileMapObject) {
         final MapProperties props = tileMapObject.getProperties();
         final MapProperties tileProps = tileMapObject.getTile().getProperties();
@@ -51,6 +53,12 @@ public class GameObject {
         } else {
             type = GameObjectComponent.GameObjectType.NOT_DEFINED;
         }
+
+        if(props.containsKey("sensor")){
+            sensor = props.get("sensor", Boolean.class);
+        } else {
+            sensor = false;
+        }
     }
 
     public int getId() {
@@ -71,5 +79,9 @@ public class GameObject {
 
     public GameObjectComponent.GameObjectType getType() {
         return type;
+    }
+
+    public boolean isSensor() {
+        return sensor;
     }
 }

@@ -57,7 +57,7 @@ public class GSLoading extends GameState<LoadingUI> {
         resourceManager.update();
 
         // Set resource loading progress.
-        gameStateUI.setProgress(resourceManager.getProgress());
+        gameStateUI.setProgress(resourceManager.getProgress(), hud);
         if(!isMusicLoaded && resourceManager.isLoaded(MusicAsset.INTRO.getFilePath())){
             isMusicLoaded = true;
             Utils.getAudioManager().playMusic(MusicAsset.INTRO);

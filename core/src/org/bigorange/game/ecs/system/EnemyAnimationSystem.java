@@ -16,7 +16,6 @@ import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
 
 public class EnemyAnimationSystem extends IteratingSystem {
 
-
     public EnemyAnimationSystem() {
         super(Family.all(EnemyComponent.class,
                 AnimationComponent.class,

@@ -40,7 +40,7 @@ public class ConversationManager implements ResourceManager.LocaleListener, Tele
             //
             TalkNode talkNode = conversations.get(conversationId);
             if (talkNode == null) {
-                // Gdx.app.error(TAG, "No conversation to this id: " + conversationId);
+                Gdx.app.error(TAG, "No conversation to this id: " + conversationId);
                 return null;
             }
 
@@ -67,7 +67,7 @@ public class ConversationManager implements ResourceManager.LocaleListener, Tele
         int cId = 1;
         TalkNodeAdapter start = new TalkNodeStart(cId);
 
-        TalkNodeAdapter talk1 = new TalkNodeTalk(cId, "你好，我是老史");
+        TalkNodeAdapter talk1 = new TalkNodeTalk(cId, "你好，我是大橙子.哈哈哈哈哈");
         TalkNodeAdapter talk2 = new TalkNodeTalk(cId, "我不爱上课");
         TalkNodeAdapter talk3 = new TalkNodeTalk(cId, "帮我点个名");
 
@@ -92,8 +92,12 @@ public class ConversationManager implements ResourceManager.LocaleListener, Tele
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        currentTalkNode = null;
-        currentConversationId = -1;
-        return true;
+        if (msg.message == MessageType.MSG_PLAYER_LEAVE_NPC) {
+            currentTalkNode = null;
+            currentConversationId = -1;
+            return true;
+        } else {
+            return false;
+        }
     }
 }

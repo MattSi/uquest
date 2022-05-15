@@ -46,7 +46,7 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
 
         final ResourceManager resourceManager = Utils.getResourceManager();
         resourceManager.load("i18n/strings_zh_CN", I18NBundle.class);
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simfang.ttf", 16, 20, 26,32);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/dengl.ttf", 16, 20, 26,32);
         i18NBundle = resourceManager.get("i18n/strings_zh_CN", I18NBundle.class);
 
 //        final FileHandle fi = Gdx.files.internal("i18n/strings");
