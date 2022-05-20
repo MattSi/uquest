@@ -49,7 +49,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
         this.ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
 
-        final TiledMap tiledMap = resourceManager.get(MapAsset.INTRO.getFilePath(), TiledMap.class);
+        final TiledMap tiledMap = resourceManager.get(MapAsset.LEVEL1.getFilePath(), TiledMap.class);
         mapManager.loadMap(tiledMap, world);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 

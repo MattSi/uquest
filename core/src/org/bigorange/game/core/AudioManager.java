@@ -35,17 +35,17 @@ public class AudioManager {
     }
 
     public void playMusic(final MusicAsset musicAsset){
-//        final Music music = resourceManager.get(musicAsset.getFilePath(), Music.class);
-//        if(currentMusicAsset == musicAsset){
-//            return;
-//        } else if(currentMusic != null){
-//            currentMusic.stop();
-//        }
-//
-//        currentMusicAsset = musicAsset;
-//        currentMusic = resourceManager.get(musicAsset.getFilePath(), Music.class);
-//        currentMusic.setLooping(true);
-//        currentMusic.setVolume(currentMusicAsset.getVolume() * volume);
-//        currentMusic.play();
+        final Music music = resourceManager.get(musicAsset.getFilePath(), Music.class);
+        if(currentMusicAsset == musicAsset){
+            return;
+        } else if(currentMusic != null){
+            currentMusic.stop();
+        }
+
+        currentMusicAsset = musicAsset;
+        currentMusic = resourceManager.get(musicAsset.getFilePath(), Music.class);
+        currentMusic.setLooping(true);
+        currentMusic.setVolume(currentMusicAsset.getVolume() * volume);
+        currentMusic.play();
     }
 }

@@ -4,96 +4,115 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.Telegraph;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.IntMap;
-import com.badlogic.gdx.utils.ObjectSet;
-import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.message.MessageType;
 
-import java.util.Locale;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ConversationManager implements ResourceManager.LocaleListener, Telegraph {
+/**
+ * 管理各种对话
+ */
+public class ConversationManager implements Telegraph {
     public static final String TAG = ConversationManager.class.getSimpleName();
     private int currentConversationId;
-    private TalkNode currentTalkNode;
-    private IntMap<TalkNode> conversations;
+    private DialogueNode currentDialogueNode;
 
-    public ConversationManager() {
+    private IntMap<DialogueTree> dialogueTrees;
+
+    private FileHandle convHandler;
+    public ConversationManager(FileHandle convHandler) {
         currentConversationId = -1;
-        currentTalkNode = null;
-        conversations = new IntMap<>();
-
-        buildConversationTree(null);
+        currentDialogueNode = null;
+        dialogueTrees = new IntMap<>();
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
 
+        buildConversationTrees(convHandler);
     }
 
 
     //
-    public TalkNode getNextTalk(int conversationId) {
+    public DialogueNode talk(int conversationId) {
         /**
          * 根据对话ID，以及当前的对话节点，找出下一个对话节点
          *
          */
-        if (conversationId != currentConversationId
-                || currentTalkNode == null
-                || currentTalkNode.getNodeType() == TalkNode.NodeType.END) {
-            //
-            TalkNode talkNode = conversations.get(conversationId);
-            if (talkNode == null) {
-                Gdx.app.error(TAG, "No conversation to this id: " + conversationId);
+        DialogueNode result = null;
+        if (conversationId != currentConversationId || currentDialogueNode == null) {
+
+            final DialogueTree dialogueTree = dialogueTrees.get(conversationId);
+            if(dialogueTree == null){
+                Gdx.app.error(TAG, "No conversation according to this id: " + conversationId);
                 return null;
             }
-
+            currentDialogueNode = dialogueTree.getStart();
             currentConversationId = conversationId;
-            currentTalkNode = talkNode;
+
         }
 
-        if (currentTalkNode.getNodeType() != TalkNode.NodeType.END) {
-            currentTalkNode = currentTalkNode.getNextNode();
+        if(currentDialogueNode == null){
+            //
+            return null;
         } else {
-            currentConversationId = -1;
-            currentTalkNode = null;
+            switch (currentDialogueNode.getNodeType()){
+                case END -> {
+                    currentConversationId = -1;
+                    currentDialogueNode = null;
+                }
+                case START -> {
+                    currentDialogueNode = currentDialogueNode.getNextNode();
+                }
+                case UNDEFINED -> {
+                    throw new UndergroundQuestDialogueException("Undefined Dialogue Node" + currentDialogueNode.toString());
+                }
+            }
         }
-
-        return currentTalkNode;
+        result = currentDialogueNode;
+        currentDialogueNode = currentDialogueNode.getNextNode();
+        return result;
     }
 
-    @Override
-    public void localeChanged(Locale locale) {
-        buildConversationTree(locale);
+
+    private void buildConversationTrees(FileHandle convHandle){
+        /**
+         * 构建对话树
+         * 对话树文本结构
+         * conversationId, lineNumber = n
+         * line1 -> DialogueNodeId,Person,DialogueNodeType, [[MessageId, NextNode],…]
+         * line2
+         * ... ...
+         * linen
+         *
+         * conversatonId = -1 means over.
+         */
+        //final FileHandle convHandle = Gdx.files.internal("dialogue/conversations.csv");
+        final String text = convHandle.readString("utf-8");
+        final String[] lines = text.split("\\r?\\n");
+        int i = 0;
+        while (true) {
+            final String[] split = lines[i++].split(",");
+            int conversationId = Integer.valueOf(split[0]);
+            if (conversationId == -1) {
+                break;
+            }
+
+            int lineNumber = Integer.valueOf(split[1]);
+            List<String> conversation = new ArrayList<>();
+            for (int j = 0; j < lineNumber; j++, i++) {
+                conversation.add(lines[i]);
+            }
+            final DialogueTree dialogueTree = new DialogueTree(conversationId, lineNumber, conversation.toArray(new String[0]));
+            dialogueTree.build();
+            dialogueTrees.put(conversationId, dialogueTree);
+        }
     }
 
-    private void buildConversationTree(Locale locale) {
-        int cId = 1;
-        TalkNodeAdapter start = new TalkNodeStart(cId);
-
-        TalkNodeAdapter talk1 = new TalkNodeTalk(cId, "你好，我是大橙子.哈哈哈哈哈");
-        TalkNodeAdapter talk2 = new TalkNodeTalk(cId, "我不爱上课");
-        TalkNodeAdapter talk3 = new TalkNodeTalk(cId, "帮我点个名");
-
-        TalkNodeAdapter end = new TalkNodeEnd(cId);
-
-
-        start.setNextNode(talk1);
-        talk1.setNextNode(talk2);
-        talk2.setNextNode(talk3);
-        talk3.setNextNode(end);
-
-        ObjectSet<TalkNode> talkSet = new ObjectSet<>();
-        talkSet.add(start);
-        talkSet.add(talk1);
-        talkSet.add(talk2);
-        talkSet.add(talk3);
-        talkSet.add(end);
-
-        conversations.put(cId, start);
-
-    }
 
     @Override
     public boolean handleMessage(Telegram msg) {
         if (msg.message == MessageType.MSG_PLAYER_LEAVE_NPC) {
-            currentTalkNode = null;
+            currentDialogueNode = null;
             currentConversationId = -1;
             return true;
         } else {

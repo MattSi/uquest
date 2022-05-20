@@ -55,7 +55,7 @@ public class UndergroundQuest extends ApplicationAdapter {
 		mapManager = new MapManager();
 		worldContactManager = new WorldContactManager();
 		audioManager = new AudioManager();
-		conversationManager = new ConversationManager();
+		conversationManager = new ConversationManager(Gdx.files.internal("dialogue/conversations.csv"));
 
 		this.game = new Game(EGameState.LOADING);
 		Gdx.app.debug(TAG, "Create=================================");
