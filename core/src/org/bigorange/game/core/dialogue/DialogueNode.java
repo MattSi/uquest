@@ -51,6 +51,14 @@ public class DialogueNode {
         return choice;
     }
 
+    public int getConversationId() {
+        return conversationId;
+    }
+
+    public int getDialogueNodeId() {
+        return dialogueNodeId;
+    }
+
     public void setChoice(List<Choice> choice) {
         this.choice = choice;
     }

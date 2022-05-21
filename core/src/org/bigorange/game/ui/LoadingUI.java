@@ -1,8 +1,11 @@
 package org.bigorange.game.ui;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.bigorange.game.core.ui.BaseUI;
 
 import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
@@ -29,6 +32,20 @@ public class LoadingUI extends BaseUI {
         add(pressAnyButtonInfo).expand().fillX().center().row();
         add(note).expand().fillX().bottom().row();
         add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
+
+        pressAnyButtonInfo.addListener(new ClickListener(){
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log("YY:", "MMMMMMMMMMMMMMMMMMMMMM");
+                super.clicked(event, x, y);
+            }
+
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+
         //debugAll();
     }
 

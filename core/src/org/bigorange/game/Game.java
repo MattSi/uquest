@@ -34,7 +34,8 @@ public class Game implements Disposable {
 
 
         hud = new HUD();
-        Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
+        Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager(), hud.getStage()));
+        //Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
 
         setGameState(initialStage, true);
     }

@@ -45,7 +45,7 @@ public class GSMenu extends GameState<MenuUI> {
 
     @Override
     public void dispose() {
-
+        hud.removeGameStateHUD(gameStateUI);
     }
 
     @Override
@@ -65,10 +65,10 @@ public class GSMenu extends GameState<MenuUI> {
             }
             case SELECT -> {
                 if(gameStateUI.isNewGameSelected()){
-                    Utils.setGameState(EGameState.GAME);
+                    Utils.setGameState(EGameState.GAME, true);
                     return;
                 }else if(gameStateUI.isContinueSelected()){
-                    Utils.setGameState(EGameState.GAME);
+                    Utils.setGameState(EGameState.GAME, true);
                     return;
                 }else if(gameStateUI.isQuitGameSelected()){
                     Gdx.app.exit();

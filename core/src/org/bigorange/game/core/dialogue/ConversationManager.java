@@ -3,6 +3,7 @@ package org.bigorange.game.core.dialogue;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.IntMap;
@@ -14,7 +15,7 @@ import java.util.List;
 /**
  * 管理各种对话
  */
-public class ConversationManager implements Telegraph {
+public class ConversationManager implements Telegraph, TelegramProvider {
     public static final String TAG = ConversationManager.class.getSimpleName();
     private int currentConversationId;
     private DialogueNode currentDialogueNode;
@@ -26,7 +27,9 @@ public class ConversationManager implements Telegraph {
         currentConversationId = -1;
         currentDialogueNode = null;
         dialogueTrees = new IntMap<>();
+        MessageManager.getInstance().addProvider(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
+        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
 
         buildConversationTrees(convHandler);
     }
@@ -57,8 +60,10 @@ public class ConversationManager implements Telegraph {
         } else {
             switch (currentDialogueNode.getNodeType()){
                 case END -> {
+                    result = currentDialogueNode;
                     currentConversationId = -1;
                     currentDialogueNode = null;
+                    return result;
                 }
                 case START -> {
                     currentDialogueNode = currentDialogueNode.getNextNode();
@@ -111,12 +116,39 @@ public class ConversationManager implements Telegraph {
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        if (msg.message == MessageType.MSG_PLAYER_LEAVE_NPC) {
-            currentDialogueNode = null;
-            currentConversationId = -1;
-            return true;
-        } else {
-            return false;
+        switch (msg.message){
+            case MessageType.MSG_PLAYER_LEAVE_NPC -> {
+                currentDialogueNode = null;
+                currentConversationId = -1;
+                return true;
+            }
+
+            case MessageType.MSG_PLAYER_TALK_TO_NPC -> {
+                final DialogueNode node = (DialogueNode)msg.extraInfo;
+                if(node.getConversationId() != currentConversationId){
+                    Gdx.app.error(TAG, "Conversation does not match: [" + node.getConversationId()
+                            + ", " + currentConversationId +"]");
+                    return false;
+                }
+
+                currentDialogueNode = node;
+                final DialogueNode talkNode = talk(node.getConversationId());
+                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_NPC_TALK_TO_PLAYER, talkNode);
+            }
+
         }
+        return false;
+//        if (msg.message == MessageType.MSG_PLAYER_LEAVE_NPC) {
+//            currentDialogueNode = null;
+//            currentConversationId = -1;
+//            return true;
+//        } else {
+//            return false;
+//        }
+    }
+
+    @Override
+    public Object provideMessageInfo(int msg, Telegraph receiver) {
+        return null;
     }
 }

@@ -2,6 +2,8 @@ package org.bigorange.game.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
@@ -101,4 +103,5 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     public TTFSkin getSkin() {
         return skin;
     }
+
 }

@@ -25,7 +25,7 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
     public InteractSystem() {
         super(Family.all(InteractComponent.class).exclude(RemoveComponent.class).get());
 
-        MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
+        MessageManager.getInstance().addProvider(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
         i18NBundle = Utils.getResourceManager().get("i18n/strings_zh_CN", I18NBundle.class);
     }
 
@@ -50,7 +50,7 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
                 Gdx.app.debug(TAG, "Talk.....");
                 final ConversationManager conversationManager = Utils.getConversationManager();
                 final DialogueNode dialogueNode = conversationManager.talk(1);
-                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC, dialogueNode);
+                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_NPC_TALK_TO_PLAYER, dialogueNode);
             }
             case UNDEFINED -> {
             }

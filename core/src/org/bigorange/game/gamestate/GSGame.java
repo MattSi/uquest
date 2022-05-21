@@ -65,7 +65,7 @@ public class GSGame extends GameState<GameUI> implements PlayerContactSystem.Pla
 
     @Override
     protected GameUI createGameStateUI(HUD hud, TTFSkin skin) {
-        return new GameUI(skin);
+        return new GameUI(hud, skin);
     }
 
     @Override
