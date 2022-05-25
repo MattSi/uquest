@@ -1,3 +1,5 @@
 include 'desktop', 'android', 'core'
 include 'tests'
+include 'dtree'
+include 'dtree'
 

@@ -88,7 +88,8 @@ public class Game implements Disposable {
 
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        activeState.render(accumulator / TARGET_FRAME_TIME);
+        //activeState.render(accumulator / TARGET_FRAME_TIME);
+        activeState.render(deltaTime);
 
 
     }
