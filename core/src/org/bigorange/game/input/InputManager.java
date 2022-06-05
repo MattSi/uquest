@@ -109,7 +109,6 @@ public class InputManager implements InputProcessor {
         EMouse mouse = mouseMapping[button];
         for (final MouseInputListener listener : mouseInputListeners) {
             listener.buttonDown(this, mouse, new Vector2(screenX, screenY));
-            Gdx.app.debug(TAG, "Click: YYYYYYYYYYYYYYYYYYY" + listener);
         }
         return false;
     }

@@ -73,7 +73,6 @@ public class HUD extends InputListener implements Disposable, KeyInputListener {
     }
 
     public void render(final float alpha){
-        stage.act(alpha * TARGET_FRAME_TIME);
         stage.getViewport().apply();
         stage.draw();
     }
