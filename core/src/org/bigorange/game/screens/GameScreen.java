@@ -51,12 +51,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     public GameScreen(TTFSkin skin) {
         super(skin);
 
-
-    }
-
-    @Override
-    public void show() {
-        super.show();
         final MapManager mapManager = Utils2.getMapManager();
         final ResourceManager resourceManager = Utils2.getResourceManager();
 
@@ -82,6 +76,12 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         addEnemies();
         addNpcs();
         addUI();
+    }
+
+    @Override
+    public void show() {
+        super.show();
+
 
         Utils2.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
         Utils2.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));

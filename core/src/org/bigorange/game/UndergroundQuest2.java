@@ -8,19 +8,27 @@ import com.badlogic.gdx.ai.DefaultTimepiece;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
+import com.badlogic.gdx.utils.reflect.ClassReflection;
+import com.badlogic.gdx.utils.reflect.ReflectionException;
 import org.bigorange.game.core.AudioManager;
 import org.bigorange.game.core.ResourceManager;
 import org.bigorange.game.core.dialogue.ConversationManager;
+import org.bigorange.game.core.screens.BaseScreen;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
+import org.bigorange.game.screens.EScreenType;
 import org.bigorange.game.screens.GameScreen;
 import org.bigorange.game.screens.LoadingScreen;
 import org.bigorange.game.screens.MenuScreen;
 import org.bigorange.game.ui.TTFSkin;
 
+import java.util.EnumMap;
+
 public class UndergroundQuest2 extends Game {
     private final String TAG = this.getClass().getSimpleName();
+    private EnumMap<EScreenType, BaseScreen> screenCache;
     private ResourceManager resourceManager;
     private AudioManager audioManager;
     private MapManager mapManager;
@@ -30,35 +38,27 @@ public class UndergroundQuest2 extends Game {
     private TTFSkin skin;
 
 
-    private static LoadingScreen loadingScreen;
-    private static MenuScreen menuScreen;
-    private static GameScreen gameScreen;
 
-    public static enum ScreenType{
-        LoadingScreen,
-        MenuScreen,
-        GameScreen,
-    }
 
-    public Screen getScreenType(ScreenType screenType){
-        switch (screenType){
-            case LoadingScreen -> {
-                return loadingScreen;
-            }
-            case MenuScreen -> {
-                return menuScreen;
-            }
+    public void setScreenType(final EScreenType screenType){
+        BaseScreen targetScreen = screenCache.get(screenType);
+        if(targetScreen == null){
+            Gdx.app.debug(TAG, "Create new Screen:" + screenType);
+            try{
+                targetScreen = (BaseScreen) ClassReflection.getConstructor(screenType.getScreenType(),
+                         TTFSkin.class).newInstance( skin);
 
-            case GameScreen -> {
-                return gameScreen;
+                screenCache.put(screenType, targetScreen);
+                setScreen(targetScreen);
+            }catch (ReflectionException e){
+                throw new GdxRuntimeException("Could not create Screen of type: " + screenType, e);
             }
         }
-        return null;
     }
-
 
     @Override
     public void create() {
+
 
         /**
          * 1. Instance managers
@@ -73,10 +73,11 @@ public class UndergroundQuest2 extends Game {
         /**
          * 3. create screens
          */
-        createScreens();
+        screenCache = new EnumMap<EScreenType, BaseScreen>(EScreenType.class);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
-        setScreen(loadingScreen);
+       // setScreen(loadingScreen);
+        setScreenType(EScreenType.LOADING);
     }
 
     @Override
@@ -118,15 +119,10 @@ public class UndergroundQuest2 extends Game {
         audioManager.dispose();
     }
 
-    private void createScreens(){
-        loadingScreen = new LoadingScreen(skin);
-        menuScreen = new MenuScreen(skin);
-        gameScreen = new GameScreen(skin);
-    }
-
     private void disposeScreens(){
-        loadingScreen.dispose();
-        menuScreen.dispose();
+        for (BaseScreen value : screenCache.values()) {
+            value.dispose();
+        }
     }
 
     private void loadOtherResource(){

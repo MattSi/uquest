@@ -135,10 +135,8 @@ public class LoadingScreen extends BaseScreen  {
     @Override
     public void keyDown(InputManager manager, EKey key) {
         if(resourceManager.getProgress() == 1){
-            Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXX");
             final UndergroundQuest2 gameInstance = Utils2.getGameInstance();
-            final Screen menuScreen = gameInstance.getScreenType(UndergroundQuest2.ScreenType.MenuScreen);
-            gameInstance.setScreen(menuScreen);
+            gameInstance.setScreenType(EScreenType.MENU);
 
         }
     }

@@ -142,9 +142,7 @@ public class MenuScreen extends BaseScreen {
             case SELECT -> {
                 if(isNewGameSelected()){
                     final UndergroundQuest2 gameInstance = Utils2.getGameInstance();
-                    final Screen gameScreen = gameInstance.getScreenType(UndergroundQuest2.ScreenType.GameScreen);
-                    gameInstance.setScreen(gameScreen);
-                    //Utils2.setGameState(EGameState.GAME, true);
+                    gameInstance.setScreenType(EScreenType.GAME);
                     return;
                 }else if(isContinueSelected()){
                     return;
