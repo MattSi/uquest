@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.KeyInputListener;
@@ -25,7 +25,7 @@ public class BaseScreen implements Screen, KeyInputListener {
     }
     @Override
     public void show() {
-        Utils2.getInputManager().addKeyInputListener(this);
+        Utils.getInputManager().addKeyInputListener(this);
     }
 
     @Override
@@ -54,7 +54,7 @@ public class BaseScreen implements Screen, KeyInputListener {
 
     @Override
     public void hide() {
-        Utils2.getInputManager().removeKeyInputListener(this);
+        Utils.getInputManager().removeKeyInputListener(this);
     }
 
     @Override

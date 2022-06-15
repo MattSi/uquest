@@ -9,7 +9,7 @@ import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.WorldContactManager;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.core.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
@@ -21,7 +21,7 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
 
 
     public PlayerContactSystem(){
-        Utils2.getWorldContactManager().addWorldContactListener(this);
+        Utils.getWorldContactManager().addWorldContactListener(this);
         listeners = new Array<>();
         MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_LEAVE_NPC);
     }

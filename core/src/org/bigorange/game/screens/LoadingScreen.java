@@ -1,16 +1,15 @@
 package org.bigorange.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import org.bigorange.game.UndergroundQuest2;
+import org.bigorange.game.UndergroundQuest;
 import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.core.assets.LocaleAssets;
 import org.bigorange.game.core.assets.MapAsset;
 import org.bigorange.game.core.assets.MusicAsset;
@@ -33,7 +32,7 @@ public class LoadingScreen extends BaseScreen  {
 
     public LoadingScreen(TTFSkin skin){
         super(skin);
-        resourceManager = Utils2.getResourceManager();
+        resourceManager = Utils.getResourceManager();
         isMusicLoaded = false;
 
         table = new Table();
@@ -101,7 +100,7 @@ public class LoadingScreen extends BaseScreen  {
         setProgress(resourceManager.getProgress());
         if(!isMusicLoaded && resourceManager.isLoaded(MusicAsset.INTRO.getFilePath())){
             isMusicLoaded = true;
-            Utils2.getAudioManager().playMusic(MusicAsset.INTRO);
+            Utils.getAudioManager().playMusic(MusicAsset.INTRO);
         }
 
         super.render(delta);
@@ -135,7 +134,7 @@ public class LoadingScreen extends BaseScreen  {
     @Override
     public void keyDown(InputManager manager, EKey key) {
         if(resourceManager.getProgress() == 1){
-            final UndergroundQuest2 gameInstance = Utils2.getGameInstance();
+            final UndergroundQuest gameInstance = Utils.getGameInstance();
             gameInstance.setScreenType(EScreenType.MENU);
 
         }

@@ -20,7 +20,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.core.assets.MapAsset;
 import org.bigorange.game.core.assets.MusicAsset;
 import org.bigorange.game.core.dialogue.Choice;
@@ -39,8 +39,8 @@ import org.bigorange.game.ui.TTFSkin;
 import java.util.List;
 
 public class GameScreen extends BaseScreen implements PlayerContactSystem.PlayerContactListener, TelegramProvider,Telegraph {
-    private ECSEngine ecsEngine;
-    private World world;
+    private final ECSEngine ecsEngine;
+    private final World world;
 
     private DialogueBox infoBox;
     private DialogueBox infoBox2;
@@ -51,13 +51,13 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     public GameScreen(TTFSkin skin) {
         super(skin);
 
-        final MapManager mapManager = Utils2.getMapManager();
-        final ResourceManager resourceManager = Utils2.getResourceManager();
+        final MapManager mapManager = Utils.getMapManager();
+        final ResourceManager resourceManager = Utils.getResourceManager();
 
         // TODO init box2d
         Box2D.init();
         world = new World(new Vector2(0,0), true);
-        world.setContactListener(Utils2.getWorldContactManager());
+        world.setContactListener(Utils.getWorldContactManager());
         world.setContinuousPhysics(true);
 
         // TODO, init Box2D light system
@@ -83,10 +83,10 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         super.show();
 
 
-        Utils2.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
-        Utils2.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
-        Utils2.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
-        Utils2.getAudioManager().playMusic(MusicAsset.TALKING);
+        Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
+        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
+        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
+        Utils.getAudioManager().playMusic(MusicAsset.TALKING);
     }
 
     @Override
@@ -119,7 +119,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     }
 
     public void addEnemies(){
-        MapManager mapManager = Utils2.getMapManager();
+        MapManager mapManager = Utils.getMapManager();
         Map currentMap = mapManager.getCurrentMap();
 
         for (Vector2 location : currentMap.getEnemyStartLocations()) {
@@ -128,7 +128,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     }
 
     public void addNpcs(){
-        MapManager mapManager = Utils2.getMapManager();
+        MapManager mapManager = Utils.getMapManager();
         Map currentMap = mapManager.getCurrentMap();
 
         for (Vector2 location : currentMap.getNpcStartLocations()) {
@@ -137,8 +137,8 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     }
 
     private void setCursor(){
-        final ResourceManager resourceManager = Utils2.getResourceManager();
-        final TextureAtlas.AtlasRegion atlasRegion = Utils2.getResourceManager().get("characters/characters.atlas",
+        final ResourceManager resourceManager = Utils.getResourceManager();
+        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
                 TextureAtlas.class).findRegion("crosshair");
 
         final TextureData textureData = atlasRegion.getTexture().getTextureData();
@@ -207,7 +207,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         MessageManager.getInstance().addListener(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
 
-        final ResourceManager resourceManager = Utils2.getResourceManager();
+        final ResourceManager resourceManager = Utils.getResourceManager();
         i18NBundle = resourceManager.get("i18n/strings_zh_CN", I18NBundle.class);
         stage.addActor(table);
     }

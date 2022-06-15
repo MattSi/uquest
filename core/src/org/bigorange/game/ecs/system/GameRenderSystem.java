@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.EntityEngine;
@@ -86,7 +86,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.world = world;
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
-        this.spriteBatch = Utils2.getSpriteBatch();
+        this.spriteBatch = Utils.getSpriteBatch();
         tmpVec3 = new Vector3();
 
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
@@ -99,7 +99,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         pixmap.dispose();
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(tmpTexture, 0,0,1,1));
 
-        Utils2.getMapManager().addMapListener(this);
+        Utils.getMapManager().addMapListener(this);
         Gdx.app.log(TAG, "instantiated.");
     }
 

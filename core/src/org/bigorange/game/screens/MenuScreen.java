@@ -1,12 +1,11 @@
 package org.bigorange.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.UndergroundQuest2;
-import org.bigorange.game.core.Utils2;
+import org.bigorange.game.UndergroundQuest;
+import org.bigorange.game.core.Utils;
 import org.bigorange.game.core.assets.MusicAsset;
 import org.bigorange.game.core.screens.BaseScreen;
 import org.bigorange.game.input.EKey;
@@ -60,7 +59,7 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        Utils2.getAudioManager().playMusic(MusicAsset.INTRO);
+        Utils.getAudioManager().playMusic(MusicAsset.INTRO);
     }
 
     @Override
@@ -73,7 +72,7 @@ public class MenuScreen extends BaseScreen {
             } else {
                 moveSelectionLeft();
             }
-            Utils2.getAudioManager().setVolume(volumeSlider.getValue());
+            Utils.getAudioManager().setVolume(volumeSlider.getValue());
         }
 
         super.render(delta);
@@ -141,7 +140,7 @@ public class MenuScreen extends BaseScreen {
             }
             case SELECT -> {
                 if(isNewGameSelected()){
-                    final UndergroundQuest2 gameInstance = Utils2.getGameInstance();
+                    final UndergroundQuest gameInstance = Utils.getGameInstance();
                     gameInstance.setScreenType(EScreenType.GAME);
                     return;
                 }else if(isContinueSelected()){

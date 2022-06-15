@@ -3,7 +3,6 @@ package org.bigorange.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.ai.DefaultTimepiece;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
@@ -19,14 +18,11 @@ import org.bigorange.game.core.screens.BaseScreen;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.screens.EScreenType;
-import org.bigorange.game.screens.GameScreen;
-import org.bigorange.game.screens.LoadingScreen;
-import org.bigorange.game.screens.MenuScreen;
 import org.bigorange.game.ui.TTFSkin;
 
 import java.util.EnumMap;
 
-public class UndergroundQuest2 extends Game {
+public class UndergroundQuest extends Game {
     private final String TAG = this.getClass().getSimpleName();
     private EnumMap<EScreenType, BaseScreen> screenCache;
     private ResourceManager resourceManager;

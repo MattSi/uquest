@@ -15,7 +15,7 @@ public class AudioManager implements Disposable {
     private final ResourceManager resourceManager;
 
     public AudioManager(){
-        this.resourceManager = Utils2.getResourceManager();
+        this.resourceManager = Utils.getResourceManager();
         this.currentMusic = null;
         this.volume = 1f;
     }
