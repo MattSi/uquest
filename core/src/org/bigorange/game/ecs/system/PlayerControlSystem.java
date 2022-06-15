@@ -15,7 +15,7 @@ import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.input.*;
-import org.bigorange.game.message.MessageType;
+import org.bigorange.game.core.message.MessageType;
 
 import static org.bigorange.game.input.EKey.*;
 

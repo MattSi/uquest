@@ -27,7 +27,7 @@
     "info_frame": {
       "font": "font_26",
       "fontColor": "white",
-      "up": "frame_brown"
+      "up": "upReleased"
     },
     "info": {
       "font": "font_16",

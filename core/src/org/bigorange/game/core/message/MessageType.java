@@ -1,4 +1,4 @@
-package org.bigorange.game.message;
+package org.bigorange.game.core.message;
 
 public class MessageType {
     public static final int MSG_NPC_TALK_TO_PLAYER = 1;

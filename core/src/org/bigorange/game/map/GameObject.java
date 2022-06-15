@@ -7,7 +7,8 @@ import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 
-import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
+import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+
 
 /**
  * 游戏对象定义，这些游戏对象由地图生成，包含以下元素

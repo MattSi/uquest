@@ -17,13 +17,14 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import org.bigorange.game.core.ResourceManager;
+import org.bigorange.game.core.Utils2;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.RemoveComponent;
-import org.bigorange.game.message.MessageType;
-import org.bigorange.game.core.Utils;
+import org.bigorange.game.core.message.MessageType;
 
-import static org.bigorange.game.UndergroundQuest.CATEGORY_PLAYER;
-import static org.bigorange.game.UndergroundQuest.CATEGORY_WORLD;
+import static org.bigorange.game.core.GameConfig.CATEGORY_PLAYER;
+import static org.bigorange.game.core.GameConfig.CATEGORY_WORLD;
+
 
 /**
  * 1. Load a map from resource manager
@@ -48,7 +49,7 @@ public class MapManager implements Telegraph {
         this.currentMap = null;
         this.gameObjectAnimationCache = new IntMap<>();
         this.mapListeners = new Array<>();
-        this.resourceManager = Utils.getResourceManager();
+        this.resourceManager = Utils2.getResourceManager();
         this.bodyDef = new BodyDef();
         this.fixtureDef = new FixtureDef();
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_CHANGE_MAP);

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import org.bigorange.game.core.Utils2;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
@@ -19,9 +20,9 @@ import org.bigorange.game.ecs.component.SpeedComponent;
 import org.bigorange.game.input.EMouse;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.MouseInputListener;
-import org.bigorange.game.core.Utils;
 
-import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
+import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+
 
 public class PlayerAnimationSystem extends IteratingSystem implements MouseInputListener {
     private final Animation<Sprite> aniLeft;
@@ -39,7 +40,7 @@ public class PlayerAnimationSystem extends IteratingSystem implements MouseInput
 
 
         // create player animations
-        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas", TextureAtlas.class).findRegion("hero");
+        final TextureAtlas.AtlasRegion atlasRegion = Utils2.getResourceManager().get("characters/characters.atlas", TextureAtlas.class).findRegion("hero");
         final TextureRegion[][] textureRegions = atlasRegion.split(48, 72);
         aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
         aniLeft = new Animation<>(0.1f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);

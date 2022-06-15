@@ -3,10 +3,11 @@ package org.bigorange.game.core;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Disposable;
 import org.bigorange.game.core.assets.MusicAsset;
 import org.bigorange.game.core.assets.SoundAsset;
 
-public class AudioManager {
+public class AudioManager implements Disposable {
     private Music currentMusic;
     private MusicAsset currentMusicAsset;
 
@@ -14,7 +15,7 @@ public class AudioManager {
     private final ResourceManager resourceManager;
 
     public AudioManager(){
-        this.resourceManager = Utils.getResourceManager();
+        this.resourceManager = Utils2.getResourceManager();
         this.currentMusic = null;
         this.volume = 1f;
     }
@@ -47,5 +48,13 @@ public class AudioManager {
         currentMusic.setLooping(true);
         currentMusic.setVolume(currentMusicAsset.getVolume() * volume);
         currentMusic.play();
+    }
+
+    @Override
+    public void dispose() {
+        if(currentMusic != null){
+            currentMusic.dispose();
+            currentMusic = null;
+        }
     }
 }

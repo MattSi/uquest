@@ -2,7 +2,8 @@ package org.bigorange.game.map;
 
 import com.badlogic.gdx.math.Vector2;
 
-import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
+import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+
 
 public class CollisionArea {
     private final Vector2 startLocation;

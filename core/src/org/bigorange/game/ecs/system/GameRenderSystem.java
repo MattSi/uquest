@@ -17,18 +17,20 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import org.bigorange.game.core.Utils2;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
-import org.bigorange.game.core.Utils;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.RenderSystem;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapListener;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-import static org.bigorange.game.UndergroundQuest.UNIT_SCALE;
+import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+
 
 public class GameRenderSystem implements RenderSystem, MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
@@ -84,7 +86,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         this.world = world;
         this.gameCamera = camera;
         viewport = new FitViewport(12.8f, 7.2f, gameCamera);
-        this.spriteBatch = Utils.getSpriteBatch();
+        this.spriteBatch = Utils2.getSpriteBatch();
         tmpVec3 = new Vector3();
 
         mapRenderer = new OrthogonalTiledMapRenderer(null, UNIT_SCALE, spriteBatch);
@@ -97,15 +99,15 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         pixmap.dispose();
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(tmpTexture, 0,0,1,1));
 
-        Utils.getMapManager().addMapListener(this);
+        Utils2.getMapManager().addMapListener(this);
         Gdx.app.log(TAG, "instantiated.");
     }
 
     @Override
     public void render(float alpha) {
 
-        //ScreenUtils.clear(0, 0, 0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        ScreenUtils.clear(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         viewport.apply();
         updateCamera(alpha);

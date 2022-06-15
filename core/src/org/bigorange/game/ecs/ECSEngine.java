@@ -14,12 +14,13 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.core.ActionType;
+import org.bigorange.game.core.Utils2;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.GameObject;
-import org.bigorange.game.core.Utils;
 
-import static org.bigorange.game.UndergroundQuest.*;
+import static org.bigorange.game.core.GameConfig.*;
+
 
 public class ECSEngine extends EntityEngine {
     private static final String TAG = ECSEngine.class.getSimpleName();
@@ -119,7 +120,7 @@ public class ECSEngine extends EntityEngine {
         npc.add(enemyCmp);
 
         final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
-        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
+        final TextureAtlas.AtlasRegion atlasRegion = Utils2.getResourceManager().get("characters/characters.atlas",
                 TextureAtlas.class).findRegion(npcId);
         final TextureRegion[][] textureRegions = atlasRegion.split(32, 32);
         ani4dCmp.aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
@@ -204,7 +205,7 @@ public class ECSEngine extends EntityEngine {
         enemy.add(enemyCmp);
 
         final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
-        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
+        final TextureAtlas.AtlasRegion atlasRegion = Utils2.getResourceManager().get("characters/characters.atlas",
                 TextureAtlas.class).findRegion(enemyId);
         final TextureRegion[][] textureRegions = atlasRegion.split(32, 32);
         ani4dCmp.aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);

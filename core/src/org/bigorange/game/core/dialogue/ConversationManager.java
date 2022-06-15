@@ -7,7 +7,7 @@ import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.IntMap;
-import org.bigorange.game.message.MessageType;
+import org.bigorange.game.core.message.MessageType;
 
 import java.util.ArrayList;
 import java.util.List;
