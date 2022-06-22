@@ -4,6 +4,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.Json;
 
+import java.util.Set;
+
 
 public class ConversationGraph extends ConversationGraphSubject {
     private IntMap<ConversationNode> conversations;
@@ -34,7 +36,7 @@ public class ConversationGraph extends ConversationGraphSubject {
 
 
     public ConversationNode getConversationNodeById(int id){
-        if(!isValid(id)){
+        if(isInvalid(id)){
             return null;
         }
 
@@ -56,15 +58,13 @@ public class ConversationGraph extends ConversationGraphSubject {
         return associatedChoices.get(currentConversationId);
     }
 
-    public boolean isValid(int conversationId){
+    public boolean isInvalid(int conversationId){
         final ConversationNode conversationNode = conversations.get(conversationId);
-        if(conversationNode == null) return false;
-
-        return true;
+        return conversationNode == null;
     }
 
     public boolean isReachable(int sourceId, int sinkId){
-        if(!isValid(sourceId) || !isValid(sinkId)) return false;
+        if(isInvalid(sourceId) || isInvalid(sinkId)) return false;
         if(conversations.get(sourceId) == null) return false;
 
         final Array<ConversationChoice> list = associatedChoices.get(sourceId);
@@ -86,18 +86,42 @@ public class ConversationGraph extends ConversationGraphSubject {
         list.add(choice);
     }
 
+    public int getCurrentConversationId() {
+        return currentConversationId;
+    }
+
+    public void setCurrentConversationId(int currentConversationId) {
+        this.currentConversationId = currentConversationId;
+    }
+
     public String toJson(){
         Json json = new Json();
         return json.prettyPrint(this);
     }
 
+    @SuppressWarnings("DefaultLocale")
     public String toString(){
-        StringBuffer output = new StringBuffer();
+        StringBuilder outputString = new StringBuilder();
         int numberTotalChoices = 0;
 
         final IntMap.Keys keys = associatedChoices.keys();
+        while(keys.hasNext){
+            final int id = keys.next();
+
+            outputString.append(String.format("[%s]: ", id));
+
+            for (ConversationChoice choice : associatedChoices.get(id)) {
+                numberTotalChoices++;
+                outputString.append(String.format("%s ", choice.getDestinationId()));
+            }
+
+            outputString.append(System.getProperty("line.separator"));
+        }
+
+        outputString.append(String.format("Number conversations: %d", conversations.size));
+        outputString.append(String.format(", Number of choices: %d", numberTotalChoices));
 
 
-        return output.toString();
+        return outputString.toString();
     }
 }

@@ -3,7 +3,9 @@ package org.bigorange.game.core.assets;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 
 public enum TextureAtlasAssets {
-    CHARACTERS("characters/characters.atlas");
+    CHARACTERS("characters/characters.atlas"),
+
+    STATUSUI("skins/statusui.atlas");
 
 
 

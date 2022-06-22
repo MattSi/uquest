@@ -4,6 +4,7 @@ public class ConversationChoice {
     private int sourceId;
     private int destinationId;
     private String choicePhrase;
+    private ConversationGraphObserver.ConversationCommandEvent conversationCommandEvent;
 
     public ConversationChoice() {
     }
@@ -30,5 +31,18 @@ public class ConversationChoice {
 
     public void setChoicePhrase(String choicePhrase) {
         this.choicePhrase = choicePhrase;
+    }
+
+    public ConversationGraphObserver.ConversationCommandEvent getConversationCommandEvent() {
+        return conversationCommandEvent;
+    }
+
+    public void setConversationCommandEvent(ConversationGraphObserver.ConversationCommandEvent conversationCommandEvent) {
+        this.conversationCommandEvent = conversationCommandEvent;
+    }
+
+    @Override
+    public String toString() {
+        return choicePhrase;
     }
 }

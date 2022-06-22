@@ -54,13 +54,11 @@ public class LoadingScreen extends BaseScreen  {
             @Override
             public void clicked(InputEvent event, float x, float y) {
                 super.clicked(event, x, y);
-                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXX");
             }
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 super.touchDown(event, x, y, pointer, button);
-                Gdx.app.log(TAG, "YYYYYYYYYYYYYYYYYYYYY");
                 return false;
             }
         });

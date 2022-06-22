@@ -2,9 +2,14 @@ package org.bigorange.game.tests;
 
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
+import com.badlogic.gdx.utils.Json;
 import org.bigorange.game.core.dialogue.ConversationChoice;
 import org.bigorange.game.core.dialogue.ConversationGraph;
 import org.bigorange.game.core.dialogue.ConversationNode;
+
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
 public class ConversationGraphTest {
     static ConversationGraph graph;
@@ -13,7 +18,7 @@ public class ConversationGraphTest {
     static String quit = "q";
     static String input = "";
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         conversations = new IntMap<>();
 
         ConversationNode start = new ConversationNode();
@@ -67,7 +72,18 @@ public class ConversationGraphTest {
 
        // graph.setConversations(conversations);
 
-        System.out.println(graph.toJson());
+        //System.out.println(graph.toJson());
+        Json j = new Json();
+        ConversationGraph g =  j.fromJson(ConversationGraph.class, new BufferedInputStream(new FileInputStream("d:/temp/202206/conversation001.json")));
+
+
+        System.out.println(g.toJson());
+        System.out.println("===========================================");
+        System.out.println(g.toString());
+
+
+
+
 
 
 //        while (!input.equals(quit)){
