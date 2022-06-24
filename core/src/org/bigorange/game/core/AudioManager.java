@@ -44,7 +44,7 @@ public class AudioManager implements Disposable {
         }
 
         currentMusicAsset = musicAsset;
-        currentMusic = resourceManager.get(musicAsset.getFilePath(), Music.class);
+        currentMusic = music;
         currentMusic.setLooping(true);
         currentMusic.setVolume(currentMusicAsset.getVolume() * volume);
         currentMusic.play();

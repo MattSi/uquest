@@ -44,9 +44,28 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
     private DialogueBox infoBox;
     private DialogueBox infoBox2;
-    private ProgressBar progressBar;
     private I18NBundle i18NBundle;
     private Table table;
+
+    protected OrthographicCamera camera = null;
+    protected OrthographicCamera hudCamera = null;
+    private static final int VIEWPORT_WIDTH = 10;
+    private static final int VIEWPORT_HEIGHT = 10;
+
+    /**
+     * 集成了不同的Viewport,
+     * 屏幕，虚拟，物理
+     * 比率
+     */
+    public static class VIEWPORT {
+        public static float viewportWidth;
+        public static float viewportHeight;
+        public static float virtualWidth;
+        public static float virtualHeight;
+        public static float physicalWidth;
+        public static float physicalHeight;
+        public static float aspectRatio;
+    }
 
     public GameScreen(TTFSkin skin) {
         super(skin);
@@ -56,13 +75,22 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         // TODO init box2d
         Box2D.init();
-        world = new World(new Vector2(0,0), true);
+        world = new World(new Vector2(0, 0), true);
         world.setContactListener(Utils.getWorldContactManager());
         world.setContinuousPhysics(true);
 
+        // Camera setup
+        setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+
+        camera = new OrthographicCamera();
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        hudCamera = new OrthographicCamera();
+        hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
+
+
         // TODO, init Box2D light system
 
-        ecsEngine = new ECSEngine(world, new OrthographicCamera());
+        ecsEngine = new ECSEngine(world, camera, hudCamera);
         ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
         final TiledMap tiledMap = resourceManager.get(MapAsset.LEVEL1.getFilePath(), TiledMap.class);
@@ -103,8 +131,10 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
     @Override
     public void resize(int width, int height) {
+        setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+
         ecsEngine.resize(width, height);
-        super.resize(width, height);
     }
 
     @Override
@@ -118,7 +148,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
     }
 
-    public void addEnemies(){
+    public void addEnemies() {
         MapManager mapManager = Utils.getMapManager();
         Map currentMap = mapManager.getCurrentMap();
 
@@ -127,7 +157,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         }
     }
 
-    public void addNpcs(){
+    public void addNpcs() {
         MapManager mapManager = Utils.getMapManager();
         Map currentMap = mapManager.getCurrentMap();
 
@@ -136,13 +166,13 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         }
     }
 
-    private void setCursor(){
+    private void setCursor() {
         final ResourceManager resourceManager = Utils.getResourceManager();
         final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
                 TextureAtlas.class).findRegion("crosshair");
 
         final TextureData textureData = atlasRegion.getTexture().getTextureData();
-        if(!textureData.isPrepared()){
+        if (!textureData.isPrepared()) {
             textureData.prepare();
         }
         Pixmap pixmap = new Pixmap(atlasRegion.getRegionWidth(), atlasRegion.getRegionHeight(), textureData.getFormat());
@@ -155,7 +185,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
                 atlasRegion.getRegionWidth(),
                 atlasRegion.getRegionHeight()
         );
-        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, 0,0));
+        Gdx.graphics.setCursor(Gdx.graphics.newCursor(pixmap, 0, 0));
         pixmap.dispose();
     }
 
@@ -164,31 +194,29 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         return this;
     }
 
-    private void addUI(){
+    private void addUI() {
         MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
-        progressBar = new ProgressBar(0, 100, 1f, false, skin, "default");
-        progressBar.setValue(50f);
-        infoBox = new DialogueBox("", skin,"info_frame");
+        infoBox = new DialogueBox("", skin, "info_frame");
         infoBox2 = new DialogueBox("", skin, "info_frame");
 
         infoBox.setVisible(false);
         infoBox2.setVisible(false);
 
-        infoBox.addListener((Event e) ->{
+        infoBox.addListener((Event e) -> {
             if (!(e instanceof InputEvent) ||
-                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown))
+                    !((InputEvent) e).getType().equals(InputEvent.Type.touchDown))
                 return false;
-            if(infoBox.getDialogueNode() != null) {
+            if (infoBox.getDialogueNode() != null) {
                 MessageManager.getInstance().dispatchMessage(0.2f, MessageType.MSG_PLAYER_TALK_TO_NPC, infoBox.getDialogueNode());
             }
             return false;
         });
 
-        infoBox2.addListener((Event e) ->{
+        infoBox2.addListener((Event e) -> {
             if (!(e instanceof InputEvent) ||
-                    !((InputEvent)e).getType().equals(InputEvent.Type.touchDown))
+                    !((InputEvent) e).getType().equals(InputEvent.Type.touchDown))
                 return false;
-            if(infoBox2.getDialogueNode() != null) {
+            if (infoBox2.getDialogueNode() != null) {
                 MessageManager.getInstance().dispatchMessage(0.2f, MessageType.MSG_PLAYER_TALK_TO_NPC, infoBox2.getDialogueNode());
             }
             return false;
@@ -197,7 +225,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         table = new Table();
         table.setFillParent(true);
-        table.add(progressBar).left().pad(5,5,5,5).row();
         Table infoBoxTable = new Table();
         infoBoxTable.add(infoBox2).expandX().row();
         infoBoxTable.add(infoBox).expandX();
@@ -214,16 +241,16 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
     @Override
     public boolean handleMessage(Telegram msg) {
-        switch (msg.message){
-            case MessageType.MSG_NPC_TALK_TO_PLAYER ->{
+        switch (msg.message) {
+            case MessageType.MSG_NPC_TALK_TO_PLAYER -> {
                 DialogueNode dialogueNode = (DialogueNode) msg.extraInfo;
 
-                switch (dialogueNode.getNodeType()){
+                switch (dialogueNode.getNodeType()) {
                     case END -> {
                         showInfoMessage("", false);
                     }
                     case MESSAGE -> {
-                        showInfoMessage( i18NBundle.format("T"+ dialogueNode.getMessageId()), true);
+                        showInfoMessage(i18NBundle.format("T" + dialogueNode.getMessageId()), true);
                     }
                     case CHOICE -> {
                         //dialogueNode.getChoice().get(0)
@@ -234,7 +261,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
             }
             case MessageType.MSG_PLAYER_LEAVE_NPC -> {
-                showInfoMessage("",false);
+                showInfoMessage("", false);
             }
         }
 
@@ -261,6 +288,36 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         infoBox2.setDialogueNode(choice2.getNextNode());
         infoBox2.setText(i18NBundle.format("T" + choice2.getMessage()));
+    }
 
+    private void setupViewport(int width, int height) {
+        //Make the viewport a percentage of the total display area
+        VIEWPORT.virtualWidth = width;
+        VIEWPORT.virtualHeight = height;
+
+        //Current viewport dimensions
+        VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+        VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+
+        //Pixel dimensions of display
+        VIEWPORT.physicalWidth = Gdx.graphics.getWidth();
+        VIEWPORT.physicalHeight = Gdx.graphics.getHeight();
+
+        VIEWPORT.aspectRatio = (VIEWPORT.virtualWidth / VIEWPORT.virtualHeight);
+
+        //update viewport if there could be skewing
+        if (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight >= VIEWPORT.aspectRatio) {
+            //Letterbox left and right
+            VIEWPORT.viewportWidth = VIEWPORT.viewportHeight * (VIEWPORT.physicalWidth / VIEWPORT.physicalHeight);
+            VIEWPORT.viewportHeight = VIEWPORT.virtualHeight;
+        } else {
+            //Letterbox above and below
+            VIEWPORT.viewportWidth = VIEWPORT.virtualWidth;
+            VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
+        }
+
+        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.virtualWidth + "," + VIEWPORT.virtualHeight + ")");
+        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.viewportWidth + "," + VIEWPORT.viewportHeight + ")");
+        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.physicalWidth + "," + VIEWPORT.physicalHeight + ")");
     }
 }

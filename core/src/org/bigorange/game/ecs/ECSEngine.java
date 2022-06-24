@@ -18,6 +18,7 @@ import org.bigorange.game.core.Utils;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.GameObject;
+import org.bigorange.game.ui.PlayerHUD;
 
 import static org.bigorange.game.core.GameConfig.*;
 
@@ -32,7 +33,7 @@ public class ECSEngine extends EntityEngine {
     private final FixtureDef fixtureDef;
 
 
-    public ECSEngine(final World world, final OrthographicCamera gameCamera) {
+    public ECSEngine(final World world, final OrthographicCamera gameCamera, final OrthographicCamera hudCamera) {
         super();
         this.world = world;
 
@@ -51,6 +52,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new TargetLostSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
+        addRenderSystem(new PlayerHUDRenderSystem(new PlayerHUD(hudCamera)));
 
     }
 

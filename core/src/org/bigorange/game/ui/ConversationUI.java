@@ -23,11 +23,10 @@ public class ConversationUI extends Window {
     private TextButton closeButton;
     private Json json;
 
-    //TODO Load Skin
-    Skin skin = null;
 
-    public ConversationUI() {
-        super("dialog", null, "solidbackground");
+
+    public ConversationUI(Skin skin) {
+        super("dialog", skin, "solidbackground");
 
         json = new Json();
         graph = new ConversationGraph();
