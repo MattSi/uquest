@@ -42,7 +42,7 @@ public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.Skin
 
             // create font according to density of target device display
             fontParam.fontParameters.size = fontSize;
-            fontParam.fontParameters.incremental = true;
+            fontParam.fontParameters.incremental = true; // 参数为true，可以显示中文
 
             dependencies.add(new AssetDescriptor("font" + fontSize + ".ttf", BitmapFont.class, fontParam));
         }

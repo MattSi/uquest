@@ -35,11 +35,11 @@ public class PlayerHUD implements Screen, ConversationGraphObserver {
         Skin STATUSUI_SKIN = new Skin(Gdx.files.internal("skins/statusui.json"), STATUSUI_TEXTUREATLAS);
         conversationUI = new ConversationUI(STATUSUI_SKIN);
         conversationUI.setMovable(true);
-        conversationUI.setVisible(false);
+        conversationUI.setVisible(true);
         conversationUI.setPosition(stage.getWidth() / 2, 0);
         conversationUI.setWidth(stage.getWidth() / 2);
         conversationUI.setHeight(stage.getHeight() / 2);
-
+        conversationUI.loadConversation();
 
         statusUI = new StatusUI(STATUSUI_SKIN, STATUSUI_TEXTUREATLAS);
         statusUI.setVisible(true);

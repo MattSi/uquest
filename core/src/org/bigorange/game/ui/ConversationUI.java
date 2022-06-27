@@ -63,6 +63,7 @@ public class ConversationUI extends Window {
         listItems.addListener(new ClickListener() {
             @Override
             public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.debug(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
                 final ConversationChoice choice = (ConversationChoice) listItems.getSelected();
                 if (choice == null) return;
                 graph.notify(graph, choice.getConversationCommandEvent());
@@ -72,7 +73,7 @@ public class ConversationUI extends Window {
 
     }
 
-    // TODO, hard code for now, how to locate NPC's conversation ID
+    //TODO, hard code for now, how to locate NPC's conversation ID
     public void loadConversation() {
         this.getTitleLabel().setText("");
 
