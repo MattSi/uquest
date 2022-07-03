@@ -7,7 +7,7 @@ import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
 import org.bigorange.game.ecs.component.GameObjectComponent;
 
-import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 
 /**

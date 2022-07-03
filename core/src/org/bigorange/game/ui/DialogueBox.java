@@ -2,7 +2,7 @@ package org.bigorange.game.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import org.bigorange.game.core.dialogue.DialogueNode;
+import org.bigorange.game.dialogue.DialogueNode;
 
 public class DialogueBox extends TextButton {
     private DialogueNode dialogueNode;

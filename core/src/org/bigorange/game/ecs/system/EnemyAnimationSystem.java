@@ -12,7 +12,7 @@ import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 
 import static com.badlogic.gdx.math.MathUtils.PI;
-import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 public class EnemyAnimationSystem extends IteratingSystem {
 

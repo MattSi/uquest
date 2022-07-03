@@ -7,50 +7,26 @@ import com.badlogic.gdx.ai.DefaultTimepiece;
 import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.badlogic.gdx.utils.I18NBundle;
-import com.badlogic.gdx.utils.reflect.ClassReflection;
-import com.badlogic.gdx.utils.reflect.ReflectionException;
-import org.bigorange.game.core.AudioManager;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.dialogue.ConversationManager;
-import org.bigorange.game.core.screens.BaseScreen;
+import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.screens.EScreenType;
+import org.bigorange.game.screens.ScreenManager;
 import org.bigorange.game.ui.TTFSkin;
-
-import java.util.EnumMap;
 
 public class UndergroundQuest extends Game {
     private final String TAG = this.getClass().getSimpleName();
-    private EnumMap<EScreenType, BaseScreen> screenCache;
+
     private ResourceManager resourceManager;
     private AudioManager audioManager;
     private MapManager mapManager;
     private WorldContactManager worldContactManager;
     private ConversationManager conversationManager;
+    private ScreenManager screenManager;
     private SpriteBatch spriteBatch;
     private TTFSkin skin;
 
-
-
-
-    public void setScreenType(final EScreenType screenType){
-        BaseScreen targetScreen = screenCache.get(screenType);
-        if(targetScreen == null){
-            Gdx.app.debug(TAG, "Create new Screen:" + screenType);
-            try{
-                targetScreen = (BaseScreen) ClassReflection.getConstructor(screenType.getScreenType(),
-                         TTFSkin.class).newInstance( skin);
-
-                screenCache.put(screenType, targetScreen);
-                setScreen(targetScreen);
-            }catch (ReflectionException e){
-                throw new GdxRuntimeException("Could not create Screen of type: " + screenType, e);
-            }
-        }
-    }
 
     @Override
     public void create() {
@@ -59,21 +35,33 @@ public class UndergroundQuest extends Game {
         /**
          * 1. Instance managers
          */
-        createManagers();
+        MessageManager.getInstance().clear();
+        MessageManager.getInstance().setDebugEnabled(true);
+        GdxAI.setTimepiece(new DefaultTimepiece(0.2f));
+        resourceManager = new ResourceManager();
+        audioManager = new AudioManager();
+        worldContactManager = new WorldContactManager();
+        conversationManager = new ConversationManager(Gdx.files.internal("dialogue/conversations.csv"));
+        mapManager = new MapManager();
+
+
+        Gdx.app.debug(TAG, "Create ==================================================");
 
         /**
          * 2. Loading Screen resource
          */
-        loadOtherResource();
+        spriteBatch = new SpriteBatch();
+        resourceManager.load("i18n/strings_zh_CN", I18NBundle .class);
+        skin = resourceManager.loadSkinSynchronously("hud/uiskin.json", "hud/Dengl.ttf", 16, 20, 26,32);
 
         /**
          * 3. create screens
          */
-        screenCache = new EnumMap<EScreenType, BaseScreen>(EScreenType.class);
+        screenManager = new ScreenManager(skin, this);
 
         Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
        // setScreen(loadingScreen);
-        setScreenType(EScreenType.LOADING);
+        screenManager.setScreenType(EScreenType.LOADING);
     }
 
     @Override
@@ -85,7 +73,7 @@ public class UndergroundQuest extends Game {
 
     @Override
     public void dispose() {
-        disposeScreens();
+        //disposeScreens();
         disposeManagers();
     }
 
@@ -98,16 +86,7 @@ public class UndergroundQuest extends Game {
     }
 
     private void createManagers(){
-        MessageManager.getInstance().clear();
-        MessageManager.getInstance().setDebugEnabled(true);
-        GdxAI.setTimepiece(new DefaultTimepiece(0.2f));
-        resourceManager = new ResourceManager();
-        audioManager = new AudioManager();
-        worldContactManager = new WorldContactManager();
-        conversationManager = new ConversationManager(Gdx.files.internal("dialogue/conversations.csv"));
-        mapManager = new MapManager();
 
-        Gdx.app.debug(TAG, "Create ==================================================");
     }
 
     private void disposeManagers(){
@@ -115,16 +94,8 @@ public class UndergroundQuest extends Game {
         audioManager.dispose();
     }
 
-    private void disposeScreens(){
-        for (BaseScreen value : screenCache.values()) {
-            value.dispose();
-        }
-    }
-
     private void loadOtherResource(){
-        spriteBatch = new SpriteBatch();
-        resourceManager.load("i18n/strings_zh_CN", I18NBundle .class);
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simsun.ttc", 16, 20, 26,32);
+
     }
 
     public MapManager getMapManager() {
@@ -141,5 +112,9 @@ public class UndergroundQuest extends Game {
 
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
+    }
+
+    public ScreenManager getScreenManager() {
+        return screenManager;
     }
 }

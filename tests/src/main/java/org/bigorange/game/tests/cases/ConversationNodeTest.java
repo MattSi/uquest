@@ -1,9 +1,8 @@
 package org.bigorange.game.tests.cases;
 
-import com.badlogic.gdx.Files;
 import com.badlogic.gdx.files.FileHandle;
-import org.bigorange.game.core.dialogue.ConversationManager;
-import org.bigorange.game.core.dialogue.DialogueNode;
+import org.bigorange.game.dialogue.ConversationManager;
+import org.bigorange.game.dialogue.DialogueNode;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

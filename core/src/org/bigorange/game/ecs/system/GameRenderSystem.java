@@ -20,7 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import org.bigorange.game.core.Utils;
+import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.EntityEngine;
@@ -29,7 +29,7 @@ import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapListener;
 import space.earlygrey.shapedrawer.ShapeDrawer;
 
-import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 
 public class GameRenderSystem implements RenderSystem, MapListener {

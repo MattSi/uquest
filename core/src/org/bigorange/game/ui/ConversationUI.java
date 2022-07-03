@@ -7,9 +7,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import org.bigorange.game.core.dialogue.ConversationChoice;
-import org.bigorange.game.core.dialogue.ConversationGraph;
-import org.bigorange.game.core.dialogue.ConversationNode;
+import org.bigorange.game.dialogue.ConversationChoice;
+import org.bigorange.game.dialogue.ConversationGraph;
+import org.bigorange.game.dialogue.ConversationNode;
 
 /**
  * Conversation UI: embedded in Player HUD
@@ -32,7 +32,7 @@ public class ConversationUI extends Window {
         graph = new ConversationGraph();
 
         //create
-        dialogText = new Label("No Conversation", skin);
+        dialogText = new Label("No Conversation", skin, "info");
         dialogText.setWrap(true);
         dialogText.setAlignment(Align.center);
         listItems = new List<ConversationChoice>(skin);

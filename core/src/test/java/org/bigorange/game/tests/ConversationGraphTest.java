@@ -3,9 +3,9 @@ package org.bigorange.game.tests;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.Json;
-import org.bigorange.game.core.dialogue.ConversationChoice;
-import org.bigorange.game.core.dialogue.ConversationGraph;
-import org.bigorange.game.core.dialogue.ConversationNode;
+import org.bigorange.game.dialogue.ConversationChoice;
+import org.bigorange.game.dialogue.ConversationGraph;
+import org.bigorange.game.dialogue.ConversationNode;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;

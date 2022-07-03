@@ -16,7 +16,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.component.SpawnType;
 
-import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 
 /**

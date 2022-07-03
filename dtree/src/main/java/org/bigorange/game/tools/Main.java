@@ -1,6 +1,6 @@
 package org.bigorange.game.tools;
 
-import org.bigorange.game.core.dialogue.DialogueNode;
+import org.bigorange.game.dialogue.DialogueNode;
 
 public class Main {
     public static void main(String[] args) {

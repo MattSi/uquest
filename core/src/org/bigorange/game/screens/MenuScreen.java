@@ -5,9 +5,8 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.UndergroundQuest;
-import org.bigorange.game.core.Utils;
-import org.bigorange.game.core.assets.MusicAsset;
-import org.bigorange.game.core.screens.BaseScreen;
+import org.bigorange.game.Utils;
+import org.bigorange.game.assets.MusicAsset;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.TTFSkin;
@@ -28,11 +27,11 @@ public class MenuScreen extends BaseScreen {
     private Table table;
 
 
-    public MenuScreen(TTFSkin skin){
-        super(skin);
+    public MenuScreen(TTFSkin skin, ScreenManager screenManager){
+        super(skin, screenManager);
         menuItems = new Array<>();
         final Stack menuPages = new Stack();
-        volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default");
+        volumeSlider = new Slider(0, 1, 0.01f, false, skin, "default-horizontal");
         //volumeSlider.setValue(initialVolumeValue);
         volumeSlider.setValue(0.5f);
         if (volumeSlider.getValue() == 0) {
@@ -83,7 +82,7 @@ public class MenuScreen extends BaseScreen {
     private Table createMainPage() {
         final Table content = new Table();
         //content.setBackground(skin.getDrawable("menu_background"));
-        content.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
+       // content.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
 
 
         //menuItems.add(new TextButton(hud.getLocalizedString("newGame"), skin, "huge"));
@@ -110,7 +109,7 @@ public class MenuScreen extends BaseScreen {
 
     private Table createCreditsPage() {
         final Table content = new Table();
-        content.add(new Image(skin.getDrawable("banner"))).expandX().top().padTop(65).row();
+       // content.add(new Image(skin.getDrawable("banner"))).expandX().top().padTop(65).row();
 
 
         //final TextButton creditsTxt = new TextButton(hud.getLocalizedString("credits"), skin, "normal");
@@ -141,7 +140,7 @@ public class MenuScreen extends BaseScreen {
             case SELECT -> {
                 if(isNewGameSelected()){
                     final UndergroundQuest gameInstance = Utils.getGameInstance();
-                    gameInstance.setScreenType(EScreenType.GAME);
+                    screenManager.setScreenType(EScreenType.GAME);
                     return;
                 }else if(isContinueSelected()){
                     return;

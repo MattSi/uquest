@@ -9,8 +9,8 @@ import com.badlogic.gdx.ai.steer.behaviors.Arrive;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.WorldContactManager;
-import org.bigorange.game.core.Utils;
-import org.bigorange.game.core.message.MessageType;
+import org.bigorange.game.Utils;
+import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 

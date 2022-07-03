@@ -2,19 +2,17 @@ package org.bigorange.game.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import org.bigorange.game.UndergroundQuest;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.Utils;
-import org.bigorange.game.core.assets.LocaleAssets;
-import org.bigorange.game.core.assets.MapAsset;
-import org.bigorange.game.core.assets.MusicAsset;
-import org.bigorange.game.core.assets.TextureAtlasAssets;
-import org.bigorange.game.core.screens.BaseScreen;
+import org.bigorange.game.ResourceManager;
+import org.bigorange.game.Utils;
+import org.bigorange.game.assets.LocaleAssets;
+import org.bigorange.game.assets.MapAsset;
+import org.bigorange.game.assets.MusicAsset;
+import org.bigorange.game.assets.TextureAtlasAssets;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.ui.TTFSkin;
@@ -30,14 +28,14 @@ public class LoadingScreen extends BaseScreen  {
     private TextButton note;
     private Table table;
 
-    public LoadingScreen(TTFSkin skin){
-        super(skin);
+    public LoadingScreen(TTFSkin skin, ScreenManager screenManager){
+        super(skin, screenManager);
         resourceManager = Utils.getResourceManager();
         isMusicLoaded = false;
 
         table = new Table();
         table.setFillParent(true);
-        progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "default");
+        progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "green_h");
 
         pressAnyButtonInfo = new TextButton("Press Any Key", skin, "huge");
         pressAnyButtonInfo.setVisible(false);
@@ -45,7 +43,7 @@ public class LoadingScreen extends BaseScreen  {
 
         note = new TextButton("Loading...", skin, "normal");
 
-        table.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
+        //table.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
         table.add(pressAnyButtonInfo).expand().fillX().center().row();
         table.add(note).expand().fillX().bottom().row();
         table.add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
@@ -133,7 +131,7 @@ public class LoadingScreen extends BaseScreen  {
     public void keyDown(InputManager manager, EKey key) {
         if(resourceManager.getProgress() == 1){
             final UndergroundQuest gameInstance = Utils.getGameInstance();
-            gameInstance.setScreenType(EScreenType.MENU);
+            screenManager.setScreenType(EScreenType.MENU);
 
         }
     }

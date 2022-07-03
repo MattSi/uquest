@@ -28,21 +28,21 @@ conversations: {
 associatedChoices: {
         1: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 1
                         destinationId: 2
                         choicePhrase: Next
 						conversationCommandEvent: NONE
                 }
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 1
                         destinationId: 3
                         choicePhrase: Next1
                         conversationCommandEvent: NONE
                 }
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 1
                         destinationId: 4
                         choicePhrase: Next2
@@ -51,28 +51,28 @@ associatedChoices: {
         ],
         2: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 2
                         destinationId: 3
                         choicePhrase: North
 						conversationCommandEvent: NONE
                 }
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 2
                         destinationId: 4
                         choicePhrase: East
 						conversationCommandEvent: NONE
                 }
 				{
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 2
                         destinationId: 5
                         choicePhrase: West
 						conversationCommandEvent: NONE
                 }
 				{
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 2
                         destinationId: 6
                         choicePhrase: South
@@ -81,7 +81,7 @@ associatedChoices: {
         ]
         3: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 3
                         destinationId: 1
                         choicePhrase: Go to beginning!
@@ -90,7 +90,7 @@ associatedChoices: {
         ]
 		4: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 4
                         destinationId: 1
                         choicePhrase: Go to beginning!
@@ -99,7 +99,7 @@ associatedChoices: {
         ]
 		5: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 5
                         destinationId: 1
                         choicePhrase: Go to beginning!
@@ -108,7 +108,7 @@ associatedChoices: {
         ]
 		6: [
                 {
-                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        class: org.bigorange.game.dialogue.ConversationChoice
                         sourceId: 6
                         destinationId: 1
                         choicePhrase: Go to beginning!

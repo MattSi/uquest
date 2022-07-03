@@ -11,7 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.core.Utils;
+import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.Box2DComponent;
@@ -21,7 +21,7 @@ import org.bigorange.game.input.EMouse;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.MouseInputListener;
 
-import static org.bigorange.game.core.GameConfig.UNIT_SCALE;
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 
 public class PlayerAnimationSystem extends IteratingSystem implements MouseInputListener {

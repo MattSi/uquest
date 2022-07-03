@@ -13,14 +13,16 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.core.ActionType;
-import org.bigorange.game.core.Utils;
+import org.bigorange.game.ActionType;
+import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.map.GameObject;
+import org.bigorange.game.screens.EScreenType;
+import org.bigorange.game.screens.ScreenManager;
 import org.bigorange.game.ui.PlayerHUD;
 
-import static org.bigorange.game.core.GameConfig.*;
+import static org.bigorange.game.GameConfig.*;
 
 
 public class ECSEngine extends EntityEngine {
@@ -40,6 +42,7 @@ public class ECSEngine extends EntityEngine {
         bodyDef = new BodyDef();
         fixtureDef = new FixtureDef();
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
+        final ScreenManager screenManager = Utils.getScreenManager();
 
         addSystem(new PlayerAnimationSystem(gameCamera));
         addSystem(new PlayerCameraSystem(gameCamera));
@@ -52,7 +55,8 @@ public class ECSEngine extends EntityEngine {
         addSystem(new TargetLostSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
-        addRenderSystem(new PlayerHUDRenderSystem(new PlayerHUD(hudCamera)));
+
+        addRenderSystem(new PlayerHUDRenderSystem((PlayerHUD) screenManager.getScreenInstance(EScreenType.PLAYERHUD)));
 
     }
 

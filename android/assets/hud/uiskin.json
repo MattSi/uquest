@@ -1,0 +1,112 @@
+{
+	BitmapFont: { default-font: { file: default.fnt } },
+	Color: {
+		green: { a: 1, b: 0, g: 1, r: 0 },
+		white: { a: 1, b: 1, g: 1, r: 1 },
+		red: { a: 1, b: 0, g: 0, r: 1 },
+		black: { a: 1, b: 0, g: 0, r: 0 },
+		gray: { a: 1, b: 0.8, g: 0.8, r: 0.8 },
+	},
+	TintedDrawable: {
+		dialogDim: { name: white, color: { r: 0, g: 0, b: 1, a: 0.45 } },
+	},
+	ProgressBarStyle: {
+		default-horizontal: { background: default-slider, knob: default-slider-knob },
+		default-vertical: { background: default-slider, knob: default-round-large }
+
+		green_h:{ background: barBack_horizontalMid, knob: barGreen_horizontalMid, knobBefore: barGreen_horizontalMid, knobAfter: barBack_horizontalMid}
+		red_h:{ background: barBack_horizontalMid, knob: barRed_horizontalMid, knobBefore: barRed_horizontalMid, knobAfter: barBack_horizontalMid}
+		yellow_h:{ background: barBack_horizontalMid, knob: barYellow_horizontalMid, knobBefore: barYellow_horizontalMid, knobAfter: barBack_horizontalMid}
+		blue_h:{ background: barBack_horizontalMid, knob: barBlue_horizontalMid, knobBefore: barBlue_horizontalMid, knobAfter: barBack_horizontalMid}
+	},
+
+	SliderStyle: {
+		default-horizontal: { parent: green_h },
+		default-vertical: { parent: default-vertical }
+	},
+
+	ButtonStyle: {
+		default: { down: default-round-down, up: default-round, disabled: default-round },
+		toggle: { parent: default, checked: default-round-down }
+
+	},
+	ImageButtonStyle:{
+		icon_close:{ parent:default, imageDown: iconCross_brown, imageUp: iconCross_brown}
+	}
+	TextButtonStyle: {
+		default: { parent: default, font: default-font, fontColor: white, disabledFontColor: gray },
+		toggle: { parent: default, checked: default-round-down, downFontColor: red },
+		huge: {
+			font: "font_32",
+			fontColor: "white"
+		},
+		big: {
+			font: "font_26",
+			fontColor: "white"
+		},
+		"small": {
+			"font": "font_16",
+			"fontColor": "white"
+		},
+		"normal": {
+			"font": "font_20",
+			"fontColor": "white"
+		},
+		"info_frame": {
+			"font": "font_26",
+			"fontColor": "white",
+		},
+		"info": {
+			"font": "font_16",
+			"fontColor": "white"
+		}
+	},
+	ScrollPaneStyle: {
+		default: { vScroll: default-scroll, hScrollKnob: default-round-large, background: default-rect, hScroll: default-scroll, vScrollKnob: default-round-large }
+	},
+	SelectBoxStyle: {
+		default: {
+			font: default-font, fontColor: white, background: default-select,
+			scrollStyle: default,
+			listStyle: { font: default-font, selection: default-select-selection }
+		}
+	},
+	SplitPaneStyle: {
+		default-vertical: { handle: default-splitpane-vertical },
+		default-horizontal: { handle: default-splitpane-vertical }
+	},
+	WindowStyle: {
+		default: { titleFont: default-font, background: default-window, titleFontColor: white},
+		dialog: { parent: default, stageBackground: dialogDim }
+	},
+
+
+	LabelStyle: {
+		default: { font: default-font, fontColor: white },
+		"info": {
+			"font": "font_16",
+			"fontColor": "white"
+		}
+	},
+	TextFieldStyle: {
+		default: { selection: selection, background: textfield, font: default-font, fontColor: white, cursor: cursor }
+	},
+	CheckBoxStyle: {
+		default: { checkboxOn: check-on, checkboxOff: check-off, font: default-font, fontColor: white }
+	},
+	ListStyle: {
+		default: { fontColorUnselected: white, selection: selection, fontColorSelected: white, font: default-font }
+	},
+	TouchpadStyle: {
+		default: { background: default-pane, knob: default-round-large }
+	},
+	TreeStyle: {
+		default: { minus: tree-minus, plus: tree-plus, selection: default-select-selection }
+	},
+	TextTooltipStyle: {
+		default: {
+			label: { font: default-font, fontColor: white },
+			background: default-pane, wrapWidth: 150
+		}
+	},
+}

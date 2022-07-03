@@ -16,14 +16,14 @@ import com.badlogic.gdx.maps.tiled.tiles.StaticTiledMapTile;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.Utils;
+import org.bigorange.game.ResourceManager;
+import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.RemoveComponent;
-import org.bigorange.game.core.message.MessageType;
+import org.bigorange.game.message.MessageType;
 
-import static org.bigorange.game.core.GameConfig.CATEGORY_PLAYER;
-import static org.bigorange.game.core.GameConfig.CATEGORY_WORLD;
+import static org.bigorange.game.GameConfig.CATEGORY_PLAYER;
+import static org.bigorange.game.GameConfig.CATEGORY_WORLD;
 
 
 /**

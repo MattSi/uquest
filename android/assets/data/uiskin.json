@@ -28,13 +28,36 @@ SliderStyle: {
 ButtonStyle: {
 	default: { down: default-round-down, up: default-round, disabled: default-round },
 	toggle: { parent: default, checked: default-round-down }
+
 },
 ImageButtonStyle:{
 	icon_close:{ parent:default, imageDown: iconCross_brown, imageUp: iconCross_brown}
 }
 TextButtonStyle: {
 	default: { parent: default, font: default-font, fontColor: white, disabledFontColor: gray },
-	toggle: { parent: default, checked: default-round-down, downFontColor: red }
+	toggle: { parent: default, checked: default-round-down, downFontColor: red },
+	huge: {
+		font: "font_32",
+		fontColor: "white"
+	},
+	big: {
+		font: "font_26",
+		fontColor: "white"
+	},
+	"small": {
+		"font": "font_16",
+		"fontColor": "white"
+	},
+
+	"info_frame": {
+		"font": "font_26",
+		"fontColor": "white",
+		"up": "upReleased"
+	},
+	"info": {
+		"font": "font_16",
+		"fontColor": "white"
+	}
 },
 ScrollPaneStyle: {
 	default: { vScroll: default-scroll, hScrollKnob: default-round-large, background: default-rect, hScroll: default-scroll, vScrollKnob: default-round-large }

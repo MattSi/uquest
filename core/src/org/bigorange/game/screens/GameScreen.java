@@ -15,18 +15,16 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.I18NBundle;
-import org.bigorange.game.core.ResourceManager;
-import org.bigorange.game.core.Utils;
-import org.bigorange.game.core.assets.MapAsset;
-import org.bigorange.game.core.assets.MusicAsset;
-import org.bigorange.game.core.dialogue.Choice;
-import org.bigorange.game.core.dialogue.DialogueNode;
-import org.bigorange.game.core.message.MessageType;
-import org.bigorange.game.core.screens.BaseScreen;
+import org.bigorange.game.ResourceManager;
+import org.bigorange.game.Utils;
+import org.bigorange.game.assets.MapAsset;
+import org.bigorange.game.assets.MusicAsset;
+import org.bigorange.game.dialogue.Choice;
+import org.bigorange.game.dialogue.DialogueNode;
+import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerContactSystem;
@@ -67,8 +65,8 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         public static float aspectRatio;
     }
 
-    public GameScreen(TTFSkin skin) {
-        super(skin);
+    public GameScreen(TTFSkin skin, ScreenManager screenManager) {
+        super(skin, screenManager);
 
         final MapManager mapManager = Utils.getMapManager();
         final ResourceManager resourceManager = Utils.getResourceManager();

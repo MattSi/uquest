@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.headless.HeadlessApplication;
 import com.badlogic.gdx.backends.headless.HeadlessApplicationConfiguration;
 import com.badlogic.gdx.graphics.GL20;
-import org.bigorange.game.core.ResourceManager;
+import org.bigorange.game.ResourceManager;
 import org.bigorange.game.input.EKey;
 import org.bigorange.game.map.MapManager;
 import org.junit.runner.notification.RunNotifier;
