@@ -12,8 +12,8 @@ public class DesktopLauncher {
 		config.height = 720;
 		config.width = 1280;
 		//config.fullscreen = true;
-		//Application app = new LwjglApplication(new UndergroundQuest(), config);
-		new LwjglApplication(new UIAdapterExample());
+		Application app = new LwjglApplication(new UndergroundQuest(), config);
+		//new LwjglApplication(new UIAdapterExample());
 		//app.setLogLevel(Application.LOG_DEBUG);
 	}
 }

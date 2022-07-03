@@ -26,7 +26,7 @@ public class ConversationUI extends Window {
 
 
     public ConversationUI(Skin skin) {
-        super("dialog", skin, "solidbackground");
+        super("dialog", skin, "default");
 
         json = new Json();
         graph = new ConversationGraph();
@@ -39,7 +39,7 @@ public class ConversationUI extends Window {
 
         closeButton = new TextButton("X", skin);
 
-        ScrollPane scrollPane = new ScrollPane(listItems, skin, "inventoryPane");
+        ScrollPane scrollPane = new ScrollPane(listItems, skin, "default");
         scrollPane.setOverscroll(false, false);
         scrollPane.setFadeScrollBars(false);
         scrollPane.setScrollingDisabled(true, false);
@@ -56,7 +56,7 @@ public class ConversationUI extends Window {
         this.row();
         this.add(scrollPane).pad(10, 10, 10, 10);
 
-        this.debug();
+        //this.debug();
         this.pack();
 
         //listeners

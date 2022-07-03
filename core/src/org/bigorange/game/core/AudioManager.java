@@ -47,7 +47,7 @@ public class AudioManager implements Disposable {
         currentMusic = music;
         currentMusic.setLooping(true);
         currentMusic.setVolume(currentMusicAsset.getVolume() * volume);
-        currentMusic.play();
+        //currentMusic.play();
     }
 
     @Override

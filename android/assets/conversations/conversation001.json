@@ -34,7 +34,21 @@ associatedChoices: {
                         choicePhrase: Next
 						conversationCommandEvent: NONE
                 }
-        ]
+                {
+                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        sourceId: 1
+                        destinationId: 3
+                        choicePhrase: Next1
+                        conversationCommandEvent: NONE
+                }
+                {
+                        class: org.bigorange.game.core.dialogue.ConversationChoice
+                        sourceId: 1
+                        destinationId: 4
+                        choicePhrase: Next2
+                        conversationCommandEvent: NONE
+                }
+        ],
         2: [
                 {
                         class: org.bigorange.game.core.dialogue.ConversationChoice

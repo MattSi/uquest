@@ -124,7 +124,7 @@ public class UndergroundQuest extends Game {
     private void loadOtherResource(){
         spriteBatch = new SpriteBatch();
         resourceManager.load("i18n/strings_zh_CN", I18NBundle .class);
-        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/dengl.ttf", 16, 20, 26,32);
+        skin = resourceManager.loadSkinSynchronously("hud/hud.json", "hud/simsun.ttc", 16, 20, 26,32);
     }
 
     public MapManager getMapManager() {
