@@ -5,7 +5,9 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 public enum TextureAtlasAssets {
     CHARACTERS("characters/characters.atlas"),
 
-    STATUSUI("skins/statusui.atlas");
+    STATUSUI("skins/statusui.atlas"),
+
+    UISKIN("hud/uiskin.atlas");
 
 
 

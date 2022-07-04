@@ -24,7 +24,9 @@ public class Utils {
         return (UndergroundQuest)app;
     }
     public static InputManager getInputManager(){
-        return (InputManager)((InputMultiplexer)Gdx.input.getInputProcessor()).getProcessors().get(0);
+        final ApplicationListener app = Gdx.app.getApplicationListener();
+
+        return ((UndergroundQuest)app).getInputManager();
     }
 
     public static SpriteBatch getSpriteBatch(){
@@ -49,8 +51,8 @@ public class Utils {
     public static ConversationManager getConversationManager(){
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getConversationManager();
     }
-
     public static ScreenManager getScreenManager(){
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getScreenManager();
     }
+
 }

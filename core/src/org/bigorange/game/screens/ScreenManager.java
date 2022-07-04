@@ -9,6 +9,7 @@ import org.bigorange.game.ui.TTFSkin;
 
 import java.util.EnumMap;
 
+
 /**
  * 屏幕管理器
  */
@@ -45,7 +46,7 @@ public class ScreenManager<S extends BaseScreen> {
         }
     }
 
-    public S getScreenInstance(final EScreenType screenType){
+    public < S extends BaseScreen> S getScreenInstance(final EScreenType screenType){
         BaseScreen targetScreen = screenCache.get(screenType);
         if(targetScreen == null){
             Gdx.app.debug(TAG, "Create new Screen:" + screenType);

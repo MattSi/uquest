@@ -24,6 +24,7 @@ public class UndergroundQuest extends Game {
     private WorldContactManager worldContactManager;
     private ConversationManager conversationManager;
     private ScreenManager screenManager;
+    private InputManager inputManager;
     private SpriteBatch spriteBatch;
     private TTFSkin skin;
 
@@ -43,6 +44,7 @@ public class UndergroundQuest extends Game {
         worldContactManager = new WorldContactManager();
         conversationManager = new ConversationManager(Gdx.files.internal("dialogue/conversations.csv"));
         mapManager = new MapManager();
+        inputManager = new InputManager();
 
 
         Gdx.app.debug(TAG, "Create ==================================================");
@@ -52,14 +54,14 @@ public class UndergroundQuest extends Game {
          */
         spriteBatch = new SpriteBatch();
         resourceManager.load("i18n/strings_zh_CN", I18NBundle .class);
-        skin = resourceManager.loadSkinSynchronously("hud/uiskin.json", "hud/Dengl.ttf", 16, 20, 26,32);
+        skin = resourceManager.loadSkinSynchronously("hud/uiskin.json", "hud/simsun.ttc", 16, 20, 26,32);
 
         /**
          * 3. create screens
          */
         screenManager = new ScreenManager(skin, this);
 
-        Gdx.input.setInputProcessor(new InputMultiplexer(new InputManager()));
+        Gdx.input.setInputProcessor(new InputMultiplexer(inputManager));
        // setScreen(loadingScreen);
         screenManager.setScreenType(EScreenType.LOADING);
     }
@@ -116,5 +118,9 @@ public class UndergroundQuest extends Game {
 
     public ScreenManager getScreenManager() {
         return screenManager;
+    }
+
+    public InputManager getInputManager() {
+        return inputManager;
     }
 }

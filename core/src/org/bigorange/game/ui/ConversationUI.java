@@ -1,8 +1,10 @@
 package org.bigorange.game.ui;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -22,6 +24,8 @@ public class ConversationUI extends Window {
     private ConversationGraph graph;
     private TextButton closeButton;
     private Json json;
+
+
 
 
 
@@ -60,16 +64,22 @@ public class ConversationUI extends Window {
         this.pack();
 
         //listeners
-        listItems.addListener(new ClickListener() {
+        listItems.addListener(new ChangeListener(){
             @Override
-            public void clicked(InputEvent event, float x, float y) {
-                Gdx.app.debug(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-                final ConversationChoice choice = (ConversationChoice) listItems.getSelected();
-                if (choice == null) return;
-                graph.notify(graph, choice.getConversationCommandEvent());
-                populateConversationDialog(choice.getDestinationId());
+            public void changed(ChangeEvent event, Actor actor) {
+                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             }
         });
+//        listItems.addListener(new ClickListener() {
+//            @Override
+//            public void clicked(InputEvent event, float x, float y) {
+//                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
+//                final ConversationChoice choice = (ConversationChoice) listItems.getSelected();
+//                if (choice == null) return;
+//                graph.notify(graph, choice.getConversationCommandEvent());
+//                populateConversationDialog(choice.getDestinationId());
+//            }
+//        });
 
     }
 
@@ -110,4 +120,6 @@ public class ConversationUI extends Window {
         dialogText.setText("");
         listItems.clearItems();
     }
+
+
 }

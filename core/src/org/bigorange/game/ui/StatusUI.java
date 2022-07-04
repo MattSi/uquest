@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 
-public class StatusUI extends Window implements StatusSubject {
+public class StatusUI extends Table implements StatusSubject {
     private Image hpBar;
     private Image mpBar;
     private Image xpBar;
@@ -35,7 +35,7 @@ public class StatusUI extends Window implements StatusSubject {
     private float barHeight = 0;
 
     public StatusUI(Skin skin, TextureAtlas atlas) {
-        super("stats", skin);
+        super(skin);
 
         observers = new Array<>();
 
@@ -68,9 +68,9 @@ public class StatusUI extends Window implements StatusSubject {
         // TODO add buttons
 
         // Align images
-        hpBar.setPosition(3,6);
-        mpBar.setPosition(3,6);
-        xpBar.setPosition(3,6);
+        hpBar.setPosition(0,0);
+        mpBar.setPosition(0,0);
+        xpBar.setPosition(0,0);
 
         //add to widget groups
         group.addActor(bar);
@@ -85,21 +85,21 @@ public class StatusUI extends Window implements StatusSubject {
         defaults().expand().fill();
 
         //account for the title padding
-        this.pad(this.getPadTop()+10, 10, 10,10);
+        this.pad(this.getPadTop(), 0, 0,0);
 
-        this.add(group).size(bar.getWidth(), bar.getHeight()).padRight(10);
+        this.add(group).size(bar.getWidth(), bar.getHeight()).padRight(0);
         this.add(hpLabel);
         this.add(hpValLabel).align(Align.left);
         this.row();
 
-        this.add(group2).size(bar2.getWidth(), bar2.getHeight()).padRight(10);
+        this.add(group2).size(bar2.getWidth(), bar2.getHeight()).padRight(0);
         this.add(mpLabel);
         this.add(mpValLabel).align(Align.left);
         this.row();
 
-        this.add(group3).size(bar3.getWidth(), bar3.getHeight()).padRight(10);
+        this.add(group3).size(bar3.getWidth(), bar3.getHeight()).padRight(0);
         this.add(xpLabel);
-        this.add(xpValLabel).align(Align.left).padRight(20);
+        this.add(xpValLabel).align(Align.left).padRight(0);
         this.row();
 
         // this.debug();

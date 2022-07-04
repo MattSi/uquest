@@ -5,6 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 public enum MapAsset {
     LEVEL1("map/battle1.tmx"),
     LEVEL2("map/battle2.tmx"),
+    ROOM("map/room.tmx"),
     INTRO("map/intro.tmx");
 
     public static final Class klass = TiledMap.class;
