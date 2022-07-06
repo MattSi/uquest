@@ -1,9 +1,11 @@
-package org.bigorange.game;
+package org.bigorange.game.audio;
 
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.Disposable;
+import org.bigorange.game.ResourceManager;
+import org.bigorange.game.Utils;
 import org.bigorange.game.assets.MusicAsset;
 import org.bigorange.game.assets.SoundAsset;
 

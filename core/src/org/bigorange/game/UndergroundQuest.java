@@ -8,6 +8,7 @@ import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
+import org.bigorange.game.audio.AudioManager;
 import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;

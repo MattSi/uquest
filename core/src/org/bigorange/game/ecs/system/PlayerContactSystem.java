@@ -1,5 +1,6 @@
 package org.bigorange.game.ecs.system;
 
+import com.badlogic.ashley.core.Engine;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.EntitySystem;
 import com.badlogic.gdx.ai.msg.MessageManager;
@@ -15,7 +16,9 @@ import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 
 
-public class PlayerContactSystem extends EntitySystem implements WorldContactManager.WorldContactListener, TelegramProvider {
+public class PlayerContactSystem extends EntitySystem implements
+        WorldContactManager.WorldContactListener,
+        TelegramProvider {
     public static final String TAG = PlayerContactSystem.class.getSimpleName();
     private final Array<PlayerContactListener> listeners;
 
@@ -23,18 +26,18 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     public PlayerContactSystem(){
         Utils.getWorldContactManager().addWorldContactListener(this);
         listeners = new Array<>();
-        MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_LEAVE_NPC);
+        MessageManager.getInstance().addProvider(this, MessageType.PLAYER_AWAY_FROM_NPC);
     }
+
 
     public void addPlayerContactListener(final PlayerContactListener listener){
         listeners.add(listener);
     }
 
     @Override
-    public void beginContact(Entity player, Entity gameObject, boolean isSensor) {
+    public void beginContact(Entity player, Entity gameObject, boolean isPlayerSensor, boolean isGameObjSensor) {
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(player);
-        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
         final SteeringComponent steeringCmp = ECSEngine.steerCmpMapper.get(gameObject);
         final SteeringLocationComponent stLocationCmp = ECSEngine.stLocationCmpMapper.get(player);
         final InteractComponent interactCmp = ECSEngine.interactCmpMapper.get(player);
@@ -47,8 +50,8 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 wallInteract(playerCmp, gameObjCmp);
             }
             case ENEMY -> {
-                if (isSensor) {
-                    enemyCmp.findPlayer = true;
+                if (isGameObjSensor) {
+                    gameObjCmp.findPlayer = true;
                 }
                 if(steeringCmp.steeringBehavior == null){
                     final Arrive<Vector2> arriveSB = new Arrive<Vector2>(steeringCmp, stLocationCmp)
@@ -61,8 +64,8 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
                 }
             }
             case NPC -> {
-                if(isSensor){
-                    enemyCmp.findPlayer = true;
+                if(isGameObjSensor){
+                    gameObjCmp.findPlayer = true;
                     interactCmp.addInRangeEntity(gameObject);
                 }
             }
@@ -70,18 +73,17 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
     }
 
     @Override
-    public void endContact(Entity player, Entity gameObject, boolean isSensor) {
+    public void endContact(Entity player, Entity gameObject, boolean isPlayerSensor, boolean isGameObjSensor) {
         final GameObjectComponent gameObjCmp = ECSEngine.gameObjCmpMapper.get(gameObject);
-        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(gameObject);
         final InteractComponent interactCmp = ECSEngine.interactCmpMapper.get(player);
 
 
         switch (gameObjCmp.type) {
             case ENEMY, NPC -> {
-                if (isSensor) {
-                    enemyCmp.findPlayer = false;
+                if (isGameObjSensor) {
+                    gameObjCmp.findPlayer = false;
                     interactCmp.removeInRangeEntity(gameObject);
-                    MessageManager.getInstance().dispatchMessage(MessageType.MSG_PLAYER_LEAVE_NPC);
+                    MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_AWAY_FROM_NPC);
                 }
             }
         }
@@ -103,4 +105,10 @@ public class PlayerContactSystem extends EntitySystem implements WorldContactMan
         void wallContact();
     }
 
+    @Override
+    public void removedFromEngine(Engine engine) {
+        super.removedFromEngine(engine);
+        listeners.clear();
+        MessageManager.getInstance().clearProviders(MessageType.PLAYER_AWAY_FROM_NPC);
+    }
 }

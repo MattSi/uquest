@@ -120,10 +120,10 @@ public class ECSEngine extends EntityEngine {
     public void addNpc(Vector2 spawnLocation, String npcId){
         final Entity npc = createEntity();
 
-        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
-        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
-        enemyCmp.maxSpeed = 2f;
-        npc.add(enemyCmp);
+//        final EnemyComponent enemyCmp = createComponent(GameObjectComponent.class);
+//        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+//        enemyCmp.maxSpeed = 2f;
+//        npc.add(enemyCmp);
 
         final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
         final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
@@ -140,8 +140,11 @@ public class ECSEngine extends EntityEngine {
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
 
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
+
         gameObjCmp.id = MathUtils.random(10000,99999);
         gameObjCmp.type = GameObjectComponent.GameObjectType.NPC;
+        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
+        gameObjCmp.birthTime = System.nanoTime();
 
         final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
         actionCmp.type = ActionType.TALK;
@@ -205,10 +208,10 @@ public class ECSEngine extends EntityEngine {
     public void addEnemy(Vector2 spawnLocation, String enemyId) {
         final Entity enemy = createEntity();
 
-        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
-        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
-        enemyCmp.maxSpeed = 2f;
-        enemy.add(enemyCmp);
+//        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
+//        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+//        enemyCmp.maxSpeed = 2f;
+//        enemy.add(enemyCmp);
 
         final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
         final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
@@ -227,6 +230,7 @@ public class ECSEngine extends EntityEngine {
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.id = MathUtils.random(10000,99999);
         gameObjCmp.type = GameObjectComponent.GameObjectType.ENEMY;
+        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
 
 
         enemy.add(ani4dCmp);
@@ -325,7 +329,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = true;
         fixtureDef.shape=circleShape;
         fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-       // fixtureDef.filter.maskBits =
+        // fixtureDef.filter.maskBits =
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
         playerCmp.maxSpeed = 2f;
@@ -391,6 +395,9 @@ public class ECSEngine extends EntityEngine {
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.id = gameObj.getId();
         gameObjCmp.type = gameObj.getType();
+        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
+        gameObjCmp.isMapGenerated=true;
+        gameObjCmp.birthTime=System.nanoTime();
         gameObjEntity.add(gameObjCmp);
 
         final MapGeneratedComponent mapCmp = createComponent(MapGeneratedComponent.class);
@@ -413,11 +420,11 @@ public class ECSEngine extends EntityEngine {
             actionCmp.type = ActionType.TALK;
             gameObjEntity.add(actionCmp);
         }
-
-        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
-        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
-        enemyCmp.maxSpeed = 2f;
-        gameObjEntity.add(enemyCmp);
+//
+//        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
+//        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
+//        enemyCmp.maxSpeed = 2f;
+//        gameObjEntity.add(enemyCmp);
 
         addEntity(gameObjEntity);
     }

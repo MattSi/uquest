@@ -2,8 +2,8 @@ package org.bigorange.game;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import org.bigorange.game.audio.AudioManager;
 import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;

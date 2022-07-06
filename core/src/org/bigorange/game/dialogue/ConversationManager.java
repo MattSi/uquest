@@ -28,7 +28,7 @@ public class ConversationManager implements Telegraph, TelegramProvider {
         currentDialogueNode = null;
         dialogueTrees = new IntMap<>();
         MessageManager.getInstance().addProvider(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
-        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
+        MessageManager.getInstance().addListener(this, MessageType.PLAYER_AWAY_FROM_NPC);
         MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
 
         buildConversationTrees(convHandler);
@@ -117,7 +117,7 @@ public class ConversationManager implements Telegraph, TelegramProvider {
     @Override
     public boolean handleMessage(Telegram msg) {
         switch (msg.message){
-            case MessageType.MSG_PLAYER_LEAVE_NPC -> {
+            case MessageType.PLAYER_AWAY_FROM_NPC -> {
                 currentDialogueNode = null;
                 currentConversationId = -1;
                 return true;

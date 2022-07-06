@@ -77,7 +77,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                                 SpeedComponent.class).
                         exclude(RemoveComponent.class).get());
 
-        this.enemiesForRender = entityEngine.getEntitiesFor(Family.all(EnemyComponent.class,
+        this.enemiesForRender = entityEngine.getEntitiesFor(Family.all(
                 AnimationComponent.class,
                 Animation4DirectionsComponent.class,
                 SpeedComponent.class,
@@ -167,7 +167,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private void renderEnemy(Entity entity, float alpha) {
         final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
-        final EnemyComponent enemyCmp = ECSEngine.enemyCmpMapper.get(entity);
+        final GameObjectComponent gameObjectCmp = ECSEngine.gameObjCmpMapper.get(entity);
 
         if (aniCmp.animation == null) {
             return;
@@ -182,7 +182,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 position.y - (aniCmp.height * 0.5f),
                 aniCmp.width, aniCmp.height);
 
-        if (enemyCmp.findPlayer) {
+        if (gameObjectCmp.findPlayer) {
             final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
             keyFrame.setColor(Color.RED);
             keyFrame.draw(spriteBatch);

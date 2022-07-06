@@ -17,8 +17,7 @@ import static org.bigorange.game.GameConfig.UNIT_SCALE;
 public class EnemyAnimationSystem extends IteratingSystem {
 
     public EnemyAnimationSystem() {
-        super(Family.all(EnemyComponent.class,
-                AnimationComponent.class,
+        super(Family.all(AnimationComponent.class,
                 Animation4DirectionsComponent.class,
                 Box2DComponent.class,
                 SpeedComponent.class

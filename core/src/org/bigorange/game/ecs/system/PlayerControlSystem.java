@@ -19,7 +19,11 @@ import org.bigorange.game.message.MessageType;
 
 import static org.bigorange.game.input.EKey.*;
 
-public class PlayerControlSystem extends IteratingSystem implements KeyInputListener, MouseInputListener, TelegramProvider, Telegraph {
+public class PlayerControlSystem extends IteratingSystem implements
+        KeyInputListener,
+        MouseInputListener,
+        TelegramProvider,
+        Telegraph {
     public static final String TAG = PlayerControlSystem.class.getSimpleName();
     private boolean directionChange;
     private int xFactor;

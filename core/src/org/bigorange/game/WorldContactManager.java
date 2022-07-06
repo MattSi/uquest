@@ -13,7 +13,8 @@ public class WorldContactManager implements ContactListener {
     private final Array<WorldContactListener> listeners;
     private Entity player;
     private Entity gameObj;
-    private boolean isSensor;
+    private boolean isPlayerSensor;
+    private boolean isGameObjSensor;
 
     public WorldContactManager(){
         playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
@@ -21,7 +22,8 @@ public class WorldContactManager implements ContactListener {
         listeners = new Array<>();
         player = null;
         gameObj = null;
-        isSensor = false;
+        isPlayerSensor = false;
+        isGameObjSensor = false;
 
     }
     public void addWorldContactListener(WorldContactListener listener){
@@ -33,7 +35,7 @@ public class WorldContactManager implements ContactListener {
     private boolean prepareContactData(final Contact contact) {
         player = null;
         gameObj = null;
-        isSensor = false;
+        isPlayerSensor = false;
 
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
@@ -56,12 +58,12 @@ public class WorldContactManager implements ContactListener {
         if (gameObjectCmpMapper.get((Entity) userDataA) != null) {
             gameObj = (Entity) userDataA;
             if (fixtureA.isSensor()) {
-                isSensor = true;
+                isGameObjSensor = true;
             }
         } else if (gameObjectCmpMapper.get((Entity) userDataB) != null) {
             gameObj = (Entity) userDataB;
             if (fixtureB.isSensor()) {
-                isSensor = true;
+                isPlayerSensor = true;
             }
         } else {
             return false;
@@ -76,7 +78,7 @@ public class WorldContactManager implements ContactListener {
             return;
 
         for (final WorldContactListener listener : listeners) {
-            listener.beginContact(player, gameObj, isSensor);
+            listener.beginContact(player, gameObj, isPlayerSensor, isGameObjSensor);
         }
 
     }
@@ -87,7 +89,7 @@ public class WorldContactManager implements ContactListener {
             return;
 
         for (final WorldContactListener listener : listeners) {
-            listener.endContact(player, gameObj, isSensor);
+            listener.endContact(player, gameObj, isPlayerSensor, isGameObjSensor);
         }
 
     }
@@ -103,8 +105,10 @@ public class WorldContactManager implements ContactListener {
     }
 
     public interface WorldContactListener {
-        void beginContact(final Entity player, final Entity gameObject, boolean isSensor);
+        void beginContact(final Entity player, final Entity gameObject,
+                          boolean isPlayerSensor, boolean isGameObjSensor);
 
-        void endContact(final Entity player, final Entity gameObject, boolean isSensor);
+        void endContact(final Entity player, final Entity gameObject,
+                        boolean isPlayerSensor, boolean isGameObjSensor);
     }
 }

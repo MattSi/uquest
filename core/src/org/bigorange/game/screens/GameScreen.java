@@ -230,7 +230,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         // Add Message listener
         MessageManager.getInstance().addListener(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
-        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_LEAVE_NPC);
+        MessageManager.getInstance().addListener(this, MessageType.PLAYER_AWAY_FROM_NPC);
 
         final ResourceManager resourceManager = Utils.getResourceManager();
         i18NBundle = resourceManager.get("i18n/strings_zh_CN", I18NBundle.class);
@@ -258,7 +258,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
                 }
 
             }
-            case MessageType.MSG_PLAYER_LEAVE_NPC -> {
+            case MessageType.PLAYER_AWAY_FROM_NPC -> {
                 showInfoMessage("", false);
             }
         }
