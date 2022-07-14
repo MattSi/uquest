@@ -37,7 +37,7 @@ public class PlayerControlSystem extends IteratingSystem implements
     private boolean actionPressed = false;
 
     public PlayerControlSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
-        super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent.class).get());
+        super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent2.class).get());
         this.ecsEngine = ecsEngine;
         this.camera = camera;
         directionChange = false;
@@ -54,21 +54,20 @@ public class PlayerControlSystem extends IteratingSystem implements
     protected void processEntity(Entity entity, float deltaTime) {
         final PlayerComponent playerCmp = EntityEngine.playerCmpMapper.get(entity);
         final Box2DComponent b2dCmp = EntityEngine.b2dCmpMapper.get(entity);
-        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
-        final SpeedComponent velocityCmp = EntityEngine.speedCmpMapper.get(entity);
+        final SpeedComponent speedCmp = EntityEngine.speedCmpMapper.get(entity);
         final InteractComponent interactCmp = EntityEngine.interactCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
 
         if (directionChange) {
             directionChange = false;
-            velocityCmp.velocity.x = xFactor * playerCmp.maxSpeed;
-            velocityCmp.velocity.y = yFactor * playerCmp.maxSpeed;
+            speedCmp.velocity.x = xFactor * speedCmp.maxSpeed;
+            speedCmp.velocity.y = yFactor * speedCmp.maxSpeed;
         }
 
         final Vector2 worldCenter = b2dCmp.body.getWorldCenter();
         b2dCmp.body.applyLinearImpulse(
-                (velocityCmp.velocity.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
-                (velocityCmp.velocity.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
+                (speedCmp.velocity.x - b2dCmp.body.getLinearVelocity().x) * b2dCmp.body.getMass(),
+                (speedCmp.velocity.y - b2dCmp.body.getLinearVelocity().y) * b2dCmp.body.getMass(),
                 worldCenter.x, worldCenter.y, true);
 
         if (isShooting) {

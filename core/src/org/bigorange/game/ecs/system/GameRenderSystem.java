@@ -5,6 +5,7 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -25,6 +26,7 @@ import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.RenderSystem;
+import org.bigorange.game.gameobjs.AnimationType;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapListener;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -65,7 +67,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                         exclude(RemoveComponent.class).get());
 
         this.charactersForRender = entityEngine.
-                getEntitiesFor(Family.all(AnimationComponent.class,
+                getEntitiesFor(Family.all(AnimationComponent2.class,
                                 Box2DComponent.class,
                                 PlayerComponent.class,
                                 SpeedComponent.class).
@@ -127,7 +129,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         }
 
         for (final Entity entity : charactersForRender) {
-            renderEntity(entity, alpha);
+            renderPlayer(entity, alpha);
         }
 
         //spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
@@ -135,6 +137,36 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
         b2dRenderer.render(world, gameCamera.combined);
         //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
+    }
+
+    private void renderPlayer(Entity entity, float alpha){
+        final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+
+        /**
+         * 1. find current animation type
+         * 2. load animation key frame.
+         */
+        final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
+        final Sprite keyFrame = currentAnimation.getKeyFrame(aniCmp.aniTimer, true);
+        final Vector2 position = b2dCmp.body.getPosition();
+
+
+        if(playerCmp != null){
+            shapeDrawer.filledEllipse(position.x, position.y - aniCmp.currAnimationWidth/2,
+                    aniCmp.currAnimationWidth /4, aniCmp.currAnimationHeight/6,0f,
+                    Color.BLACK, Color.GRAY);
+        }
+
+
+        keyFrame.setOriginCenter();
+        keyFrame.setBounds(
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.currAnimationWidth* 0.5f),
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.currAnimationHeight* 0.5f),
+                aniCmp.currAnimationWidth, aniCmp.currAnimationHeight);
+
+        keyFrame.draw(spriteBatch);
     }
 
     private void renderEntity(Entity entity, float alpha) {

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.4" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="41">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="32" tileheight="32" infinite="0" nextlayerid="12" nextobjectid="42">
  <tileset firstgid="1" name="ProjectUtumno_full" tilewidth="32" tileheight="32" tilecount="6080" columns="64">
   <image source="ProjectUtumno_full.png" width="2048" height="3040"/>
   <tile id="0">
@@ -146,6 +146,9 @@
   <object id="34" gid="10055" x="992" y="1372" width="87" height="79"/>
   <object id="36" gid="7812" x="489" y="1318" width="24" height="19"/>
   <object id="37" gid="8539" x="530" y="1365" width="22" height="20"/>
+  <object id="41" x="484" y="1158.67" width="45.3333" height="41.3333">
+   <ellipse/>
+  </object>
  </objectgroup>
  <objectgroup id="9" name="Spawn">
   <object id="10" x="566.667" y="1850.67" width="44" height="22.6667">

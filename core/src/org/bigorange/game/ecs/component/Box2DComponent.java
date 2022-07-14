@@ -10,13 +10,10 @@ public class Box2DComponent implements Component, Pool.Poolable {
     public final Vector2 positionBeforeUpdate = new Vector2();
     public float width;
     public float height;
-    public float x, y;
-
 
     @Override
     public void reset() {
         width = height = 0f;
-        x = y = 0f;
         positionBeforeUpdate.set(0, 0);
 
         if (body != null) {

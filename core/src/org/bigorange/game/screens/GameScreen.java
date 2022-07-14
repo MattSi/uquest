@@ -24,9 +24,10 @@ import org.bigorange.game.assets.MapAsset;
 import org.bigorange.game.assets.MusicAsset;
 import org.bigorange.game.dialogue.Choice;
 import org.bigorange.game.dialogue.DialogueNode;
+import org.bigorange.game.gameobjs.GameObjectConfig;
+import org.bigorange.game.gameobjs.GameObjectFactory;
 import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.system.PlayerAnimationSystem;
 import org.bigorange.game.ecs.system.PlayerContactSystem;
 import org.bigorange.game.ecs.system.PlayerControlSystem;
 import org.bigorange.game.map.Map;
@@ -77,6 +78,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         world.setContactListener(Utils.getWorldContactManager());
         world.setContinuousPhysics(true);
 
+
         // Camera setup
         setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
@@ -85,6 +87,12 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         hudCamera = new OrthographicCamera();
         hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
 
+
+        GameObjectFactory gof = GameObjectFactory.getInstance();
+        gof.setWorldContactListener(Utils.getWorldContactManager());
+        GameObjectConfig playConfig = gof.getGameObjectConfig(GameObjectFactory.GameObjectName.PLAYER);
+
+        Gdx.app.log(TAG, playConfig.toString());
 
         // TODO, init Box2D light system
 
@@ -97,11 +105,11 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         final Map currentMap = mapManager.getCurrentMap();
         final Array<Vector2> playerStartLocations = currentMap.getPlayerStartLocations();
-        this.ecsEngine.addPlayer(playerStartLocations.get(0));
+        this.ecsEngine.addPlayer2(playerStartLocations.get(0));
         //setCursor();
         addEnemies();
         addNpcs();
-        addUI();
+        //addUI();
     }
 
     @Override
@@ -111,7 +119,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
         Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
         Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
-        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
+       // Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
         Utils.getAudioManager().playMusic(MusicAsset.TALKING);
     }
 
