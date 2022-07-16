@@ -13,7 +13,7 @@ import java.util.EnumMap;
  * 动画组件，同之前的区别在于，将动画的类型也包含在内，减轻System的负担
  */
 public class AnimationComponent2 implements Component, Pool.Poolable {
-    public EnumMap<AnimationType, Animation<Sprite>> animations;
+    public EnumMap<AnimationType, AnimationPack<Sprite>> animations;
     public AnimationType aniType;
     public float aniTimer;
     public int stopFrameIndex;
@@ -32,5 +32,21 @@ public class AnimationComponent2 implements Component, Pool.Poolable {
 
     }
 
+    public static class AnimationPack<T> {
+        public int width;
+        public int height;
+        private Animation<T> animation;
 
+        public AnimationPack() {
+        }
+
+
+        public Animation<T> getAnimation() {
+            return animation;
+        }
+
+        public void setAnimation(Animation<T> animation) {
+            this.animation = animation;
+        }
+    }
 }

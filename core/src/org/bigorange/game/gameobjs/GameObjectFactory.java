@@ -25,6 +25,7 @@ public class GameObjectFactory {
     private final FixtureDef fixtureDef;
 
     public static String PLAYER_CONFIG = "scripts/player.json";
+    public static String DOOR_KEEPER_CONFIG = "scripts/door_keeper.json";
     private GameObjectFactory(){
         world = new World(new Vector2(0,0), true);
         world.setContinuousPhysics(true);
@@ -33,10 +34,12 @@ public class GameObjectFactory {
         gameObjects = new ObjectMap<>();
 
         gameObjects.put(GameObjectName.PLAYER.toString(), loadGameObjectConfigByPath(PLAYER_CONFIG));
+        gameObjects.put(GameObjectName.DOOR_KEEPER.toString(), loadGameObjectConfigByPath(DOOR_KEEPER_CONFIG));
     }
 
     public static enum GameObjectName {
         PLAYER,
+        DOOR_KEEPER,
         FIRE
     }
 

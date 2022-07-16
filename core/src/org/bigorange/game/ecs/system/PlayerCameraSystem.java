@@ -15,7 +15,7 @@ public class PlayerCameraSystem extends IteratingSystem {
 
 
     public PlayerCameraSystem(final OrthographicCamera gameCamera){
-        super(Family.all(Box2DComponent.class).get());
+        super(Family.all(Box2DComponent.class, PlayerComponent.class).get());
 
         this.gameCamera = gameCamera;
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");

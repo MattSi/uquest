@@ -4,10 +4,11 @@ import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.utils.Pool;
 
 /**
- * 标识为Player，并无其他用途
+ * 标识为NPC，并无其他属性用途
  */
-public class PlayerComponent implements Pool.Poolable, Component {
+public class NpcComponent implements Component, Pool.Poolable {
     @Override
     public void reset() {
+
     }
 }

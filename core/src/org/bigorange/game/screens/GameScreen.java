@@ -168,7 +168,8 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         Map currentMap = mapManager.getCurrentMap();
 
         for (Vector2 location : currentMap.getNpcStartLocations()) {
-            ecsEngine.addNpc(location, "Dog 01-1");
+            //ecsEngine.addNpc(location, "Dog 01-1");
+            ecsEngine.addNpc2(location,"", GameObjectFactory.GameObjectName.DOOR_KEEPER);
         }
     }
 

@@ -50,8 +50,8 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     private final ImmutableArray<Entity> gameObjectsForRender;
     private final ImmutableArray<Entity> charactersForRender;
     private final ImmutableArray<Entity> bulletsForRender;
-
     private final ImmutableArray<Entity> enemiesForRender;
+    private final ImmutableArray<Entity> npcsForRender;
 
     private final Box2DDebugRenderer b2dRenderer;
 
@@ -64,7 +64,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                                 GameObjectComponent.class,
                                 MapGeneratedComponent.class,
                                 Box2DComponent.class).
-                        exclude(RemoveComponent.class).get());
+                        exclude(RemoveComponent.class, PlayerComponent.class).get());
 
         this.charactersForRender = entityEngine.
                 getEntitiesFor(Family.all(AnimationComponent2.class,
@@ -84,6 +84,11 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 Animation4DirectionsComponent.class,
                 SpeedComponent.class,
                 Box2DComponent.class).exclude(RemoveComponent.class).get());
+
+        this.npcsForRender = entityEngine.getEntitiesFor(Family.all(
+                NpcComponent.class,
+                AnimationComponent2.class,
+                GameObjectComponent2.class).get());
 
         this.world = world;
         this.gameCamera = camera;
@@ -128,6 +133,10 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             renderEnemy(entity, alpha);
         }
 
+        for (Entity entity : npcsForRender) {
+            renderPlayer(entity, alpha);
+        }
+
         for (final Entity entity : charactersForRender) {
             renderPlayer(entity, alpha);
         }
@@ -148,18 +157,18 @@ public class GameRenderSystem implements RenderSystem, MapListener {
          * 1. find current animation type
          * 2. load animation key frame.
          */
-        final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
-        final Sprite keyFrame = currentAnimation.getKeyFrame(aniCmp.aniTimer, true);
+        //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
+        final AnimationComponent2.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
+        final Sprite keyFrame = currAniPack.getAnimation().getKeyFrame(aniCmp.aniTimer, true);
         final Vector2 position = b2dCmp.body.getPosition();
 
 
-        if(playerCmp != null){
-            shapeDrawer.filledEllipse(position.x, position.y - aniCmp.currAnimationWidth/2,
-                    aniCmp.currAnimationWidth /4, aniCmp.currAnimationHeight/6,0f,
-                    Color.BLACK, Color.GRAY);
-        }
+        shapeDrawer.filledEllipse(position.x, position.y - aniCmp.currAnimationWidth/2,
+                aniCmp.currAnimationWidth /4, aniCmp.currAnimationHeight/6,0f,
+                Color.BLACK, Color.GRAY);
 
 
+        keyFrame.setColor(Color.WHITE);
         keyFrame.setOriginCenter();
         keyFrame.setBounds(
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.currAnimationWidth* 0.5f),

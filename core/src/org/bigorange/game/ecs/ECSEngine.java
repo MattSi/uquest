@@ -14,6 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.bigorange.game.ActionType;
 import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.component.*;
@@ -22,9 +23,7 @@ import org.bigorange.game.gameobjs.AnimationType;
 import org.bigorange.game.gameobjs.GameObjectConfig;
 import org.bigorange.game.gameobjs.GameObjectFactory;
 import org.bigorange.game.map.GameObject;
-import org.bigorange.game.screens.EScreenType;
 import org.bigorange.game.screens.ScreenManager;
-import org.bigorange.game.ui.PlayerHUD;
 
 import java.util.EnumMap;
 
@@ -50,7 +49,6 @@ public class ECSEngine extends EntityEngine {
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
         final ScreenManager screenManager = Utils.getScreenManager();
 
-       // addSystem(new PlayerAnimationSystem(gameCamera));
         addSystem(new PlayerCameraSystem(gameCamera));
         addSystem(new PlayerControlSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
@@ -124,6 +122,79 @@ public class ECSEngine extends EntityEngine {
         return keyFrames;
     }
 
+
+    public void addNpc2(Vector2 spawnLocation, String npcId, GameObjectFactory.GameObjectName npcName){
+        GameObjectFactory gof = GameObjectFactory.getInstance();
+        GameObjectConfig cfg = gof.getGameObjectConfig(npcName);
+
+        final Entity npc = createEntity();
+
+        // 添加基础Component
+        GameObjectComponent2 goCmp2 = createBasicComponent(cfg,spawnLocation);
+        npc.add(goCmp2);
+
+        // 添加动画Component
+        AnimationComponent2 aniCmp2 = createAnimationComponent(cfg);
+        npc.add(aniCmp2);
+
+
+        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
+        npc.add(speedCmp);
+
+        final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
+        actionCmp.type = ActionType.TALK;
+        npc.add(actionCmp);
+
+
+        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
+        b2dCmp.height = 0.2f;
+        b2dCmp.width = 0.2f;
+
+        // body
+        bodyDef.gravityScale = 0;
+        bodyDef.position.set(spawnLocation);
+        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.fixedRotation = true;
+        bodyDef.angle = 0;
+        bodyDef.linearVelocity.set(0, 0);
+
+        //bodyDef.linearVelocity.set(2,1);
+        b2dCmp.positionBeforeUpdate.set(spawnLocation);
+        b2dCmp.body = world.createBody(bodyDef);
+        b2dCmp.body.setUserData(npc);
+
+        // fixture
+        final PolygonShape shape = new PolygonShape();
+        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
+
+        fixtureDef.isSensor = false;
+        fixtureDef.shape = shape;
+        fixtureDef.density = 1f;
+        fixtureDef.friction = 0.8f;
+        fixtureDef.restitution = 0f;
+        fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
+        fixtureDef.filter.maskBits = MASK_PLAYER;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        shape.dispose();
+
+
+        // create sensor
+        final CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(2f);
+        fixtureDef.isSensor = true;
+        fixtureDef.shape = circleShape;
+        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
+        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
+
+        b2dCmp.body.createFixture(fixtureDef);
+        circleShape.dispose();
+
+        npc.add(b2dCmp);
+        npc.add(createComponent(NpcComponent.class));
+
+        addEntity(npc);
+    }
 
     public void addNpc(Vector2 spawnLocation, String npcId){
         final Entity npc = createEntity();
@@ -306,51 +377,17 @@ public class ECSEngine extends EntityEngine {
 
     public void addPlayer2(Vector2 spawnLocation) {
         GameObjectFactory gof = GameObjectFactory.getInstance();
-        GameObjectConfig playerObj = gof.getGameObjectConfig(GameObjectFactory.GameObjectName.PLAYER);
+        GameObjectConfig cfg = gof.getGameObjectConfig(GameObjectFactory.GameObjectName.PLAYER);
 
         final Entity player = createEntity();
 
         // 添加基础Component
-        GameObjectComponent2 goCmp2 = createComponent(GameObjectComponent2.class);
-        goCmp2.gameObjId = playerObj.getGameObjId();
-        goCmp2.isMapGenerated = false;
-        goCmp2.state = playerObj.getState();
-        goCmp2.birthTime = System.nanoTime();
-        goCmp2.spawnLocation = spawnLocation;
-        goCmp2.direction = playerObj.getDirection();
-        player.add(goCmp2);
+        final GameObjectComponent2 basicCmp = createBasicComponent(cfg, spawnLocation);
+        player.add(basicCmp);
 
         // 添加动画Component
-        AnimationComponent2 aniCmp2 = createComponent(AnimationComponent2.class);
-        Array<GameObjectConfig.AnimationConfig> animations = playerObj.getAnimationConfig();
-        if (animations != null && animations.size > 0) {
-            aniCmp2.animations = new EnumMap<AnimationType, Animation<Sprite>>
-                    (AnimationType.class);
-            aniCmp2.aniType = AnimationType.IDLE;
-            aniCmp2.aniTimer = 0f;
-            for (GameObjectConfig.AnimationConfig animationCfg : animations) {
-                /**
-                 * 1. get atlasRegion
-                 * 2. get gridPoints to divide.
-                 */
-                String atlasRegionName = animationCfg.getAtlasRegion();
-                AnimationType animationType = animationCfg.getAnimationType();
-                Array<GridPoint2> points = animationCfg.getGridPoints();
-                TextureAtlas.AtlasRegion region = Utils.getResourceManager().get("characters/characters.atlas", TextureAtlas.class).
-                        findRegion(atlasRegionName);
-                TextureRegion[][] split = region.split(animationCfg.getTileWidth(), animationCfg.getTileHeight());
-                Sprite[] keyFrames = new Sprite[points.size];
-                for (int i = 0; i < points.size; i++) {
-                    keyFrames[i] = new Sprite(split[points.get(i).x][points.get(i).y]);
-                }
-                Animation<Sprite> animation = new Animation<>(animationCfg.getFrameDuration(), keyFrames);
-                animation.setPlayMode(Animation.PlayMode.LOOP);
-                aniCmp2.animations.put(animationType, animation);
-                aniCmp2.stopFrameIndex = animationCfg.getStopFrameIndex();
-            }
-        }
-        player.add(aniCmp2);
-
+        final AnimationComponent2 animationCmp = createAnimationComponent(cfg);
+        player.add(animationCmp);
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.height = 0.2f;
@@ -402,61 +439,6 @@ public class ECSEngine extends EntityEngine {
 
         addEntity(player);
     }
-    public void addPlayer(Vector2 spawnLocation) {
-        final Entity player = createEntity();
-
-        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.height = 0.2f;
-        b2dCmp.width = 0.2f;
-        // body
-        bodyDef.gravityScale = 0;
-        bodyDef.position.set(spawnLocation.x, spawnLocation.y);
-        b2dCmp.positionBeforeUpdate.set(bodyDef.position);
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearVelocity.set(1, 2);
-        b2dCmp.body = world.createBody(bodyDef);
-        b2dCmp.body.setUserData(player);
-
-
-        // fixture
-        final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
-        fixtureDef.isSensor = false;
-        fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = CATEGORY_PLAYER;
-        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_SENSOR ;
-
-        b2dCmp.body.createFixture(fixtureDef);
-        shape.dispose();
-        player.add(b2dCmp);
-
-        final CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(5f);
-        fixtureDef.isSensor = true;
-        fixtureDef.shape=circleShape;
-        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        // fixtureDef.filter.maskBits =
-
-        final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
-       // playerCmp.maxSpeed = 2f;
-
-        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
-        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
-        final SteeringLocationComponent stLocationCmp = createComponent(SteeringLocationComponent.class);
-        stLocationCmp.body = b2dCmp.body;
-
-        final InteractComponent interactCmp = createComponent(InteractComponent.class);
-
-        player.add(playerCmp);
-        player.add(aniCmp);
-        player.add(speedCmp);
-        player.add(stLocationCmp);
-        player.add(interactCmp);
-
-
-        addEntity(player);
-    }
-
 
     /**
      * 添加地图对象
@@ -537,5 +519,70 @@ public class ECSEngine extends EntityEngine {
 
     public ImmutableArray<Entity> getGameObjEntities() {
         return gameObjEntities;
+    }
+
+    /**
+     * Create Basic GameObject Component
+     * @param cfg
+     * @param spawnLocation
+     * @return
+     */
+    private GameObjectComponent2 createBasicComponent(GameObjectConfig cfg, Vector2 spawnLocation){
+        if(cfg == null){
+            throw new GdxRuntimeException("Cannot create Basic Component, because GameObjectConfig is null");
+        }
+        final GameObjectComponent2 component = createComponent(GameObjectComponent2.class);
+        component.gameObjId = cfg.getGameObjId();
+        component.isMapGenerated = false;
+        component.state = cfg.getState();
+        component.birthTime = System.nanoTime();
+        component.spawnLocation = spawnLocation;
+        component.direction = cfg.getDirection();
+        return component;
+    }
+
+    /**
+     * Create Animation component
+     * @param cfg
+     * @return
+     */
+    private AnimationComponent2 createAnimationComponent(GameObjectConfig cfg){
+        if(cfg == null){
+            throw new GdxRuntimeException("Cannot create Basic Component, because GameObjectConfig is null");
+        }
+        final AnimationComponent2 component = createComponent(AnimationComponent2.class);
+        Array<GameObjectConfig.AnimationConfig> animations = cfg.getAnimationConfig();
+        if (animations != null && animations.size > 0) {
+            component.animations = new EnumMap<AnimationType, AnimationComponent2.AnimationPack<Sprite>>
+                    (AnimationType.class);
+            component.aniType = AnimationType.IDLE;
+            component.aniTimer = 0f;
+            for (GameObjectConfig.AnimationConfig animationCfg : animations) {
+                /**
+                 * 1. get atlasRegion
+                 * 2. get gridPoints to divide.
+                 */
+                String atlasRegionName = animationCfg.getAtlasRegion();
+                AnimationType animationType = animationCfg.getAnimationType();
+                Array<GridPoint2> points = animationCfg.getGridPoints();
+                TextureAtlas.AtlasRegion region = Utils.getResourceManager().get("characters/characters.atlas", TextureAtlas.class).
+                        findRegion(atlasRegionName);
+                TextureRegion[][] split = region.split(animationCfg.getTileWidth(), animationCfg.getTileHeight());
+
+                AnimationComponent2.AnimationPack<Sprite> aPack = new AnimationComponent2.AnimationPack<>();
+                Sprite[] keyFrames = new Sprite[points.size];
+                for (int i = 0; i < points.size; i++) {
+                    keyFrames[i] = new Sprite(split[points.get(i).x][points.get(i).y]);
+                }
+                Animation<Sprite> animation = new Animation<>(animationCfg.getFrameDuration(), keyFrames);
+                animation.setPlayMode(Animation.PlayMode.LOOP);
+                aPack.setAnimation(animation);
+                aPack.height = animationCfg.getTileHeight();
+                aPack.width = animationCfg.getTileWidth();
+                component.animations.put(animationType, aPack);
+                component.stopFrameIndex = animationCfg.getStopFrameIndex();
+            }
+        }
+        return component;
     }
 }

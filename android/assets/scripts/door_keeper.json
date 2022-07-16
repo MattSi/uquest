@@ -1,0 +1,35 @@
+{
+gameObjId : DOOR_KEEPER
+state : IDLE
+direction : DOWN
+conversationConfigPath : ""
+questConfigPath : ""
+currentQuestId : ""
+itemTypeId: NONE
+animationConfig: [
+	{
+		frameDuration: 0.25
+		animationType: IDLE
+		atlasRegion: Boss 01
+		tileWidth: 96
+		tileHeight: 96
+		stopFrameIndex: 0
+		gridPoints: [
+			{
+				x: 3
+				y: 0
+			}
+			
+			{
+				x: 3
+				y: 1
+			}
+			{
+			    x: 3
+				y: 2
+			}
+		]
+	}
+
+]
+}	
