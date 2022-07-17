@@ -2,7 +2,7 @@
 gameObjId : DOOR_KEEPER
 state : IDLE
 direction : DOWN
-conversationConfigPath : ""
+conversationConfigPath : "conversations/conversation001.json"
 questConfigPath : ""
 currentQuestId : ""
 itemTypeId: NONE
@@ -30,6 +30,5 @@ animationConfig: [
 			}
 		]
 	}
-
 ]
-}	
+}

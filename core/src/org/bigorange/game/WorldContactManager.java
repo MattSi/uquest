@@ -4,24 +4,25 @@ import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
-import org.bigorange.game.ecs.component.GameObjectComponent;
+import org.bigorange.game.ecs.component.CpuComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
 
 public class WorldContactManager implements ContactListener {
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
-    private final ComponentMapper<GameObjectComponent> gameObjectCmpMapper;
+    private final ComponentMapper<CpuComponent> cpuCmpMapper;
     private final Array<WorldContactListener> listeners;
     private Entity player;
-    private Entity gameObj;
+    private Entity cpuGameObj;
     private boolean isPlayerSensor;
     private boolean isGameObjSensor;
 
     public WorldContactManager(){
         playerCmpMapper = ComponentMapper.getFor(PlayerComponent.class);
-        gameObjectCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
+        cpuCmpMapper = ComponentMapper.getFor(CpuComponent.class);
+
         listeners = new Array<>();
         player = null;
-        gameObj = null;
+        cpuGameObj = null;
         isPlayerSensor = false;
         isGameObjSensor = false;
 
@@ -34,7 +35,7 @@ public class WorldContactManager implements ContactListener {
 
     private boolean prepareContactData(final Contact contact) {
         player = null;
-        gameObj = null;
+        cpuGameObj = null;
         isPlayerSensor = false;
 
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
@@ -49,21 +50,27 @@ public class WorldContactManager implements ContactListener {
 
         if (playerCmpMapper.get((Entity) userDataA) != null) {
             player = (Entity) userDataA;
+            if(fixtureA.isSensor()){
+                isPlayerSensor=true;
+            }
         } else if (playerCmpMapper.get((Entity) userDataB) != null) {
             player = (Entity) userDataB;
+            if(fixtureB.isSensor()){
+                isPlayerSensor=true;
+            }
         } else {
             return false;
         }
 
-        if (gameObjectCmpMapper.get((Entity) userDataA) != null) {
-            gameObj = (Entity) userDataA;
+        if (cpuCmpMapper.get((Entity) userDataA) != null) {
+            cpuGameObj = (Entity) userDataA;
             if (fixtureA.isSensor()) {
                 isGameObjSensor = true;
             }
-        } else if (gameObjectCmpMapper.get((Entity) userDataB) != null) {
-            gameObj = (Entity) userDataB;
+        } else if (cpuCmpMapper.get((Entity) userDataB) != null) {
+            cpuGameObj = (Entity) userDataB;
             if (fixtureB.isSensor()) {
-                isPlayerSensor = true;
+                isGameObjSensor = true;
             }
         } else {
             return false;
@@ -78,7 +85,7 @@ public class WorldContactManager implements ContactListener {
             return;
 
         for (final WorldContactListener listener : listeners) {
-            listener.beginContact(player, gameObj, isPlayerSensor, isGameObjSensor);
+            listener.beginContact(player, cpuGameObj, isPlayerSensor, isGameObjSensor);
         }
 
     }
@@ -89,7 +96,7 @@ public class WorldContactManager implements ContactListener {
             return;
 
         for (final WorldContactListener listener : listeners) {
-            listener.endContact(player, gameObj, isPlayerSensor, isGameObjSensor);
+            listener.endContact(player, cpuGameObj, isPlayerSensor, isGameObjSensor);
         }
 
     }
@@ -105,10 +112,10 @@ public class WorldContactManager implements ContactListener {
     }
 
     public interface WorldContactListener {
-        void beginContact(final Entity player, final Entity gameObject,
+        void beginContact(final Entity player, final Entity cpuGameObj,
                           boolean isPlayerSensor, boolean isGameObjSensor);
 
-        void endContact(final Entity player, final Entity gameObject,
+        void endContact(final Entity player, final Entity cpuGameObj,
                         boolean isPlayerSensor, boolean isGameObjSensor);
     }
 }

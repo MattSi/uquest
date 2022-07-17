@@ -67,7 +67,6 @@ public class ConversationUI extends Window {
         listItems.addListener(new ChangeListener(){
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
             }
         });
 //        listItems.addListener(new ClickListener() {

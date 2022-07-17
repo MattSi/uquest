@@ -55,4 +55,10 @@ public class Utils {
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getScreenManager();
     }
 
+    public static boolean isStrNullOrEmpty(String str){
+        if(str == null || str.isEmpty()){
+            return true;
+        }
+        return false;
+    }
 }

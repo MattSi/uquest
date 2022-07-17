@@ -124,16 +124,16 @@ public class ConversationManager implements Telegraph, TelegramProvider {
             }
 
             case MessageType.MSG_PLAYER_TALK_TO_NPC -> {
-                final DialogueNode node = (DialogueNode)msg.extraInfo;
-                if(node.getConversationId() != currentConversationId){
-                    Gdx.app.error(TAG, "Conversation does not match: [" + node.getConversationId()
-                            + ", " + currentConversationId +"]");
-                    return false;
-                }
-
-                currentDialogueNode = node;
-                final DialogueNode talkNode = talk(node.getConversationId());
-                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_NPC_TALK_TO_PLAYER, talkNode);
+//                final DialogueNode node = (DialogueNode)msg.extraInfo;
+//                if(node.getConversationId() != currentConversationId){
+//                    Gdx.app.error(TAG, "Conversation does not match: [" + node.getConversationId()
+//                            + ", " + currentConversationId +"]");
+//                    return false;
+//                }
+//
+//                currentDialogueNode = node;
+//                final DialogueNode talkNode = talk(node.getConversationId());
+//                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_NPC_TALK_TO_PLAYER, talkNode);
             }
 
         }

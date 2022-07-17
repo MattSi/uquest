@@ -1,4 +1,4 @@
-package org.bigorange.game.ecs.system;
+package org.bigorange.game.recycle;
 
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;

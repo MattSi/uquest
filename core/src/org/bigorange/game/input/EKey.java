@@ -10,7 +10,7 @@ public enum EKey {
     Action(Input.Keys.E),
     Map(Input.Keys.M),
     SELECT(Input.Keys.ENTER, Input.Keys.SPACE),
-    BACK(Input.Keys.ESCAPE);
+    ESCAPE(Input.Keys.ESCAPE);
 
     final int[] keyCode;
 

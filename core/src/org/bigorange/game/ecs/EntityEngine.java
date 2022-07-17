@@ -6,7 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import org.bigorange.game.ecs.component.*;
-import org.bigorange.game.ecs.system.AnimationTimerSystem;
+import org.bigorange.game.recycle.AnimationTimerSystem;
 import org.bigorange.game.ecs.system.RemoveSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
@@ -19,10 +19,13 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     public static ComponentMapper<Box2DComponent> b2dCmpMapper = ComponentMapper.getFor(Box2DComponent.class);
     public static ComponentMapper<BulletComponent> bulletCmpMapper = ComponentMapper.getFor(BulletComponent.class);
     public static ComponentMapper<GameObjectComponent> gameObjCmpMapper = ComponentMapper.getFor(GameObjectComponent.class);
+    public static ComponentMapper<GameObjectComponent2> gameObj2CmpMapper = ComponentMapper.getFor(GameObjectComponent2.class);
+    public static ComponentMapper<CpuComponent> cpuCmpMapper = ComponentMapper.getFor(CpuComponent.class);
     public static ComponentMapper<SpeedComponent> speedCmpMapper = ComponentMapper.getFor(SpeedComponent.class);
     public static ComponentMapper<SteeringComponent> steerCmpMapper = ComponentMapper.getFor(SteeringComponent.class);
     public static ComponentMapper<SteeringLocationComponent> stLocationCmpMapper = ComponentMapper.getFor(SteeringLocationComponent.class);
     public static ComponentMapper<InteractComponent> interactCmpMapper = ComponentMapper.getFor(InteractComponent.class);
+    public static ComponentMapper<ActionableComponent> actionCmpMapper = ComponentMapper.getFor(ActionableComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {

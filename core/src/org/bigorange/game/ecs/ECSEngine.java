@@ -19,11 +19,11 @@ import org.bigorange.game.ActionType;
 import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
-import org.bigorange.game.gameobjs.AnimationType;
-import org.bigorange.game.gameobjs.GameObjectConfig;
-import org.bigorange.game.gameobjs.GameObjectFactory;
+import org.bigorange.game.gameobjs.*;
 import org.bigorange.game.map.GameObject;
+import org.bigorange.game.screens.EScreenType;
 import org.bigorange.game.screens.ScreenManager;
+import org.bigorange.game.ui.PlayerHUD;
 
 import java.util.EnumMap;
 
@@ -48,7 +48,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef = new FixtureDef();
         gameObjEntities = getEntitiesFor(Family.all(GameObjectComponent.class).get());
         final ScreenManager screenManager = Utils.getScreenManager();
-
+        final PlayerHUD playerHUD = (PlayerHUD) screenManager.getScreenInstance(EScreenType.PLAYERHUD);
         addSystem(new PlayerCameraSystem(gameCamera));
         addSystem(new PlayerControlSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
@@ -58,11 +58,11 @@ public class ECSEngine extends EntityEngine {
         addSystem(new InteractSystem());
         addSystem(new TargetLostSystem());
         addSystem(new AnimationTimerSystem2());
-        addSystem(new PlayerAnimationSystem2(gameCamera));
+        addSystem(new AnimationSystem(gameCamera));
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
 
-        //addRenderSystem(new PlayerHUDRenderSystem((PlayerHUD) screenManager.getScreenInstance(EScreenType.PLAYERHUD)));
+        addRenderSystem(new PlayerHUDRenderSystem(playerHUD));
 
     }
 
@@ -137,14 +137,21 @@ public class ECSEngine extends EntityEngine {
         AnimationComponent2 aniCmp2 = createAnimationComponent(cfg);
         npc.add(aniCmp2);
 
+        // 添加NPC的行为
+        if(!Utils.isStrNullOrEmpty(cfg.getConversationConfigPath())){
+            final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
+            actionCmp.type = ActionType.TALK;
+            npc.add(actionCmp);
+        }
 
+        // 添加速度组件
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
         npc.add(speedCmp);
 
-        final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
-        actionCmp.type = ActionType.TALK;
-        npc.add(actionCmp);
-
+        // 添加标识组件
+        final CpuComponent cpuCmp = createComponent(CpuComponent.class);
+        cpuCmp.gameObjectType = GameObjectType.NPC;
+        npc.add(cpuCmp);
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.height = 0.2f;
@@ -178,7 +185,6 @@ public class ECSEngine extends EntityEngine {
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
 
-
         // create sensor
         final CircleShape circleShape = new CircleShape();
         circleShape.setRadius(2f);
@@ -191,95 +197,7 @@ public class ECSEngine extends EntityEngine {
         circleShape.dispose();
 
         npc.add(b2dCmp);
-        npc.add(createComponent(NpcComponent.class));
 
-        addEntity(npc);
-    }
-
-    public void addNpc(Vector2 spawnLocation, String npcId){
-        final Entity npc = createEntity();
-
-//        final EnemyComponent enemyCmp = createComponent(GameObjectComponent.class);
-//        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
-//        enemyCmp.maxSpeed = 2f;
-//        npc.add(enemyCmp);
-
-        final Animation4DirectionsComponent ani4dCmp = createComponent(Animation4DirectionsComponent.class);
-        final TextureAtlas.AtlasRegion atlasRegion = Utils.getResourceManager().get("characters/characters.atlas",
-                TextureAtlas.class).findRegion(npcId);
-        final TextureRegion[][] textureRegions = atlasRegion.split(32, 32);
-        ani4dCmp.aniDown = new Animation<>(0.1f, getKeyFrames(textureRegions[0]), Animation.PlayMode.LOOP);
-        ani4dCmp.aniLeft = new Animation<>(0.1f, getKeyFrames(textureRegions[1]), Animation.PlayMode.LOOP);
-        ani4dCmp.aniRight = new Animation<>(0.1f, getKeyFrames(textureRegions[2]), Animation.PlayMode.LOOP);
-        ani4dCmp.aniUp = new Animation<>(0.1f, getKeyFrames(textureRegions[3]), Animation.PlayMode.LOOP);
-
-        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
-        aniCmp.height = aniCmp.width = 32;
-
-        final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
-
-        final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
-
-        gameObjCmp.id = MathUtils.random(10000,99999);
-        gameObjCmp.type = GameObjectComponent.GameObjectType.NPC;
-        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
-        gameObjCmp.birthTime = System.nanoTime();
-
-        final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
-        actionCmp.type = ActionType.TALK;
-
-        npc.add(ani4dCmp);
-        npc.add(aniCmp);
-        npc.add(speedCmp);
-        npc.add(gameObjCmp);
-        npc.add(actionCmp);
-
-
-        final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
-        b2dCmp.height = 0.2f;
-        b2dCmp.width = 0.2f;
-
-        // body
-        bodyDef.gravityScale = 0;
-        bodyDef.position.set(spawnLocation);
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
-        bodyDef.fixedRotation = true;
-        bodyDef.angle = 0;
-        bodyDef.linearVelocity.set(0, 0);
-
-        //bodyDef.linearVelocity.set(2,1);
-        b2dCmp.positionBeforeUpdate.set(spawnLocation);
-        b2dCmp.body = world.createBody(bodyDef);
-        b2dCmp.body.setUserData(npc);
-
-        // fixture
-        final PolygonShape shape = new PolygonShape();
-        shape.setAsBox(b2dCmp.width * 0.5f, b2dCmp.height * 0.5f);
-
-        fixtureDef.isSensor = false;
-        fixtureDef.shape = shape;
-        fixtureDef.density = 1f;
-        fixtureDef.friction = 0.8f;
-        fixtureDef.restitution = 0f;
-        fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
-        fixtureDef.filter.maskBits = MASK_PLAYER;
-
-        b2dCmp.body.createFixture(fixtureDef);
-        shape.dispose();
-
-
-        // create sensor
-        final CircleShape circleShape = new CircleShape();
-        circleShape.setRadius(2f);
-        fixtureDef.isSensor = true;
-        fixtureDef.shape = circleShape;
-        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
-
-        b2dCmp.body.createFixture(fixtureDef);
-        circleShape.dispose();
-
-        npc.add(b2dCmp);
 
         addEntity(npc);
     }
@@ -308,8 +226,8 @@ public class ECSEngine extends EntityEngine {
 
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.id = MathUtils.random(10000,99999);
-        gameObjCmp.type = GameObjectComponent.GameObjectType.ENEMY;
-        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
+        gameObjCmp.type = GameObjectType.ENEMY;
+        gameObjCmp.state = GameObjectState.IDLED;
 
 
         enemy.add(ani4dCmp);
@@ -397,7 +315,7 @@ public class ECSEngine extends EntityEngine {
         bodyDef.position.set(spawnLocation.x, spawnLocation.y);
         b2dCmp.positionBeforeUpdate.set(bodyDef.position);
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.linearVelocity.set(1, 2);
+        //bodyDef.linearVelocity.set(1, 2);
         b2dCmp.body = world.createBody(bodyDef);
         b2dCmp.body.setUserData(player);
 
@@ -435,7 +353,6 @@ public class ECSEngine extends EntityEngine {
         player.add(playerCmp);
         player.add(stLocationCmp);
         player.add(interactCmp);
-
 
         addEntity(player);
     }
@@ -483,7 +400,7 @@ public class ECSEngine extends EntityEngine {
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
         gameObjCmp.id = gameObj.getId();
         gameObjCmp.type = gameObj.getType();
-        gameObjCmp.state = GameObjectComponent.GameObjectState.IDLED;
+        gameObjCmp.state = GameObjectState.IDLED;
         gameObjCmp.isMapGenerated=true;
         gameObjCmp.birthTime=System.nanoTime();
         gameObjEntity.add(gameObjCmp);
@@ -576,7 +493,7 @@ public class ECSEngine extends EntityEngine {
                 }
                 Animation<Sprite> animation = new Animation<>(animationCfg.getFrameDuration(), keyFrames);
                 animation.setPlayMode(Animation.PlayMode.LOOP);
-                aPack.setAnimation(animation);
+                aPack.animation = animation;
                 aPack.height = animationCfg.getTileHeight();
                 aPack.width = animationCfg.getTileWidth();
                 component.animations.put(animationType, aPack);

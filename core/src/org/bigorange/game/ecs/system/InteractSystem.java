@@ -12,23 +12,26 @@ import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.Utils;
 import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.dialogue.DialogueNode;
+import org.bigorange.game.ecs.component.GameObjectComponent2;
 import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.ActionableComponent;
 import org.bigorange.game.ecs.component.InteractComponent;
 import org.bigorange.game.ecs.component.RemoveComponent;
+import org.bigorange.game.screens.ScreenManager;
+import org.bigorange.game.ui.PlayerHUD;
 
 public class InteractSystem extends IteratingSystem implements TelegramProvider,Telegraph {
     public static final String TAG = InteractSystem.class.getSimpleName();
     private final I18NBundle i18NBundle;
-    private DialogueNode dialogueNode;
+    private GameObjectComponent2 gameObjectComponent;
 
     public InteractSystem() {
         super(Family.all(InteractComponent.class).exclude(RemoveComponent.class).get());
 
         MessageManager.getInstance().addProvider(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
+        MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
         i18NBundle = Utils.getResourceManager().get("i18n/strings_zh_CN", I18NBundle.class);
-        dialogueNode = null;
     }
 
     @Override
@@ -47,12 +50,14 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
 
     private void doEntityAction(Entity player, Entity interactEntity) {
         final ActionableComponent actionTypeCmp = interactEntity.getComponent(ActionableComponent.class);
+        final GameObjectComponent2 gameObjCmp = interactEntity.getComponent(GameObjectComponent2.class);
         switch (actionTypeCmp.type) {
             case TALK -> {
                 Gdx.app.debug(TAG, "Talk.....");
+
                 final ConversationManager conversationManager = Utils.getConversationManager();
-                dialogueNode = conversationManager.talk(1);
-                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_NPC_TALK_TO_PLAYER, dialogueNode);
+                gameObjectComponent = gameObjCmp;
+                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC);
             }
             case UNDEFINED -> {
             }
@@ -61,7 +66,7 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
 
     @Override
     public Object provideMessageInfo(int msg, Telegraph receiver) {
-        return dialogueNode;
+        return gameObjectComponent;
     }
 
     @Override

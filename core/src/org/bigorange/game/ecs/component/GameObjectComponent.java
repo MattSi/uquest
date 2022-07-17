@@ -3,6 +3,8 @@ package org.bigorange.game.ecs.component;
 import com.badlogic.ashley.core.Component;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Pool;
+import org.bigorange.game.gameobjs.GameObjectState;
+import org.bigorange.game.gameobjs.GameObjectType;
 
 public class GameObjectComponent implements Component, Pool.Poolable {
 
@@ -25,11 +27,4 @@ public class GameObjectComponent implements Component, Pool.Poolable {
         spawnLocation.setZero();
     }
 
-    public enum GameObjectType {
-        NOT_DEFINED, TREE, WALL, MISSILE, ENEMY, NPC
-    }
-
-    public enum GameObjectState {
-        IDLED, PATROL, ATTACK, RUN_AWAY
-    }
 }

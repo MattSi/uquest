@@ -5,7 +5,6 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.utils.ImmutableArray;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
-import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -23,10 +22,9 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.RenderSystem;
-import org.bigorange.game.gameobjs.AnimationType;
+import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapListener;
 import space.earlygrey.shapedrawer.ShapeDrawer;
@@ -36,7 +34,6 @@ import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 public class GameRenderSystem implements RenderSystem, MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
-
 
     private final Viewport viewport;
     private final OrthogonalTiledMapRenderer mapRenderer;
@@ -86,7 +83,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 Box2DComponent.class).exclude(RemoveComponent.class).get());
 
         this.npcsForRender = entityEngine.getEntitiesFor(Family.all(
-                NpcComponent.class,
+                CpuComponent.class,
                 AnimationComponent2.class,
                 GameObjectComponent2.class).get());
 
@@ -159,7 +156,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
          */
         //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
         final AnimationComponent2.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
-        final Sprite keyFrame = currAniPack.getAnimation().getKeyFrame(aniCmp.aniTimer, true);
+        final Sprite keyFrame = currAniPack.animation.getKeyFrame(aniCmp.aniTimer, true);
         final Vector2 position = b2dCmp.body.getPosition();
 
 

@@ -35,18 +35,10 @@ public class AnimationComponent2 implements Component, Pool.Poolable {
     public static class AnimationPack<T> {
         public int width;
         public int height;
-        private Animation<T> animation;
+        public Animation<T> animation;
 
         public AnimationPack() {
         }
 
-
-        public Animation<T> getAnimation() {
-            return animation;
-        }
-
-        public void setAnimation(Animation<T> animation) {
-            this.animation = animation;
-        }
     }
 }

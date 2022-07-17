@@ -5,7 +5,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapTile;
 import com.badlogic.gdx.maps.tiled.objects.TiledMapTileMapObject;
 import com.badlogic.gdx.maps.tiled.tiles.AnimatedTiledMapTile;
 import com.badlogic.gdx.math.Rectangle;
-import org.bigorange.game.ecs.component.GameObjectComponent;
+import org.bigorange.game.gameobjs.GameObjectType;
 
 import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
@@ -27,7 +27,7 @@ public class GameObject {
     private final TiledMapTileMapObject tileMapObjectRef;
     private final Rectangle boundaries;
     private final float animationInterval;
-    private final GameObjectComponent.GameObjectType type;
+    private final GameObjectType type;
 
     private final boolean sensor;
 
@@ -48,11 +48,11 @@ public class GameObject {
         }
 
         if(props.containsKey("type")){
-            type = GameObjectComponent.GameObjectType.valueOf(props.get("type", String.class));
+            type = GameObjectType.valueOf(props.get("type", String.class));
         } else if(tileProps.containsKey("type")){
-            type = GameObjectComponent.GameObjectType.valueOf(tileProps.get("type", String.class));
+            type = GameObjectType.valueOf(tileProps.get("type", String.class));
         } else {
-            type = GameObjectComponent.GameObjectType.NOT_DEFINED;
+            type = GameObjectType.NOT_DEFINED;
         }
 
         if(props.containsKey("sensor")){
@@ -78,7 +78,7 @@ public class GameObject {
         return animationInterval;
     }
 
-    public GameObjectComponent.GameObjectType getType() {
+    public GameObjectType getType() {
         return type;
     }
 

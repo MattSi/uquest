@@ -3,6 +3,9 @@ package org.bigorange.game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.ai.msg.MessageManager;
+import com.badlogic.gdx.ai.msg.Telegram;
+import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -20,15 +23,17 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.Utils;
 import org.bigorange.game.dialogue.ConversationGraph;
 import org.bigorange.game.dialogue.ConversationGraphObserver;
+import org.bigorange.game.ecs.component.ActionableComponent;
+import org.bigorange.game.ecs.component.GameObjectComponent2;
+import org.bigorange.game.input.EKey;
 import org.bigorange.game.input.EMouse;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.input.MouseInputListener;
+import org.bigorange.game.message.MessageType;
 import org.bigorange.game.screens.BaseScreen;
 import org.bigorange.game.screens.ScreenManager;
 
-public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver {
-    private static final String TAG = PlayerHUD.class.getSimpleName();
-
+public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver, Telegraph {
     private Viewport viewport;
     private Camera camera;
 
@@ -37,6 +42,8 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver 
 
     public PlayerHUD(TTFSkin skin, ScreenManager screenManager) {
         super(skin, screenManager);
+        MessageManager.getInstance().addListener(this, MessageType.PLAYER_CLOSE_TO_NPC);
+        MessageManager.getInstance().addListener(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
         this.camera = new OrthographicCamera();
         viewport = new ScreenViewport(this.camera);
         stage.setDebugAll(false);
@@ -82,18 +89,27 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver 
                 InputMultiplexer inputProcessor =(InputMultiplexer) Gdx.input.getInputProcessor();
                 inputProcessor.removeProcessor(stage);
                 inputProcessor.addProcessor(Utils.getInputManager());
-                Button button = (Button) actor;
-                Gdx.app.log(TAG, ""+button.isChecked());
             }
         });
         conversationUI.getCloseButton().addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-
+                //Gdx.app.log(TAG, "YYYYYYYYYYYYYYYYYYYYYYYYYYY");
 
             }
         });
+    }
 
+    @Override
+    public void keyDown(InputManager manager, EKey key) {
+        super.keyDown(manager, key);
+        if(key == EKey.ESCAPE){
+            conversationUI.setVisible(false);
+
+            InputMultiplexer inputProcessor =(InputMultiplexer) Gdx.input.getInputProcessor();
+            inputProcessor.removeProcessor(stage);
+            inputProcessor.addProcessor(Utils.getInputManager());
+        }
     }
 
     @Override
@@ -149,4 +165,26 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver 
     }
 
 
+    @Override
+    public boolean handleMessage(Telegram msg) {
+        switch (msg.message){
+            case MessageType.PLAYER_CLOSE_TO_NPC -> {
+                ActionableComponent action = (ActionableComponent) msg.extraInfo;
+                switch (action.type){
+                    case TALK -> {
+                        Gdx.app.debug(TAG, "Player HUD received message: PLAYER_CLOSE_TO_NPC");
+                    }
+                }
+            }
+            case MessageType.MSG_PLAYER_TALK_TO_NPC -> {
+                GameObjectComponent2 gameObjCmp = (GameObjectComponent2) msg.extraInfo;
+                InputMultiplexer inputProcessor =(InputMultiplexer) Gdx.input.getInputProcessor();
+
+                inputProcessor.removeProcessor(Utils.getInputManager());
+                inputProcessor.addProcessor(stage);
+                conversationUI.setVisible(true);
+            }
+        }
+        return true;
+    }
 }

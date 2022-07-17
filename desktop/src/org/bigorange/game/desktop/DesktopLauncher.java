@@ -14,6 +14,6 @@ public class DesktopLauncher {
 		//config.fullscreen = true;
 		Application app = new LwjglApplication(new UndergroundQuest(), config);
 		//new LwjglApplication(new UIAdapterExample());
-		//app.setLogLevel(Application.LOG_DEBUG);
+		app.setLogLevel(Application.LOG_DEBUG);
 	}
 }
