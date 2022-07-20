@@ -3,6 +3,7 @@ package org.bigorange.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
@@ -15,13 +16,14 @@ import static com.badlogic.gdx.math.MathUtils.PI;
 import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 public class EnemyAnimationSystem extends IteratingSystem {
-
+    private static final String TAG = EnemyAnimationSystem.class.getSimpleName();
     public EnemyAnimationSystem() {
         super(Family.all(AnimationComponent.class,
                 Animation4DirectionsComponent.class,
                 Box2DComponent.class,
                 SpeedComponent.class
         ).exclude(RemoveComponent.class).get());
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     private Array<Sprite> getKeyFrames(final TextureRegion[] textureRegions) {

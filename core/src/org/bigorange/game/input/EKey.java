@@ -14,6 +14,7 @@ public enum EKey {
 
     final int[] keyCode;
 
+
     EKey(final int... keyCode){
         this.keyCode = keyCode;
     }

@@ -33,6 +33,7 @@ import org.bigorange.game.ecs.system.PlayerControlSystem;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.ui.DialogueBox;
+import org.bigorange.game.ui.PlayerHUD;
 import org.bigorange.game.ui.TTFSkin;
 
 import java.util.List;
@@ -118,9 +119,12 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
 
         Utils.getInputManager().addKeyInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
-        Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerControlSystem.class));
        // Utils.getInputManager().addMouseInputListener(ecsEngine.getSystem(PlayerAnimationSystem.class));
         Utils.getAudioManager().playMusic(MusicAsset.TALKING);
+        Gdx.app.log(TAG, "Show......");
+
+        final PlayerHUD playerHUD = (PlayerHUD) screenManager.getScreenInstance(EScreenType.PLAYERHUD);
+        playerHUD.show();
     }
 
     @Override

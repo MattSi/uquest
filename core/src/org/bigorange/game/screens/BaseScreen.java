@@ -4,26 +4,27 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import org.bigorange.game.Utils;
-import org.bigorange.game.input.EKey;
-import org.bigorange.game.input.InputManager;
-import org.bigorange.game.input.KeyInputListener;
+import org.bigorange.game.input.*;
 import org.bigorange.game.ui.TTFSkin;
 
-public class BaseScreen implements Screen, KeyInputListener {
+public abstract class BaseScreen implements Screen, InputListener {
     protected Stage stage;
     protected TTFSkin skin;
     protected ScreenManager screenManager;
     protected String TAG = this.getClass().getSimpleName();
+    protected boolean keyInputListenerEnabled;
 
-    public BaseScreen(TTFSkin skin, ScreenManager screenManager){
-        this.stage = new Stage(new FitViewport( Gdx.graphics.getWidth(),
+    public BaseScreen(TTFSkin skin, ScreenManager screenManager) {
+        this.stage = new Stage(new FitViewport(Gdx.graphics.getWidth(),
                 Gdx.graphics.getHeight(),
                 new OrthographicCamera()));
         this.skin = skin;
         this.screenManager = screenManager;
+        this.keyInputListenerEnabled = true;
     }
 
     @Override
@@ -72,5 +73,29 @@ public class BaseScreen implements Screen, KeyInputListener {
     @Override
     public void keyUP(InputManager manager, EKey key) {
 
+    }
+
+    @Override
+    public void buttonDown(InputManager manager, EMouse mouse, Vector2 screenPoint, int pointer) {
+    }
+
+    @Override
+    public void buttonUp(InputManager manager, EMouse mouse, Vector2 screenPoint, int pointer) {
+
+    }
+
+    @Override
+    public void mouseMoved(InputManager manager, Vector2 screenPoint) {
+
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        keyInputListenerEnabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return keyInputListenerEnabled;
     }
 }

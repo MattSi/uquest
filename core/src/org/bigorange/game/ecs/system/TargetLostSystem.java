@@ -3,18 +3,22 @@ package org.bigorange.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.ecs.component.SteeringComponent;
 
 public class TargetLostSystem extends IteratingSystem {
+    private static final String TAG = TargetLostSystem.class.getSimpleName();
 
     // Enemy will lost target if distance over than 6 meters.
     public final static float lostDistance = 6f;
 
+
     public TargetLostSystem(){
         super(Family.all(SteeringComponent.class).exclude(RemoveComponent.class).get());
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
     @Override
     protected void processEntity(Entity entity, float deltaTime) {

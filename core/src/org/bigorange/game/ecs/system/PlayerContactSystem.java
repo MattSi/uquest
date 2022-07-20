@@ -30,6 +30,7 @@ public class PlayerContactSystem extends EntitySystem implements
         listeners = new Array<>();
         MessageManager.getInstance().addProvider(this, MessageType.PLAYER_AWAY_FROM_NPC);
         MessageManager.getInstance().addProvider(this, MessageType.PLAYER_CLOSE_TO_NPC);
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
 
@@ -55,7 +56,7 @@ public class PlayerContactSystem extends EntitySystem implements
                     actionCmp = actionCmpTmp;
                     MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_CLOSE_TO_NPC, actionCmp );
                     interactCmp.addInRangeEntity(cpuGameObj);
-                    Gdx.app.debug(TAG, "Player close to NPC, this NPC's action is TALK");
+                    Gdx.app.debug(TAG, "Player close to NPC, Press E key to talk to this NPC.");
                 }
             }
         }

@@ -20,8 +20,7 @@ import org.bigorange.game.message.MessageType;
 import static org.bigorange.game.input.EKey.*;
 
 public class PlayerControlSystem extends IteratingSystem implements
-        KeyInputListener,
-        MouseInputListener,
+        InputListener,
         TelegramProvider,
         Telegraph {
     public static final String TAG = PlayerControlSystem.class.getSimpleName();
@@ -35,6 +34,7 @@ public class PlayerControlSystem extends IteratingSystem implements
     private boolean isShooting;
     private Vector3 shootingTarget;
     private boolean actionPressed = false;
+    protected boolean keyInputListenerEnabled;
 
     public PlayerControlSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
         super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent2.class).get());
@@ -43,11 +43,11 @@ public class PlayerControlSystem extends IteratingSystem implements
         directionChange = false;
         xFactor = 0;
         yFactor = 0;
-        shootingTarget = new Vector3(0,0,0);
+        shootingTarget = new Vector3(0, 0, 0);
+        keyInputListenerEnabled = true;
         MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_CHANGE_MAP);
 
-
-        Gdx.app.debug(TAG,  " instantiated.");
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override
@@ -90,8 +90,8 @@ public class PlayerControlSystem extends IteratingSystem implements
     }
 
     @Override
-    public void buttonDown(InputManager manager, EMouse mouse, Vector2 screenPoint) {
-        switch (mouse){
+    public void buttonDown(InputManager manager, EMouse mouse, Vector2 screenPoint, int pointer) {
+        switch (mouse) {
             case LEFT -> {
                 isShooting = true;
                 shootingTarget.set(screenPoint.x, screenPoint.y, 0);
@@ -125,7 +125,7 @@ public class PlayerControlSystem extends IteratingSystem implements
                 actionPressed = true;
                 break;
             case Map:
-                MessageManager.getInstance().dispatchMessage(0.0f, this, MessageType.MSG_PLAYER_CHANGE_MAP,"map/battle2.tmx");
+                MessageManager.getInstance().dispatchMessage(0.0f, this, MessageType.MSG_PLAYER_CHANGE_MAP, "map/battle2.tmx");
                 break;
             default:
                 // nothing to do
@@ -158,10 +158,19 @@ public class PlayerControlSystem extends IteratingSystem implements
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        keyInputListenerEnabled = enabled;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return keyInputListenerEnabled;
+    }
 
 
     @Override
-    public void buttonUp(InputManager manager, EMouse mouse, Vector2 screenPoint) {
+    public void buttonUp(InputManager manager, EMouse mouse, Vector2 screenPoint, int pointer) {
 
     }
 
@@ -174,4 +183,5 @@ public class PlayerControlSystem extends IteratingSystem implements
     public boolean handleMessage(Telegram msg) {
         return false;
     }
+
 }

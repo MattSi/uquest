@@ -3,6 +3,7 @@ package org.bigorange.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
@@ -13,13 +14,14 @@ import org.bigorange.game.gameobjs.AnimationType;
 import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
 public class AnimationSystem extends IteratingSystem {
-
+    private static final String TAG = AnimationSystem.class.getSimpleName();
     private final OrthographicCamera camera;
 
     public AnimationSystem(OrthographicCamera camera) {
         super(Family.all(AnimationComponent2.class, SpeedComponent.class,
                 GameObjectComponent2.class).get());
         this.camera = camera;
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override

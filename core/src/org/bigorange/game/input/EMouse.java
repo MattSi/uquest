@@ -8,6 +8,11 @@ public enum EMouse {
     RIGHT(Input.Buttons.RIGHT);
 
     final int mouseCode;
+
+    public int getMouseCode() {
+        return mouseCode;
+    }
+
     EMouse(int mouseCode) {
         this.mouseCode = mouseCode;
     }

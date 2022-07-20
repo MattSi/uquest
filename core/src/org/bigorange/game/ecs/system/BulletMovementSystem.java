@@ -3,6 +3,7 @@ package org.bigorange.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.Box2DComponent;
@@ -11,11 +12,13 @@ import org.bigorange.game.ecs.component.RemoveComponent;
 import org.bigorange.game.ecs.component.SpeedComponent;
 
 public class BulletMovementSystem extends IteratingSystem {
+    private static final String TAG  = BulletMovementSystem.class.getSimpleName();
     private final ECSEngine ecsEngine;
 
     public BulletMovementSystem(ECSEngine ecsEngine) {
         super(Family.all(BulletComponent.class, Box2DComponent.class).get());
         this.ecsEngine = ecsEngine;
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override

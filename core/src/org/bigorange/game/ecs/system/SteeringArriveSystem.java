@@ -3,6 +3,7 @@ package org.bigorange.game.ecs.system;
 import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.steer.SteeringAcceleration;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -15,6 +16,7 @@ public class SteeringArriveSystem extends IteratingSystem {
 
     public SteeringArriveSystem() {
         super(Family.all(SteeringComponent.class).exclude(RemoveComponent.class).get());
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override
@@ -25,6 +27,7 @@ public class SteeringArriveSystem extends IteratingSystem {
             steeringCmp.steeringBehavior.calculateSteering(steeringCmp.steeringOutput);
             applySteering(steeringCmp, deltaTime);
         }
+
     }
 
     private void applySteering(SteeringComponent steeringCmp, float deltaTime) {

@@ -25,10 +25,6 @@ public class ConversationUI extends Window {
     private TextButton closeButton;
     private Json json;
 
-
-
-
-
     public ConversationUI(Skin skin) {
         super("dialog", skin, "default");
 

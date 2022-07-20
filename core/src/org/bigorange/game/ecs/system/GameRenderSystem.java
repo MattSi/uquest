@@ -104,7 +104,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         shapeDrawer = new ShapeDrawer(spriteBatch, new TextureRegion(tmpTexture, 0,0,1,1));
 
         Utils.getMapManager().addMapListener(this);
-        Gdx.app.log(TAG, "instantiated.");
+        Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override

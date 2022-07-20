@@ -12,8 +12,7 @@ public class InputManager implements InputProcessor {
 
     private final EMouse[] mouseMapping;
     private final boolean[] buttonState;
-    private final Array<KeyInputListener> keyInputListeners;
-    private final Array<MouseInputListener> mouseInputListeners;
+    private final Array<InputListener> inputListeners;
     private final Vector2 screenPoint;
 
     public InputManager() {
@@ -33,19 +32,25 @@ public class InputManager implements InputProcessor {
 
         this.keyState = new boolean[EKey.values().length];
         this.buttonState = new boolean[EMouse.values().length]; // number of static final fields in class Buttons is 5 (com.badlogic.gdx.Input.Buttons)
-        keyInputListeners = new Array<>();
-        mouseInputListeners = new Array<>();
+        inputListeners = new Array<>();
 
     }
 
-    public void addKeyInputListener(KeyInputListener listener) {
-        if(!keyInputListeners.contains(listener, true)){
-            keyInputListeners.add(listener);
+    public void addKeyInputListener(InputListener listener) {
+        if(!inputListeners.contains(listener, true)){
+            inputListeners.add(listener);
         }
     }
 
-    public void removeKeyInputListener(KeyInputListener listener){
-        keyInputListeners.removeValue(listener, true);
+    public void removeKeyInputListener(InputListener listener){
+        inputListeners.removeValue(listener, true);
+    }
+
+    public void setEnableKeyInputListeners(boolean enabled) {
+        for (InputListener inputListener : inputListeners) {
+            inputListener.setEnabled(enabled);
+            Gdx.app.log(TAG, "Listener: " + inputListener.toString() + " set to " + enabled);
+        }
     }
 
     @Override
@@ -74,30 +79,36 @@ public class InputManager implements InputProcessor {
         return true;
     }
 
-    public void notifyKeyDown(final EKey key){
+    public void notifyKeyDown(final EKey key) {
         keyState[key.ordinal()] = true;
-        for (final KeyInputListener listener : keyInputListeners) {
-            listener.keyDown(this, key);
+        for (int i = 0; i < inputListeners.size; i++) {
+            InputListener listener = inputListeners.get(i);
+            if (listener.isEnabled()) {
+                listener.keyDown(this, key);
+            }
         }
 
     }
 
     public void notifyKeyUp(final EKey key) {
         keyState[key.ordinal()] = false;
-        for (final KeyInputListener listener : keyInputListeners) {
-            listener.keyUP(this, key);
+        for (int i = 0; i < inputListeners.size; i++) {
+            InputListener listener = inputListeners.get(i);
+            if (listener.isEnabled()) {
+                listener.keyUP(this, key);
+            }
         }
     }
-
-    public void addMouseInputListener(MouseInputListener listener){
-        if(mouseInputListeners.contains(listener,true))
-            return;
-        mouseInputListeners.add(listener);
-    }
-
-    public void removeMouseInputListener(MouseInputListener listener){
-        mouseInputListeners.removeValue(listener, true);
-    }
+//
+//    public void addMouseInputListener(MouseInputListener listener){
+//        if(mouseInputListeners.contains(listener,true))
+//            return;
+//        mouseInputListeners.add(listener);
+//    }
+//
+//    public void removeMouseInputListener(MouseInputListener listener){
+//        mouseInputListeners.removeValue(listener, true);
+//    }
 
     public boolean isMouseDown(EMouse mouse) {
         return buttonState[mouse.ordinal()];
@@ -107,30 +118,41 @@ public class InputManager implements InputProcessor {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         buttonState[button] = true;
         EMouse mouse = mouseMapping[button];
-        for (final MouseInputListener listener : mouseInputListeners) {
-            listener.buttonDown(this, mouse, new Vector2(screenX, screenY));
+        for(int i=0; i<inputListeners.size; i++){
+            InputListener listener = inputListeners.get(i);
+            if(listener.isEnabled()){
+                listener.buttonDown(this, mouse, new Vector2(screenX, screenY), pointer);
+            }
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         buttonState[button] = false;
         EMouse mouse = mouseMapping[button];
-        for (final MouseInputListener listener : mouseInputListeners) {
-            listener.buttonUp(this, mouse, new Vector2(screenX, screenY));
+        for (int i = 0; i < inputListeners.size; i++) {
+            InputListener listener = inputListeners.get(i);
+            if(listener.isEnabled()) {
+                listener.buttonUp(this, mouse, new Vector2(screenX, screenY), pointer);
+            }
         }
+
         return true;
     }
 
     @Override
     public boolean mouseMoved(int screenX, int screenY) {
-        for (final MouseInputListener listener : mouseInputListeners) {
-            listener.mouseMoved(this, this.screenPoint.set(screenX, screenY));
-        }
 
+        for (int i = 0; i < inputListeners.size; i++) {
+            InputListener listener = inputListeners.get(i);
+            if(listener.isEnabled()) {
+                listener.mouseMoved(this, this.screenPoint.set(screenX, screenY));
+            }
+        }
         return true;
     }
+
     //////////////////////////////////////////////////////////////////////////////////////
     @Override
     public boolean keyTyped(char character) {
