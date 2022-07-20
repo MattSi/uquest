@@ -3,6 +3,7 @@ package org.bigorange.game.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -12,6 +13,8 @@ import com.badlogic.gdx.utils.Json;
 import org.bigorange.game.dialogue.ConversationChoice;
 import org.bigorange.game.dialogue.ConversationGraph;
 import org.bigorange.game.dialogue.ConversationNode;
+import org.bigorange.game.ecs.component.ActionableComponent;
+import org.bigorange.game.ecs.component.GameObjectComponent2;
 
 /**
  * Conversation UI: embedded in Player HUD
@@ -60,31 +63,34 @@ public class ConversationUI extends Window {
         this.pack();
 
         //listeners
-        listItems.addListener(new ChangeListener(){
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-            }
-        });
-//        listItems.addListener(new ClickListener() {
+//        listItems.addListener(new ChangeListener(){
 //            @Override
-//            public void clicked(InputEvent event, float x, float y) {
-//                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX");
-//                final ConversationChoice choice = (ConversationChoice) listItems.getSelected();
-//                if (choice == null) return;
-//                graph.notify(graph, choice.getConversationCommandEvent());
-//                populateConversationDialog(choice.getDestinationId());
+//            public void changed(ChangeEvent event, Actor actor) {
+//                Gdx.app.log(TAG, "YYYYYYYYYYYYYYYYYYYYYYYYYYYY");
 //            }
 //        });
+        listItems.addListener(new ClickListener() {
+            @Override
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.log(TAG, "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZ");
+                final ConversationChoice choice = (ConversationChoice) listItems.getSelected();
+                if (choice == null) return;
+                graph.notify(graph, choice.getConversationCommandEvent());
+                populateConversationDialog(choice.getDestinationId());
+            }
+        });
+
 
     }
 
     //TODO, hard code for now, how to locate NPC's conversation ID
-    public void loadConversation() {
+    public void loadConversation(ActionableComponent actionCmp) {
         this.getTitleLabel().setText("");
 
         clearDialog();
 
-        final ConversationGraph g = json.fromJson(ConversationGraph.class, Gdx.files.internal("conversations/conversation001.json"));
+
+        final ConversationGraph g = json.fromJson(ConversationGraph.class, Gdx.files.internal(actionCmp.talkScript));
         setConversationGraph(g);
     }
 

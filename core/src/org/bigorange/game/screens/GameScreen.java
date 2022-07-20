@@ -42,11 +42,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     private final ECSEngine ecsEngine;
     private final World world;
 
-    private DialogueBox infoBox;
-    private DialogueBox infoBox2;
-    private I18NBundle i18NBundle;
-    private Table table;
-
     protected OrthographicCamera camera = null;
     protected OrthographicCamera hudCamera = null;
     private static final int VIEWPORT_WIDTH = 10;
@@ -205,50 +200,7 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         return this;
     }
 
-    private void addUI() {
-        MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
-        infoBox = new DialogueBox("", skin, "info_frame");
-        infoBox2 = new DialogueBox("", skin, "info_frame");
 
-        infoBox.setVisible(false);
-        infoBox2.setVisible(false);
-
-        infoBox.addListener((Event e) -> {
-            if (!(e instanceof InputEvent) ||
-                    !((InputEvent) e).getType().equals(InputEvent.Type.touchDown))
-                return false;
-            if (infoBox.getDialogueNode() != null) {
-                MessageManager.getInstance().dispatchMessage(0.2f, MessageType.MSG_PLAYER_TALK_TO_NPC, infoBox.getDialogueNode());
-            }
-            return false;
-        });
-
-        infoBox2.addListener((Event e) -> {
-            if (!(e instanceof InputEvent) ||
-                    !((InputEvent) e).getType().equals(InputEvent.Type.touchDown))
-                return false;
-            if (infoBox2.getDialogueNode() != null) {
-                MessageManager.getInstance().dispatchMessage(0.2f, MessageType.MSG_PLAYER_TALK_TO_NPC, infoBox2.getDialogueNode());
-            }
-            return false;
-        });
-
-
-        table = new Table();
-        table.setFillParent(true);
-        Table infoBoxTable = new Table();
-        infoBoxTable.add(infoBox2).expandX().row();
-        infoBoxTable.add(infoBox).expandX();
-        table.add(infoBoxTable).expand().bottom();
-
-        // Add Message listener
-        MessageManager.getInstance().addListener(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
-        MessageManager.getInstance().addListener(this, MessageType.PLAYER_AWAY_FROM_NPC);
-
-        final ResourceManager resourceManager = Utils.getResourceManager();
-        i18NBundle = resourceManager.get("i18n/strings_zh_CN", I18NBundle.class);
-        stage.addActor(table);
-    }
 
     @Override
     public boolean handleMessage(Telegram msg) {
@@ -258,47 +210,25 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
 
                 switch (dialogueNode.getNodeType()) {
                     case END -> {
-                        showInfoMessage("", false);
+//                        showInfoMessage("", false);
                     }
                     case MESSAGE -> {
-                        showInfoMessage(i18NBundle.format("T" + dialogueNode.getMessageId()), true);
+//                        showInfoMessage(i18NBundle.format("T" + dialogueNode.getMessageId()), true);
                     }
                     case CHOICE -> {
                         //dialogueNode.getChoice().get(0)
                         final List<Choice> choiceDialogue = dialogueNode.getChoice();
-                        showChoiceMessage(choiceDialogue.get(0), choiceDialogue.get(1), true);
+//                        showChoiceMessage(choiceDialogue.get(0), choiceDialogue.get(1), true);
                     }
                 }
 
             }
             case MessageType.PLAYER_AWAY_FROM_NPC -> {
-                showInfoMessage("", false);
+               // showInfoMessage("", false);
             }
         }
 
         return true;
-    }
-
-
-    public void showInfoMessage(final String message, boolean isVisible) {
-        infoBox.setVisible(isVisible);
-        infoBox2.setVisible(false);
-        infoBox2.setDialogueNode(null);
-        infoBox.setDialogueNode(null);
-
-        infoBox.setText(message);
-    }
-
-
-    public void showChoiceMessage(final Choice choice1, final Choice choice2, boolean isVisible) {
-        infoBox.setVisible(isVisible);
-        infoBox2.setVisible(isVisible);
-
-        infoBox.setDialogueNode(choice1.getNextNode());
-        infoBox.setText(i18NBundle.format("T" + choice1.getMessage()));
-
-        infoBox2.setDialogueNode(choice2.getNextNode());
-        infoBox2.setText(i18NBundle.format("T" + choice2.getMessage()));
     }
 
     private void setupViewport(int width, int height) {

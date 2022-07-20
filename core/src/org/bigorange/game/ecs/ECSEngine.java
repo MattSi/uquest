@@ -141,6 +141,7 @@ public class ECSEngine extends EntityEngine {
         if(!Utils.isStrNullOrEmpty(cfg.getConversationConfigPath())){
             final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
             actionCmp.type = ActionType.TALK;
+            actionCmp.talkScript = cfg.getConversationConfigPath();
             npc.add(actionCmp);
         }
 
@@ -455,6 +456,7 @@ public class ECSEngine extends EntityEngine {
         component.birthTime = System.nanoTime();
         component.spawnLocation = spawnLocation;
         component.direction = cfg.getDirection();
+
         return component;
     }
 

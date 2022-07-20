@@ -6,10 +6,12 @@ import org.bigorange.game.ActionType;
 
 public class ActionableComponent implements Component, Pool.Poolable {
     public ActionType type = ActionType.UNDEFINED;
+    public String talkScript;
 
     @Override
     public void reset() {
         type = ActionType.UNDEFINED;
+        talkScript = null;
     }
 }
 

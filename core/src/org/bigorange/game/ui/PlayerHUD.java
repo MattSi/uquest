@@ -50,7 +50,7 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
         conversationUI.setPosition(stage.getWidth() / 2, 0);
         conversationUI.setWidth(stage.getWidth() / 2);
         conversationUI.setHeight(stage.getHeight() / 2);
-        conversationUI.loadConversation();
+        //conversationUI.loadConversation();
 
         final TextureAtlas textureAtlas = Utils.getResourceManager().get("hud/uiskin.atlas", TextureAtlas.class);
         statusUI = new StatusUI(skin, textureAtlas);
@@ -71,17 +71,10 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
 
         //=======================================================================================
         //Listeners
-        conversationUI.getCloseButton().addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-                conversationUIClosed();
-            }
-        });
         conversationUI.getCloseButton().addListener(new ClickListener(){
             @Override
             public void clicked(InputEvent event, float x, float y) {
-                //Gdx.app.log(TAG, "YYYYYYYYYYYYYYYYYYYYYYYYYYY");
-
+                conversationUIClosed();
             }
         });
     }
@@ -166,6 +159,7 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
     public void onNotify(ConversationGraph graph, ConversationCommandEvent event) {
         switch (event){
             case NONE -> {
+                Gdx.app.log(TAG, "XXXXXXXXXXXXXXXXXXXXXXXX");
             }
             case EXIT_CONVERSATION -> {
                 conversationUI.setVisible(false);
@@ -190,7 +184,8 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
                 }
             }
             case MessageType.MSG_PLAYER_TALK_TO_NPC -> {
-
+                ActionableComponent gameObj = (ActionableComponent)msg.extraInfo;
+                conversationUI.loadConversation(gameObj);
                 conversationUI.setVisible(true);
                 Utils.getInputManager().setEnableKeyInputListeners(false);
                 Utils.getInputManager().addKeyInputListener(this);

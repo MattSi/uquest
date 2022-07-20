@@ -29,7 +29,6 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
     public InteractSystem() {
         super(Family.all(InteractComponent.class).exclude(RemoveComponent.class).get());
 
-        MessageManager.getInstance().addProvider(this, MessageType.MSG_NPC_TALK_TO_PLAYER);
         MessageManager.getInstance().addProvider(this, MessageType.MSG_PLAYER_TALK_TO_NPC);
         i18NBundle = Utils.getResourceManager().get("i18n/strings_zh_CN", I18NBundle.class);
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
@@ -57,8 +56,7 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
                 Gdx.app.debug(TAG, "Talk.....");
 
                 final ConversationManager conversationManager = Utils.getConversationManager();
-                gameObjectComponent = gameObjCmp;
-                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC);
+                MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC, actionTypeCmp);
             }
             case UNDEFINED -> {
             }
@@ -67,7 +65,7 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
 
     @Override
     public Object provideMessageInfo(int msg, Telegraph receiver) {
-        return gameObjectComponent;
+        return null;
     }
 
     @Override
