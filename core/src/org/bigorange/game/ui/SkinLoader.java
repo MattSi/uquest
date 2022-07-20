@@ -14,8 +14,6 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreetypeFontLoader;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
-import static com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.DEFAULT_CHARS;
-
 public class SkinLoader extends AsynchronousAssetLoader<TTFSkin, SkinLoader.SkinParameter> {
 
     public SkinLoader(FileHandleResolver resolver) {

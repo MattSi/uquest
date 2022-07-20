@@ -22,8 +22,6 @@ public class PlayerContactSystem extends EntitySystem implements
         TelegramProvider {
     public static final String TAG = PlayerContactSystem.class.getSimpleName();
     private final Array<PlayerContactListener> listeners;
-    private ActionableComponent actionCmp;
-
 
     public PlayerContactSystem(){
         Utils.getWorldContactManager().addWorldContactListener(this);
@@ -53,9 +51,8 @@ public class PlayerContactSystem extends EntitySystem implements
             }
             case NPC -> {
                 if(isGameObjSensor){
-                    actionCmp = actionCmpTmp;
                     cpuGameObj.add(getEngine().createComponent(CpuCmpClosedToPlayerComponent.class));
-                    MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_CLOSE_TO_NPC, actionCmp );
+                    MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_CLOSE_TO_NPC, actionCmpTmp);
                     interactCmp.addInRangeEntity(cpuGameObj);
                     Gdx.app.debug(TAG, "Player close to NPC, Press E key to talk to this NPC.");
                 }
@@ -113,7 +110,7 @@ public class PlayerContactSystem extends EntitySystem implements
 
     @Override
     public Object provideMessageInfo(int msg, Telegraph receiver) {
-        return actionCmp;
+        return null;
     }
 
     public interface PlayerContactListener{

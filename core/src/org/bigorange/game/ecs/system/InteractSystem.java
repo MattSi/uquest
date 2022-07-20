@@ -10,16 +10,12 @@ import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.Utils;
-import org.bigorange.game.dialogue.ConversationManager;
-import org.bigorange.game.dialogue.DialogueNode;
-import org.bigorange.game.ecs.component.GameObjectComponent2;
-import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.ActionableComponent;
+import org.bigorange.game.ecs.component.GameObjectComponent2;
 import org.bigorange.game.ecs.component.InteractComponent;
 import org.bigorange.game.ecs.component.RemoveComponent;
-import org.bigorange.game.screens.ScreenManager;
-import org.bigorange.game.ui.PlayerHUD;
+import org.bigorange.game.message.MessageType;
 
 public class InteractSystem extends IteratingSystem implements TelegramProvider,Telegraph {
     public static final String TAG = InteractSystem.class.getSimpleName();
@@ -54,8 +50,6 @@ public class InteractSystem extends IteratingSystem implements TelegramProvider,
         switch (actionTypeCmp.type) {
             case TALK -> {
                 Gdx.app.debug(TAG, "Talk.....");
-
-                final ConversationManager conversationManager = Utils.getConversationManager();
                 MessageManager.getInstance().dispatchMessage(0.2f, this, MessageType.MSG_PLAYER_TALK_TO_NPC, actionTypeCmp);
             }
             case UNDEFINED -> {

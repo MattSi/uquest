@@ -1,7 +1,6 @@
 package org.bigorange.game.screens;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.Telegram;
 import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
@@ -13,30 +12,21 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.Utils;
 import org.bigorange.game.assets.MapAsset;
 import org.bigorange.game.assets.MusicAsset;
-import org.bigorange.game.dialogue.Choice;
-import org.bigorange.game.dialogue.DialogueNode;
-import org.bigorange.game.gameobjs.GameObjectConfig;
-import org.bigorange.game.gameobjs.GameObjectFactory;
-import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.system.PlayerContactSystem;
 import org.bigorange.game.ecs.system.PlayerControlSystem;
+import org.bigorange.game.gameobjs.GameObjectConfig;
+import org.bigorange.game.gameobjs.GameObjectFactory;
 import org.bigorange.game.map.Map;
 import org.bigorange.game.map.MapManager;
-import org.bigorange.game.ui.DialogueBox;
+import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ui.PlayerHUD;
 import org.bigorange.game.ui.TTFSkin;
-
-import java.util.List;
 
 public class GameScreen extends BaseScreen implements PlayerContactSystem.PlayerContactListener, TelegramProvider,Telegraph {
     private final ECSEngine ecsEngine;
@@ -206,22 +196,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     public boolean handleMessage(Telegram msg) {
         switch (msg.message) {
             case MessageType.MSG_NPC_TALK_TO_PLAYER -> {
-                DialogueNode dialogueNode = (DialogueNode) msg.extraInfo;
-
-                switch (dialogueNode.getNodeType()) {
-                    case END -> {
-//                        showInfoMessage("", false);
-                    }
-                    case MESSAGE -> {
-//                        showInfoMessage(i18NBundle.format("T" + dialogueNode.getMessageId()), true);
-                    }
-                    case CHOICE -> {
-                        //dialogueNode.getChoice().get(0)
-                        final List<Choice> choiceDialogue = dialogueNode.getChoice();
-//                        showChoiceMessage(choiceDialogue.get(0), choiceDialogue.get(1), true);
-                    }
-                }
-
             }
             case MessageType.PLAYER_AWAY_FROM_NPC -> {
                // showInfoMessage("", false);

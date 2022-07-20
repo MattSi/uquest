@@ -4,7 +4,6 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import org.bigorange.game.audio.AudioManager;
-import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.screens.ScreenManager;
@@ -48,9 +47,6 @@ public class Utils {
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getAudioManager();
     }
 
-    public static ConversationManager getConversationManager(){
-        return ((UndergroundQuest)Gdx.app.getApplicationListener()).getConversationManager();
-    }
     public static ScreenManager getScreenManager(){
         return ((UndergroundQuest)Gdx.app.getApplicationListener()).getScreenManager();
     }

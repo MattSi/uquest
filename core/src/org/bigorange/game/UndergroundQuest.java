@@ -9,7 +9,6 @@ import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.I18NBundle;
 import org.bigorange.game.audio.AudioManager;
-import org.bigorange.game.dialogue.ConversationManager;
 import org.bigorange.game.input.InputManager;
 import org.bigorange.game.map.MapManager;
 import org.bigorange.game.screens.EScreenType;
@@ -23,7 +22,6 @@ public class UndergroundQuest extends Game {
     private AudioManager audioManager;
     private MapManager mapManager;
     private WorldContactManager worldContactManager;
-    private ConversationManager conversationManager;
     private ScreenManager screenManager;
     private InputManager inputManager;
     private SpriteBatch spriteBatch;
@@ -43,7 +41,6 @@ public class UndergroundQuest extends Game {
         resourceManager = new ResourceManager();
         audioManager = new AudioManager();
         worldContactManager = new WorldContactManager();
-        conversationManager = new ConversationManager(Gdx.files.internal("dialogue/conversations.csv"));
         mapManager = new MapManager();
         inputManager = new InputManager();
 
@@ -109,9 +106,6 @@ public class UndergroundQuest extends Game {
         return worldContactManager;
     }
 
-    public ConversationManager getConversationManager() {
-        return conversationManager;
-    }
 
     public SpriteBatch getSpriteBatch() {
         return spriteBatch;
