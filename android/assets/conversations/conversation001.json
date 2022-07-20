@@ -41,28 +41,28 @@
                                 class: org.bigorange.game.dialogue.ConversationChoice
                                 sourceId: 2
                                 destinationId: 3
-                                choicePhrase: 北方
+                                choicePhrase: "北方"
                                 conversationCommandEvent: NONE
                         }
                         {
                                 class: org.bigorange.game.dialogue.ConversationChoice
                                 sourceId: 2
                                 destinationId: 4
-                                choicePhrase: 东方
+                                choicePhrase: "东方"
                                 conversationCommandEvent: NONE
                         }
                         {
                                 class: org.bigorange.game.dialogue.ConversationChoice
                                 sourceId: 2
                                 destinationId: 5
-                                choicePhrase: 西方
+                                choicePhrase: "西方"
                                 conversationCommandEvent: NONE
                         }
                         {
                                 class: org.bigorange.game.dialogue.ConversationChoice
                                 sourceId: 2
                                 destinationId: 6
-                                choicePhrase: 南方
+                                choicePhrase: "南方"
                                 conversationCommandEvent: NONE
                         }
                 ]

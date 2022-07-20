@@ -131,7 +131,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         }
 
         for (Entity entity : npcsForRender) {
-            renderPlayer(entity, alpha);
+            renderNpc(entity, alpha);
         }
 
         for (final Entity entity : charactersForRender) {
@@ -145,6 +145,41 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
     }
 
+    private void renderNpc(Entity entity, float alpha){
+        final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final CpuCmpClosedToPlayerComponent cpuClosedToPlayerCmp = ECSEngine.cpuCloseToPlayerComMapper.get(entity);
+
+        /**
+         * 1. find current animation type
+         * 2. load animation key frame.
+         */
+        //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
+        final AnimationComponent2.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
+        final Sprite keyFrame = currAniPack.animation.getKeyFrame(aniCmp.aniTimer, true);
+        final Vector2 position = b2dCmp.body.getPosition();
+
+
+//        shapeDrawer.filledEllipse(position.x, position.y - aniCmp.currAnimationWidth/2,
+//                aniCmp.currAnimationWidth /4, aniCmp.currAnimationHeight/6,0f,
+//                Color.BLACK, Color.GRAY);
+
+        keyFrame.setOriginCenter();
+        keyFrame.setBounds(
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.currAnimationWidth* 0.5f),
+                MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.currAnimationHeight* 0.5f),
+                aniCmp.currAnimationWidth, aniCmp.currAnimationHeight);
+
+        if(cpuClosedToPlayerCmp != null){
+            final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
+            keyFrame.setColor(Color.RED);
+            keyFrame.draw(spriteBatch);
+            keyFrame.setColor(defaultColor);
+        } else {
+            keyFrame.draw(spriteBatch);
+        }
+
+    }
     private void renderPlayer(Entity entity, float alpha){
         final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);

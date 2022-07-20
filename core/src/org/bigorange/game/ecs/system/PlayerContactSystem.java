@@ -54,6 +54,7 @@ public class PlayerContactSystem extends EntitySystem implements
             case NPC -> {
                 if(isGameObjSensor){
                     actionCmp = actionCmpTmp;
+                    cpuGameObj.add(getEngine().createComponent(CpuCmpClosedToPlayerComponent.class));
                     MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_CLOSE_TO_NPC, actionCmp );
                     interactCmp.addInRangeEntity(cpuGameObj);
                     Gdx.app.debug(TAG, "Player close to NPC, Press E key to talk to this NPC.");
@@ -102,18 +103,12 @@ public class PlayerContactSystem extends EntitySystem implements
             case ENEMY, NPC -> {
                 if (isGameObjSensor) {
                     interactCmp.removeInRangeEntity(cpuGameObj);
+                    cpuGameObj.remove(CpuCmpClosedToPlayerComponent.class);
                     MessageManager.getInstance().dispatchMessage(MessageType.PLAYER_AWAY_FROM_NPC);
                     Gdx.app.debug(TAG, "Player leaved NPC.");
                 }
             }
         }
-    }
-
-    private void wallInteract(PlayerComponent playerCmp, GameObjectComponent gameObjCmp) {
-        for (PlayerContactListener listener : listeners) {
-            listener.wallContact();
-        }
-
     }
 
     @Override
