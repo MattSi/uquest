@@ -86,9 +86,7 @@ public class ConversationUI extends Window {
     //TODO, hard code for now, how to locate NPC's conversation ID
     public void loadConversation(ActionableComponent actionCmp) {
         this.getTitleLabel().setText("");
-
         clearDialog();
-
 
         final ConversationGraph g = json.fromJson(ConversationGraph.class, Gdx.files.internal(actionCmp.talkScript));
         setConversationGraph(g);

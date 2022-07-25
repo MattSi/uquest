@@ -120,17 +120,14 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
 
     @Override
     public void pause() {
-
     }
 
     @Override
     public void resume() {
-
     }
 
     @Override
     public void hide() {
-
     }
 
     @Override
@@ -167,9 +164,11 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
                 }
             }
             case MessageType.MSG_PLAYER_TALK_TO_NPC -> {
-                ActionableComponent gameObj = (ActionableComponent) msg.extraInfo;
-                conversationUI.loadConversation(gameObj);
-                onConversationUIOpen();
+                if(!conversationUI.isVisible()) {
+                    ActionableComponent gameObj = (ActionableComponent) msg.extraInfo;
+                    conversationUI.loadConversation(gameObj);
+                    onConversationUIOpen();
+                }
             }
         }
         return true;

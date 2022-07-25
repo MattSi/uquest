@@ -11,6 +11,7 @@ import com.badlogic.gdx.ai.msg.Telegraph;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import org.bigorange.game.Utils;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.EntityEngine;
 import org.bigorange.game.ecs.component.*;
@@ -34,10 +35,12 @@ public class PlayerControlSystem extends IteratingSystem implements
     private boolean isShooting;
     private Vector3 shootingTarget;
     private boolean actionPressed = false;
+    private boolean selectPressed = false;
     protected boolean keyInputListenerEnabled;
 
     public PlayerControlSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
-        super(Family.all(PlayerComponent.class, Box2DComponent.class, AnimationComponent2.class).get());
+        super(Family.all(PlayerComponent.class, Box2DComponent.class,
+                AnimationComponent2.class).get());
         this.ecsEngine = ecsEngine;
         this.camera = camera;
         directionChange = false;
@@ -57,6 +60,7 @@ public class PlayerControlSystem extends IteratingSystem implements
         final SpeedComponent speedCmp = EntityEngine.speedCmpMapper.get(entity);
         final InteractComponent interactCmp = EntityEngine.interactCmpMapper.get(entity);
         b2dCmp.positionBeforeUpdate.set(b2dCmp.body.getPosition());
+
 
         if (directionChange) {
             directionChange = false;
@@ -81,6 +85,15 @@ public class PlayerControlSystem extends IteratingSystem implements
 
             interactCmp.interact = true;
         }
+
+        if (selectPressed) {
+            selectPressed = false;
+            if(playerCmp.rollingTriggerOff()) {
+                entity.add(ecsEngine.createComponent(RollingComponent.class));
+            }
+        }
+//        Gdx.app.log(TAG, "VX: " + speedCmp.velocity.x + " VY:" + speedCmp.velocity.y +
+//                " XF: " + xFactor + "  YF: " + yFactor + "DirChg:" + directionChange);
     }
 
 
@@ -127,6 +140,9 @@ public class PlayerControlSystem extends IteratingSystem implements
             case Map:
                 MessageManager.getInstance().dispatchMessage(0.0f, this, MessageType.MSG_PLAYER_CHANGE_MAP, "map/battle2.tmx");
                 break;
+            case SELECT:
+                selectPressed = true;
+                break;
             default:
                 // nothing to do
                 break;
@@ -152,10 +168,28 @@ public class PlayerControlSystem extends IteratingSystem implements
                 directionChange = true;
                 yFactor = manager.isKeyDown(UP) ? 1 : 0;
                 break;
+            case SELECT:
+                selectPressed = true;
+                break;
             default:
                 // nothing to do
                 break;
         }
+    }
+
+    public void refreshKeys() {
+        final InputManager manager = Utils.getInputManager();
+        int left = manager.isKeyDown(LEFT) ? -1 : 0;
+        int right = manager.isKeyDown(RIGHT) ? 1 : 0;
+        int up = manager.isKeyDown(UP) ? 1 : 0;
+        int down = manager.isKeyDown(DOWN) ? -1 : 0;
+
+        xFactor = right + left;
+        yFactor = up + down;
+
+        // todo, fixme, using BOX2D DYNAMIC
+        directionChange = true;
+
     }
 
     @Override

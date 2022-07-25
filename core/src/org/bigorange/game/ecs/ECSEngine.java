@@ -59,6 +59,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new TargetLostSystem());
         addSystem(new AnimationTimerSystem2());
         addSystem(new AnimationSystem(gameCamera));
+        addSystem(new RollingSystem());
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
 
@@ -123,14 +124,14 @@ public class ECSEngine extends EntityEngine {
     }
 
 
-    public void addNpc2(Vector2 spawnLocation, String npcId, GameObjectFactory.GameObjectName npcName){
+    public void addNpc2(Vector2 spawnLocation, String npcId, GameObjectFactory.GameObjectName npcName) {
         GameObjectFactory gof = GameObjectFactory.getInstance();
         GameObjectConfig cfg = gof.getGameObjectConfig(npcName);
 
         final Entity npc = createEntity();
 
         // 添加基础Component
-        GameObjectComponent2 goCmp2 = createBasicComponent(cfg,spawnLocation);
+        GameObjectComponent2 goCmp2 = createBasicComponent(cfg, spawnLocation);
         npc.add(goCmp2);
 
         // 添加动画Component
@@ -138,7 +139,7 @@ public class ECSEngine extends EntityEngine {
         npc.add(aniCmp2);
 
         // 添加NPC的行为
-        if(!Utils.isStrNullOrEmpty(cfg.getConversationConfigPath())){
+        if (!Utils.isStrNullOrEmpty(cfg.getConversationConfigPath())) {
             final ActionableComponent actionCmp = createComponent(ActionableComponent.class);
             actionCmp.type = ActionType.TALK;
             actionCmp.talkScript = cfg.getConversationConfigPath();
@@ -226,7 +227,7 @@ public class ECSEngine extends EntityEngine {
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
 
         final GameObjectComponent gameObjCmp = createComponent(GameObjectComponent.class);
-        gameObjCmp.id = MathUtils.random(10000,99999);
+        gameObjCmp.id = MathUtils.random(10000, 99999);
         gameObjCmp.type = GameObjectType.ENEMY;
         gameObjCmp.state = GameObjectState.IDLED;
 
@@ -360,6 +361,7 @@ public class ECSEngine extends EntityEngine {
 
     /**
      * 添加地图对象
+     *
      * @param gameObj
      * @param animation
      */
@@ -402,15 +404,15 @@ public class ECSEngine extends EntityEngine {
         gameObjCmp.id = gameObj.getId();
         gameObjCmp.type = gameObj.getType();
         gameObjCmp.state = GameObjectState.IDLED;
-        gameObjCmp.isMapGenerated=true;
-        gameObjCmp.birthTime=System.nanoTime();
+        gameObjCmp.isMapGenerated = true;
+        gameObjCmp.birthTime = System.nanoTime();
         gameObjEntity.add(gameObjCmp);
 
         final MapGeneratedComponent mapCmp = createComponent(MapGeneratedComponent.class);
         gameObjEntity.add(mapCmp);
 
 
-        if(gameObj.isSensor()){
+        if (gameObj.isSensor()) {
             // create sensor
             final CircleShape circleShape = new CircleShape();
             circleShape.setRadius(1f);
@@ -441,12 +443,13 @@ public class ECSEngine extends EntityEngine {
 
     /**
      * Create Basic GameObject Component
+     *
      * @param cfg
      * @param spawnLocation
      * @return
      */
-    private GameObjectComponent2 createBasicComponent(GameObjectConfig cfg, Vector2 spawnLocation){
-        if(cfg == null){
+    private GameObjectComponent2 createBasicComponent(GameObjectConfig cfg, Vector2 spawnLocation) {
+        if (cfg == null) {
             throw new GdxRuntimeException("Cannot create Basic Component, because GameObjectConfig is null");
         }
         final GameObjectComponent2 component = createComponent(GameObjectComponent2.class);
@@ -462,11 +465,12 @@ public class ECSEngine extends EntityEngine {
 
     /**
      * Create Animation component
+     *
      * @param cfg
      * @return
      */
-    private AnimationComponent2 createAnimationComponent(GameObjectConfig cfg){
-        if(cfg == null){
+    private AnimationComponent2 createAnimationComponent(GameObjectConfig cfg) {
+        if (cfg == null) {
             throw new GdxRuntimeException("Cannot create Basic Component, because GameObjectConfig is null");
         }
         final AnimationComponent2 component = createComponent(AnimationComponent2.class);
@@ -476,6 +480,7 @@ public class ECSEngine extends EntityEngine {
                     (AnimationType.class);
             component.aniType = AnimationType.IDLE;
             component.aniTimer = 0f;
+            component.isEnable = true;
             for (GameObjectConfig.AnimationConfig animationCfg : animations) {
                 /**
                  * 1. get atlasRegion

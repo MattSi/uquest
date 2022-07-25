@@ -184,6 +184,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
+        final RollingComponent rollingCmp = ECSEngine.rollingCmpMapper.get(entity);
 
         /**
          * 1. find current animation type
@@ -200,14 +201,21 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                 Color.BLACK, Color.GRAY);
 
 
-        keyFrame.setColor(Color.WHITE);
+
         keyFrame.setOriginCenter();
         keyFrame.setBounds(
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.currAnimationWidth* 0.5f),
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.currAnimationHeight* 0.5f),
                 aniCmp.currAnimationWidth, aniCmp.currAnimationHeight);
+        if(rollingCmp != null){
+            final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
+            keyFrame.setColor(rollingCmp.rollingColor);
+            keyFrame.draw(spriteBatch);
+            keyFrame.setColor(defaultColor);
+        } else {
+            keyFrame.draw(spriteBatch);
+        }
 
-        keyFrame.draw(spriteBatch);
     }
 
     private void renderEntity(Entity entity, float alpha) {

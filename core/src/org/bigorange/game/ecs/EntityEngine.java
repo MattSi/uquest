@@ -27,6 +27,7 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     public static ComponentMapper<InteractComponent> interactCmpMapper = ComponentMapper.getFor(InteractComponent.class);
     public static ComponentMapper<ActionableComponent> actionCmpMapper = ComponentMapper.getFor(ActionableComponent.class);
     public static ComponentMapper<CpuCmpClosedToPlayerComponent> cpuCloseToPlayerComMapper = ComponentMapper.getFor(CpuCmpClosedToPlayerComponent.class);
+    public static ComponentMapper<RollingComponent> rollingCmpMapper = ComponentMapper.getFor(RollingComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {

@@ -19,6 +19,7 @@ public class AnimationComponent2 implements Component, Pool.Poolable {
     public int stopFrameIndex;
     public float currAnimationWidth;
     public float currAnimationHeight;
+    public boolean isEnable;
 
     @Override
     public void reset() {
@@ -29,7 +30,7 @@ public class AnimationComponent2 implements Component, Pool.Poolable {
         stopFrameIndex = 0;
         currAnimationHeight = 0f;
         currAnimationWidth = 0f;
-
+        isEnable = true;
     }
 
     public static class AnimationPack<T> {

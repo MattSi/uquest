@@ -9,15 +9,20 @@ import org.bigorange.game.ecs.component.AnimationComponent2;
 
 public class AnimationTimerSystem2 extends IteratingSystem {
     private static final String TAG = AnimationTimerSystem2.class.getSimpleName();
-    public AnimationTimerSystem2(){
+
+    public AnimationTimerSystem2() {
         super(Family.all(AnimationComponent2.class).get());
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
+
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent2 aniCmp = EntityEngine.aniCmpMapper2.get(entity);
+        if (!aniCmp.isEnable) {
+
+            return;
+        }
 
         aniCmp.aniTimer += deltaTime;
-
     }
 }
