@@ -8,12 +8,14 @@ public class RollingComponent implements Component, Pool.Poolable {
     public static final float rollingTime = 0.15f; // 0.15 second
     public float deltaTime = 0f;
     public boolean isTriggered = false;
-    public Color rollingColor;
+    public Color rollingColor = RollingColor.C1.color;
+    public boolean isRolling;
     @Override
     public void reset() {
         deltaTime = 0f;
         isTriggered = false;
-        rollingColor = null;
+        rollingColor = RollingColor.C1.color;
+        isRolling = false;
     }
 
     public boolean isTimeUp() {

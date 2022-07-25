@@ -199,14 +199,12 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         shapeDrawer.filledEllipse(position.x, position.y - aniCmp.currAnimationWidth/2,
                 aniCmp.currAnimationWidth /4, aniCmp.currAnimationHeight/6,0f,
                 Color.BLACK, Color.GRAY);
-
-
-
         keyFrame.setOriginCenter();
         keyFrame.setBounds(
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.x, position.x, alpha) - (aniCmp.currAnimationWidth* 0.5f),
                 MathUtils.lerp(b2dCmp.positionBeforeUpdate.y, position.y, alpha) - (aniCmp.currAnimationHeight* 0.5f),
                 aniCmp.currAnimationWidth, aniCmp.currAnimationHeight);
+
         if(rollingCmp != null){
             final Color defaultColor = Color.valueOf(spriteBatch.getColor().toString());
             keyFrame.setColor(rollingCmp.rollingColor);

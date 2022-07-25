@@ -88,6 +88,9 @@ public class PlayerControlSystem extends IteratingSystem implements
 
         if (selectPressed) {
             selectPressed = false;
+            if(speedCmp.velocity.epsilonEquals(Vector2.Zero)){
+                return;
+            }
             if(playerCmp.rollingTriggerOff()) {
                 entity.add(ecsEngine.createComponent(RollingComponent.class));
             }
