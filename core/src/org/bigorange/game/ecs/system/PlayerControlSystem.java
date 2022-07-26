@@ -88,6 +88,7 @@ public class PlayerControlSystem extends IteratingSystem implements
 
         if (selectPressed) {
             selectPressed = false;
+            // 速度为0时不能翻滚(瞬移)
             if(speedCmp.velocity.epsilonEquals(Vector2.Zero)){
                 return;
             }

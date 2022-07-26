@@ -19,7 +19,6 @@ public class AnimationTimerSystem2 extends IteratingSystem {
     protected void processEntity(Entity entity, float deltaTime) {
         AnimationComponent2 aniCmp = EntityEngine.aniCmpMapper2.get(entity);
         if (!aniCmp.isEnable) {
-
             return;
         }
 

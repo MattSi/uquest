@@ -40,7 +40,7 @@ public class RollingSystem extends IteratingSystem {
         // 结束
         if (rollingCmp.deltaTime > RollingComponent.rollingTime) {
             rollingCmp.isRolling = false;
-            rollingCmp.isTriggered = false;
+            rollingCmp.isJustTriggered = false;
 
             speedCmp.velocity.y /= times;
             speedCmp.velocity.x /= times;
@@ -52,12 +52,13 @@ public class RollingSystem extends IteratingSystem {
             playerControlSystem.setEnabled(true);
             playerControlSystem.refreshKeys();
             aniCmp.isEnable = true;
+            Gdx.app.debug(TAG, "Player rolling end.");
             return;
         }
 
         // 开始
-        if (!rollingCmp.isTriggered) {
-            rollingCmp.isTriggered = true;
+        if (!rollingCmp.isJustTriggered) {
+            rollingCmp.isJustTriggered = true;
             rollingCmp.isRolling = true;
 
             speedCmp.velocity.y *= times;
@@ -68,6 +69,7 @@ public class RollingSystem extends IteratingSystem {
 
             getEngine().getSystem(PlayerControlSystem.class).setEnabled(false);
             aniCmp.isEnable = false;
+            Gdx.app.debug(TAG, "Player rolling start.");
             return;
         }
 

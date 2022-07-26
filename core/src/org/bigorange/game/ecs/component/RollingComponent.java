@@ -7,13 +7,14 @@ import com.badlogic.gdx.utils.Pool;
 public class RollingComponent implements Component, Pool.Poolable {
     public static final float rollingTime = 0.15f; // 0.15 second
     public float deltaTime = 0f;
-    public boolean isTriggered = false;
+    // 刚刚被触发, 用于触发后的第一帧,初始化一些数据
+    public boolean isJustTriggered = false;
     public Color rollingColor = RollingColor.C1.color;
     public boolean isRolling;
     @Override
     public void reset() {
         deltaTime = 0f;
-        isTriggered = false;
+        isJustTriggered = false;
         rollingColor = RollingColor.C1.color;
         isRolling = false;
     }
