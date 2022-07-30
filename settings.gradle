@@ -1,5 +1,1 @@
-include 'desktop', 'android', 'core'
-include 'tests'
-include 'dtree'
-include 'dtree'
-
+include 'core', 'lwjgl3'
