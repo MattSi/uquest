@@ -1,0 +1,35 @@
+{
+  gameObjId : EXPLOSION1
+  state : IDLE
+  direction : DOWN
+  questConfigPath : ""
+  currentQuestId : ""
+  itemTypeId: NONE
+  animationConfig: [
+    {
+      frameDuration: 0.25
+      animationType: IDLE
+      atlasRegion: WEAPONS
+      tileWidth: 64
+      tileHeight: 63
+      stopFrameIndex: 0
+      subTextures: [
+        {
+          value: explosion1.png
+        },
+        {
+          value: explosion2.png
+        },
+        {
+          value: explosion3.png
+        },
+        {
+          value: explosion4.png
+        },
+        {
+          value: explosion5.png
+        },
+      ]
+    }
+  ]
+}

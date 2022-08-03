@@ -40,7 +40,7 @@ public class PlayerControlSystem extends IteratingSystem implements
 
     public PlayerControlSystem(ECSEngine ecsEngine, OrthographicCamera camera) {
         super(Family.all(PlayerComponent.class, Box2DComponent.class,
-                AnimationComponent2.class).get());
+                AnimationComponent.class).get());
         this.ecsEngine = ecsEngine;
         this.camera = camera;
         directionChange = false;

@@ -6,7 +6,7 @@ import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.MathUtils;
 import org.bigorange.game.ecs.EntityEngine;
-import org.bigorange.game.ecs.component.AnimationComponent2;
+import org.bigorange.game.ecs.component.AnimationComponent;
 import org.bigorange.game.ecs.component.InvincibilityComponent;
 import org.bigorange.game.ecs.component.RollingComponent;
 import org.bigorange.game.ecs.component.SpeedComponent;
@@ -30,7 +30,7 @@ public class RollingSystem extends IteratingSystem {
          */
         final RollingComponent rollingCmp = EntityEngine.rollingCmpMapper.get(entity);
         final SpeedComponent speedCmp = EntityEngine.speedCmpMapper.get(entity);
-        final AnimationComponent2 aniCmp = EntityEngine.aniCmpMapper2.get(entity);
+        final AnimationComponent aniCmp = EntityEngine.aniCmpMapper2.get(entity);
         final float times = 6f;
 
         if(rollingCmp == null){

@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import org.bigorange.game.ActionType;
 import org.bigorange.game.Utils;
+import org.bigorange.game.assets.TextureAtlasAssets;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.*;
 import org.bigorange.game.gameobjs.*;
@@ -57,7 +58,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new SteeringArriveSystem());
         addSystem(new InteractSystem());
         addSystem(new TargetLostSystem());
-        addSystem(new AnimationTimerSystem2());
+        addSystem(new AnimationSimpleSystem());
         addSystem(new AnimationSystem(gameCamera));
         addSystem(new RollingSystem());
 
@@ -71,6 +72,14 @@ public class ECSEngine extends EntityEngine {
     // 生成子弹
     public void addBullet(Vector2 start, Vector2 target) {
         final Entity bullet = createEntity();
+        final GameObjectConfig bullet1Cfg = GameObjectFactory.getInstance().
+                getGameObjectConfig(GameObjectFactory.GameObjectName.BULLET1);
+
+        final GameObjectComponent goCmp = createComponent(GameObjectComponent.class);
+        goCmp.birthTime = System.nanoTime();
+        goCmp.id = 2222;
+        goCmp.type = GameObjectType.MISSILE;
+        bullet.add(goCmp);
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.height = 0.2f;
@@ -99,10 +108,26 @@ public class ECSEngine extends EntityEngine {
         shape.dispose();
         bullet.add(b2dCmp);
 
+        // Add Sprite
+        final AnimationSimpleComponent aniCmp = createSimpleAnimationComponent(bullet1Cfg);
+        bullet.add(aniCmp);
 
         final BulletComponent bulletCmp = createComponent(BulletComponent.class);
         bulletCmp.startTime = System.currentTimeMillis();
         bulletCmp.maxSpeed = 8;
+        bulletCmp.target = target;
+
+        float tmp = target.x - start.x;
+        if(MathUtils.isZero(tmp)){
+            if(target.y > start.y){
+                bulletCmp.rotation = 0f;
+            } else {
+                bulletCmp.rotation = 180f;
+            }
+        } else {
+            bulletCmp.rotation = MathUtils.radiansToDegrees* ( MathUtils.PI*3/2 +  MathUtils.atan2((target.y - start.y), (target.x - start.x)));
+        }
+
         bullet.add(bulletCmp);
 
         float rad = MathUtils.atan2((target.y - start.y), (target.x - start.x));
@@ -135,7 +160,7 @@ public class ECSEngine extends EntityEngine {
         npc.add(goCmp2);
 
         // 添加动画Component
-        AnimationComponent2 aniCmp2 = createAnimationComponent(cfg);
+        AnimationComponent aniCmp2 = createAnimationComponent(cfg);
         npc.add(aniCmp2);
 
         // 添加NPC的行为
@@ -221,7 +246,7 @@ public class ECSEngine extends EntityEngine {
         ani4dCmp.aniRight = new Animation<>(0.1f, getKeyFrames(textureRegions[2]), Animation.PlayMode.LOOP);
         ani4dCmp.aniUp = new Animation<>(0.1f, getKeyFrames(textureRegions[3]), Animation.PlayMode.LOOP);
 
-        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        final AnimationSimpleComponent aniCmp = createComponent(AnimationSimpleComponent.class);
         aniCmp.height = aniCmp.width = 32;
 
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
@@ -306,7 +331,7 @@ public class ECSEngine extends EntityEngine {
         player.add(basicCmp);
 
         // 添加动画Component
-        final AnimationComponent2 animationCmp = createAnimationComponent(cfg);
+        final AnimationComponent animationCmp = createAnimationComponent(cfg);
         player.add(animationCmp);
 
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
@@ -394,7 +419,7 @@ public class ECSEngine extends EntityEngine {
         gameObjEntity.add(b2dCmp);
 
 
-        final AnimationComponent aniCmp = createComponent(AnimationComponent.class);
+        final AnimationSimpleComponent aniCmp = createComponent(AnimationSimpleComponent.class);
         aniCmp.height = boundaries.height;
         aniCmp.width = boundaries.width;
         aniCmp.animation = animation;
@@ -463,50 +488,117 @@ public class ECSEngine extends EntityEngine {
         return component;
     }
 
+
     /**
      * Create Animation component
      *
      * @param cfg
      * @return
      */
-    private AnimationComponent2 createAnimationComponent(GameObjectConfig cfg) {
+    private AnimationComponent createAnimationComponent(GameObjectConfig cfg) {
         if (cfg == null) {
-            throw new GdxRuntimeException("Cannot create Basic Component, because GameObjectConfig is null");
+            throw new GdxRuntimeException("Cannot create Animation2 Component, because GameObjectConfig is null");
         }
-        final AnimationComponent2 component = createComponent(AnimationComponent2.class);
+        final AnimationComponent component = createComponent(AnimationComponent.class);
         Array<GameObjectConfig.AnimationConfig> animations = cfg.getAnimationConfig();
         if (animations != null && animations.size > 0) {
-            component.animations = new EnumMap<AnimationType, AnimationComponent2.AnimationPack<Sprite>>
+            component.animations = new EnumMap<AnimationType, AnimationComponent.AnimationPack<Sprite>>
                     (AnimationType.class);
             component.aniType = AnimationType.IDLE;
             component.aniTimer = 0f;
             component.isEnable = true;
+            //animations.
             for (GameObjectConfig.AnimationConfig animationCfg : animations) {
                 /**
                  * 1. get atlasRegion
-                 * 2. get gridPoints to divide.
+                 * 2. if gridPoints is valid, then get gridPoints to divide.
+                 * 3. if subTextures is valid, then use subTextures to set animations
                  */
                 String atlasRegionName = animationCfg.getAtlasRegion();
                 AnimationType animationType = animationCfg.getAnimationType();
                 Array<GridPoint2> points = animationCfg.getGridPoints();
-                TextureAtlas.AtlasRegion region = Utils.getResourceManager().get("characters/characters.atlas", TextureAtlas.class).
-                        findRegion(atlasRegionName);
-                TextureRegion[][] split = region.split(animationCfg.getTileWidth(), animationCfg.getTileHeight());
+                Array<String> subTextures = animationCfg.getSubTextures();
+                if (points != null && points.size != 0) {
+                    final TextureAtlasAssets textureAtlasAssets = TextureAtlasAssets.valueOf(cfg.getAtlas());
+                    TextureAtlas.AtlasRegion region = Utils.getResourceManager().get(textureAtlasAssets.getFilePath(), TextureAtlas.class).
+                            findRegion(atlasRegionName);
+                    TextureRegion[][] split = region.split(animationCfg.getTileWidth(), animationCfg.getTileHeight());
 
-                AnimationComponent2.AnimationPack<Sprite> aPack = new AnimationComponent2.AnimationPack<>();
-                Sprite[] keyFrames = new Sprite[points.size];
-                for (int i = 0; i < points.size; i++) {
-                    keyFrames[i] = new Sprite(split[points.get(i).x][points.get(i).y]);
+
+                    AnimationComponent.AnimationPack<Sprite> aPack = new AnimationComponent.AnimationPack<>();
+                    Sprite[] keyFrames = new Sprite[points.size];
+                    for (int i = 0; i < points.size; i++) {
+                        keyFrames[i] = new Sprite(split[points.get(i).x][points.get(i).y]);
+                    }
+                    Animation<Sprite> animation = new Animation<>(animationCfg.getFrameDuration(), keyFrames);
+                    animation.setPlayMode(Animation.PlayMode.LOOP);
+                    aPack.animation = animation;
+                    aPack.height = animationCfg.getTileHeight();
+                    aPack.width = animationCfg.getTileWidth();
+                    component.animations.put(animationType, aPack);
+                    component.stopFrameIndex = animationCfg.getStopFrameIndex();
+                } else if (subTextures != null && subTextures.size != 0) {
+                    final TextureAtlasAssets textureAtlasAssets = TextureAtlasAssets.valueOf(animationCfg.getAtlasRegion());
+                    Sprite[] keyFrames = new Sprite[subTextures.size];
+
+                    for (int i = 0; i < subTextures.size; i++) {
+                        String subTexture = subTextures.get(i);
+                        final TextureAtlas.AtlasRegion region = Utils.getResourceManager().
+                                get(textureAtlasAssets.getFilePath(), TextureAtlas.class).findRegion(subTexture);
+                        keyFrames[i] = new Sprite(region);
+                    }
+                    AnimationComponent.AnimationPack<Sprite> aPack = new AnimationComponent.AnimationPack<>();
+                    Animation<Sprite> animation = new Animation<Sprite>(animationCfg.getFrameDuration(), keyFrames);
+                    animation.setPlayMode(Animation.PlayMode.NORMAL);
+                    aPack.animation = animation;
+                    aPack.height = animationCfg.getTileHeight();
+                    aPack.width = animationCfg.getTileWidth();
+                    component.animations.put(animationType, aPack);
+                    component.stopFrameIndex = animationCfg.getStopFrameIndex();
+
                 }
-                Animation<Sprite> animation = new Animation<>(animationCfg.getFrameDuration(), keyFrames);
-                animation.setPlayMode(Animation.PlayMode.LOOP);
-                aPack.animation = animation;
-                aPack.height = animationCfg.getTileHeight();
-                aPack.width = animationCfg.getTileWidth();
-                component.animations.put(animationType, aPack);
-                component.stopFrameIndex = animationCfg.getStopFrameIndex();
             }
         }
+        return component;
+    }
+
+    /**
+     * Create Simple Animation Component
+     *
+     * @param cfg
+     * @return
+     */
+    private AnimationSimpleComponent createSimpleAnimationComponent(GameObjectConfig cfg) {
+        if (cfg == null) {
+            throw new GdxRuntimeException("Cannot create Animation Component, because GameObjectConfig is null");
+        }
+
+        final AnimationSimpleComponent component = createComponent(AnimationSimpleComponent.class);
+        Array<GameObjectConfig.AnimationConfig> animations = cfg.getAnimationConfig();
+        // 简单动画,只取数组中第一个元素
+        // 简单动画, 默认只有subTexture模式
+        if (animations != null && animations.size > 0) {
+            //component.animation = new Animation<Sprite>()
+            GameObjectConfig.AnimationConfig animationCfg = animations.get(0);
+            final Array<String> subTextures = animationCfg.getSubTextures();
+            final TextureAtlasAssets textureAtlasAssets = TextureAtlasAssets.valueOf(animationCfg.getAtlasRegion());
+            if (subTextures != null && subTextures.size != 0) {
+                Sprite[] keyFrames = new Sprite[subTextures.size];
+
+                for(int i=0; i<subTextures.size; i++){
+                    String subTexture = subTextures.get(i);
+                    final TextureAtlas.AtlasRegion region = Utils.getResourceManager().
+                            get(textureAtlasAssets.getFilePath(), TextureAtlas.class).findRegion(subTexture);
+                    keyFrames[i] = new Sprite(region);
+                }
+                component.animation = new Animation<Sprite>(animationCfg.getFrameDuration(), keyFrames);
+                component.height = animationCfg.getTileHeight();
+                component.width = animationCfg.getTileWidth();
+            }
+
+        }
+
+
         return component;
     }
 }

@@ -5,22 +5,22 @@ import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import com.badlogic.gdx.Gdx;
 import org.bigorange.game.ecs.EntityEngine;
-import org.bigorange.game.ecs.component.AnimationComponent2;
+import org.bigorange.game.ecs.component.AnimationSimpleComponent;
 
-public class AnimationTimerSystem2 extends IteratingSystem {
-    private static final String TAG = AnimationTimerSystem2.class.getSimpleName();
+import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
-    public AnimationTimerSystem2() {
-        super(Family.all(AnimationComponent2.class).get());
+public class AnimationSimpleSystem extends IteratingSystem {
+    private static final String TAG = AnimationSimpleSystem.class.getSimpleName();
+
+    public AnimationSimpleSystem() {
+        super(Family.all(AnimationSimpleComponent.class).get());
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        AnimationComponent2 aniCmp = EntityEngine.aniCmpMapper2.get(entity);
-        if (!aniCmp.isEnable) {
-            return;
-        }
+        AnimationSimpleComponent aniCmp = EntityEngine.aniCmpMapper.get(entity);
+
 
         aniCmp.aniTimer += deltaTime;
     }

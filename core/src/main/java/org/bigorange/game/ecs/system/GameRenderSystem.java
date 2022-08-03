@@ -57,14 +57,14 @@ public class GameRenderSystem implements RenderSystem, MapListener {
 
     public GameRenderSystem(final EntityEngine entityEngine, final World world, final OrthographicCamera camera) {
         this.gameObjectsForRender = entityEngine.
-                getEntitiesFor(Family.all(AnimationComponent.class,
+                getEntitiesFor(Family.all(AnimationSimpleComponent.class,
                                 GameObjectComponent.class,
                                 MapGeneratedComponent.class,
                                 Box2DComponent.class).
                         exclude(RemoveComponent.class, PlayerComponent.class).get());
 
         this.charactersForRender = entityEngine.
-                getEntitiesFor(Family.all(AnimationComponent2.class,
+                getEntitiesFor(Family.all(AnimationComponent.class,
                                 Box2DComponent.class,
                                 PlayerComponent.class,
                                 SpeedComponent.class).
@@ -77,14 +77,14 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                         exclude(RemoveComponent.class).get());
 
         this.enemiesForRender = entityEngine.getEntitiesFor(Family.all(
-                AnimationComponent.class,
+                AnimationSimpleComponent.class,
                 Animation4DirectionsComponent.class,
                 SpeedComponent.class,
                 Box2DComponent.class).exclude(RemoveComponent.class).get());
 
         this.npcsForRender = entityEngine.getEntitiesFor(Family.all(
                 CpuComponent.class,
-                AnimationComponent2.class,
+                AnimationComponent.class,
                 GameObjectComponent2.class).get());
 
         this.world = world;
@@ -138,15 +138,42 @@ public class GameRenderSystem implements RenderSystem, MapListener {
             renderPlayer(entity, alpha);
         }
 
+        for (Entity entity : bulletsForRender) {
+            renderBullet(entity, alpha);
+        }
+
         //spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.end();
 
-        b2dRenderer.render(world, gameCamera.combined);
+        //b2dRenderer.render(world, gameCamera.combined);
         //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
     }
 
+    private void renderBullet(Entity entity, float alpha){
+        final AnimationSimpleComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
+        final BulletComponent bulletCmp = ECSEngine.bulletCmpMapper.get(entity);
+
+        /**
+         * 1. find current animation type
+         * 2. load animation key frame.
+         */
+        //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
+        final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
+        final Vector2 position = b2dCmp.body.getPosition();
+
+
+        keyFrame.setOriginCenter();
+        keyFrame.setBounds(position.x, position.y, aniCmp.width * UNIT_SCALE, aniCmp.height * UNIT_SCALE);
+        keyFrame.setRotation(bulletCmp.rotation);
+        keyFrame.draw(spriteBatch);
+
+        Gdx.app.log(TAG, "Width: "+ aniCmp.width + " Height: "+ aniCmp.height);
+        //Gdx.app.log(TAG, "Position: " + position.toString());
+    }
+
     private void renderNpc(Entity entity, float alpha){
-        final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper2.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final CpuCmpClosedToPlayerComponent cpuClosedToPlayerCmp = ECSEngine.cpuCloseToPlayerComMapper.get(entity);
 
@@ -155,7 +182,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
          * 2. load animation key frame.
          */
         //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
-        final AnimationComponent2.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
+        final AnimationComponent.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
         final Sprite keyFrame = currAniPack.animation.getKeyFrame(aniCmp.aniTimer, true);
         final Vector2 position = b2dCmp.body.getPosition();
 
@@ -178,10 +205,9 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         } else {
             keyFrame.draw(spriteBatch);
         }
-
     }
     private void renderPlayer(Entity entity, float alpha){
-        final AnimationComponent2 aniCmp = ECSEngine.aniCmpMapper2.get(entity);
+        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper2.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
         final RollingComponent rollingCmp = ECSEngine.rollingCmpMapper.get(entity);
@@ -190,8 +216,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
          * 1. find current animation type
          * 2. load animation key frame.
          */
-        //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
-        final AnimationComponent2.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
+        final AnimationComponent.AnimationPack<Sprite> currAniPack = aniCmp.animations.get(aniCmp.aniType);
         final Sprite keyFrame = currAniPack.animation.getKeyFrame(aniCmp.aniTimer, true);
         final Vector2 position = b2dCmp.body.getPosition();
 
@@ -219,7 +244,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     }
 
     private void renderEntity(Entity entity, float alpha) {
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final AnimationSimpleComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final PlayerComponent playerCmp = ECSEngine.playerCmpMapper.get(entity);
 
@@ -246,7 +271,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
     }
 
     private void renderEnemy(Entity entity, float alpha) {
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final AnimationSimpleComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final GameObjectComponent gameObjectCmp = ECSEngine.gameObjCmpMapper.get(entity);
 

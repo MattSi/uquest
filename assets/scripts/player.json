@@ -6,6 +6,7 @@ conversationConfigPath : ""
 questConfigPath : ""
 currentQuestId : ""
 itemTypeId: NONE
+atlas: CHARACTERS
 inventory : [
 	{
 		value: ARMOR04

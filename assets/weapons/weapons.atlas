@@ -1,0 +1,1033 @@
+weapons.png
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+barrelBlack_side.png
+  rotate: false
+  xy: 323, 150
+  size: 20, 28
+  orig: 20, 28
+  offset: 0, 0
+  index: -1
+barrelBlack_top.png
+  rotate: false
+  xy: 299, 150
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+barrelGreen_side.png
+  rotate: false
+  xy: 324, 359
+  size: 20, 28
+  orig: 20, 28
+  offset: 0, 0
+  index: -1
+barrelGreen_top.png
+  rotate: false
+  xy: 300, 366
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+barrelRed_side.png
+  rotate: false
+  xy: 324, 206
+  size: 20, 28
+  orig: 20, 28
+  offset: 0, 0
+  index: -1
+barrelRed_top.png
+  rotate: false
+  xy: 300, 342
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+barrelRust_side.png
+  rotate: false
+  xy: 324, 178
+  size: 20, 28
+  orig: 20, 28
+  offset: 0, 0
+  index: -1
+barrelRust_top.png
+  rotate: false
+  xy: 300, 318
+  size: 24, 24
+  orig: 24, 24
+  offset: 0, 0
+  index: -1
+barricadeMetal.png
+  rotate: false
+  xy: 296, 184
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+barricadeWood.png
+  rotate: false
+  xy: 298, 72
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+bulletBlue1.png
+  rotate: false
+  xy: 194, 46
+  size: 4, 10
+  orig: 4, 10
+  offset: 0, 0
+  index: -1
+bulletBlue1_outline.png
+  rotate: false
+  xy: 181, 106
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+bulletBlue2.png
+  rotate: false
+  xy: 173, 106
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+bulletBlue2_outline.png
+  rotate: false
+  xy: 136, 310
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: -1
+bulletBlue3.png
+  rotate: false
+  xy: 201, 106
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+bulletBlue3_outline.png
+  rotate: false
+  xy: 370, 188
+  size: 8, 18
+  orig: 8, 18
+  offset: 0, 0
+  index: -1
+bulletDark1.png
+  rotate: false
+  xy: 189, 106
+  size: 4, 10
+  orig: 4, 10
+  offset: 0, 0
+  index: -1
+bulletDark1_outline.png
+  rotate: false
+  xy: 80, 176
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+bulletDark2.png
+  rotate: false
+  xy: 370, 104
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+bulletDark2_outline.png
+  rotate: false
+  xy: 148, 310
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: -1
+bulletDark3.png
+  rotate: false
+  xy: 197, 106
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+bulletDark3_outline.png
+  rotate: false
+  xy: 370, 86
+  size: 8, 18
+  orig: 8, 18
+  offset: 0, 0
+  index: -1
+bulletGreen1.png
+  rotate: false
+  xy: 190, 46
+  size: 4, 10
+  orig: 4, 10
+  offset: 0, 0
+  index: -1
+bulletGreen1_outline.png
+  rotate: false
+  xy: 310, 22
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+bulletGreen2.png
+  rotate: false
+  xy: 112, 176
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+bulletGreen2_outline.png
+  rotate: false
+  xy: 124, 310
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: -1
+bulletGreen3.png
+  rotate: false
+  xy: 186, 46
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+bulletGreen3_outline.png
+  rotate: false
+  xy: 370, 224
+  size: 8, 18
+  orig: 8, 18
+  offset: 0, 0
+  index: -1
+bulletRed1.png
+  rotate: false
+  xy: 120, 244
+  size: 4, 10
+  orig: 4, 10
+  offset: 0, 0
+  index: -1
+bulletRed1_outline.png
+  rotate: false
+  xy: 96, 176
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+bulletRed2.png
+  rotate: false
+  xy: 88, 176
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+bulletRed2_outline.png
+  rotate: false
+  xy: 160, 310
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: -1
+bulletRed3.png
+  rotate: false
+  xy: 182, 46
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+bulletRed3_outline.png
+  rotate: false
+  xy: 206, 272
+  size: 8, 18
+  orig: 8, 18
+  offset: 0, 0
+  index: -1
+bulletSand1.png
+  rotate: false
+  xy: 198, 46
+  size: 4, 10
+  orig: 4, 10
+  offset: 0, 0
+  index: -1
+bulletSand1_outline.png
+  rotate: false
+  xy: 72, 176
+  size: 8, 14
+  orig: 8, 14
+  offset: 0, 0
+  index: -1
+bulletSand2.png
+  rotate: false
+  xy: 64, 176
+  size: 8, 12
+  orig: 8, 12
+  offset: 0, 0
+  index: -1
+bulletSand2_outline.png
+  rotate: false
+  xy: 359, 142
+  size: 12, 16
+  orig: 12, 16
+  offset: 0, 0
+  index: -1
+bulletSand3.png
+  rotate: false
+  xy: 193, 106
+  size: 4, 14
+  orig: 4, 14
+  offset: 0, 0
+  index: -1
+bulletSand3_outline.png
+  rotate: false
+  xy: 370, 206
+  size: 8, 18
+  orig: 8, 18
+  offset: 0, 0
+  index: -1
+crateMetal.png
+  rotate: false
+  xy: 298, 100
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+crateMetal_side.png
+  rotate: false
+  xy: 298, 240
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+crateWood.png
+  rotate: false
+  xy: 296, 212
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+crateWood_side.png
+  rotate: false
+  xy: 298, 268
+  size: 28, 28
+  orig: 28, 28
+  offset: 0, 0
+  index: -1
+explosion1.png
+  rotate: false
+  xy: 0, 326
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+explosion2.png
+  rotate: false
+  xy: 64, 68
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+explosion3.png
+  rotate: false
+  xy: 0, 128
+  size: 64, 63
+  orig: 64, 63
+  offset: 0, 0
+  index: -1
+explosion4.png
+  rotate: false
+  xy: 218, 350
+  size: 46, 45
+  orig: 46, 45
+  offset: 0, 0
+  index: -1
+explosion5.png
+  rotate: false
+  xy: 64, 124
+  size: 53, 52
+  orig: 53, 52
+  offset: 0, 0
+  index: -1
+explosionSmoke1.png
+  rotate: false
+  xy: 60, 330
+  size: 60, 60
+  orig: 60, 60
+  offset: 0, 0
+  index: -1
+explosionSmoke2.png
+  rotate: false
+  xy: 63, 191
+  size: 57, 56
+  orig: 57, 56
+  offset: 0, 0
+  index: -1
+explosionSmoke3.png
+  rotate: false
+  xy: 0, 191
+  size: 63, 63
+  orig: 63, 63
+  offset: 0, 0
+  index: -1
+explosionSmoke4.png
+  rotate: false
+  xy: 172, 350
+  size: 46, 45
+  orig: 46, 45
+  offset: 0, 0
+  index: -1
+explosionSmoke5.png
+  rotate: false
+  xy: 117, 124
+  size: 53, 52
+  orig: 53, 52
+  offset: 0, 0
+  index: -1
+fenceRed.png
+  rotate: false
+  xy: 124, 294
+  size: 48, 16
+  orig: 48, 16
+  offset: 0, 0
+  index: -1
+fenceYellow.png
+  rotate: false
+  xy: 120, 228
+  size: 52, 16
+  orig: 52, 16
+  offset: 0, 0
+  index: -1
+oilSpill_large.png
+  rotate: false
+  xy: 124, 244
+  size: 50, 50
+  orig: 50, 50
+  offset: 0, 0
+  index: -1
+oilSpill_small.png
+  rotate: false
+  xy: 296, 22
+  size: 14, 14
+  orig: 14, 14
+  offset: 0, 0
+  index: -1
+sandbagBeige.png
+  rotate: false
+  xy: 174, 272
+  size: 32, 22
+  orig: 32, 22
+  offset: 0, 0
+  index: -1
+sandbagBeige_open.png
+  rotate: false
+  xy: 172, 216
+  size: 42, 28
+  orig: 42, 28
+  offset: 0, 0
+  index: -1
+sandbagBrown.png
+  rotate: false
+  xy: 296, 0
+  size: 32, 22
+  orig: 32, 22
+  offset: 0, 0
+  index: -1
+sandbagBrown_open.png
+  rotate: false
+  xy: 174, 244
+  size: 42, 28
+  orig: 42, 28
+  offset: 0, 0
+  index: -1
+shotLarge.png
+  rotate: false
+  xy: 324, 334
+  size: 20, 25
+  orig: 20, 25
+  offset: 0, 0
+  index: -1
+shotOrange.png
+  rotate: false
+  xy: 342, 234
+  size: 16, 28
+  orig: 16, 28
+  offset: 0, 0
+  index: -1
+shotRed.png
+  rotate: false
+  xy: 324, 296
+  size: 21, 38
+  orig: 21, 38
+  offset: 0, 0
+  index: -1
+shotThin.png
+  rotate: false
+  xy: 370, 0
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+specialBarrel1.png
+  rotate: false
+  xy: 325, 128
+  size: 14, 22
+  orig: 14, 22
+  offset: 0, 0
+  index: -1
+specialBarrel1_outline.png
+  rotate: false
+  xy: 326, 72
+  size: 18, 26
+  orig: 18, 26
+  offset: 0, 0
+  index: -1
+specialBarrel2.png
+  rotate: false
+  xy: 344, 366
+  size: 12, 24
+  orig: 12, 24
+  offset: 0, 0
+  index: -1
+specialBarrel2_outline.png
+  rotate: false
+  xy: 342, 262
+  size: 16, 28
+  orig: 16, 28
+  offset: 0, 0
+  index: -1
+specialBarrel3.png
+  rotate: false
+  xy: 370, 306
+  size: 10, 28
+  orig: 10, 28
+  offset: 0, 0
+  index: -1
+specialBarrel3_outline.png
+  rotate: false
+  xy: 344, 334
+  size: 14, 32
+  orig: 14, 32
+  offset: 0, 0
+  index: -1
+specialBarrel4.png
+  rotate: false
+  xy: 369, 274
+  size: 10, 32
+  orig: 10, 32
+  offset: 0, 0
+  index: -1
+specialBarrel4_outline.png
+  rotate: false
+  xy: 344, 188
+  size: 14, 36
+  orig: 14, 36
+  offset: 0, 0
+  index: -1
+specialBarrel5.png
+  rotate: false
+  xy: 358, 188
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+specialBarrel5_outline.png
+  rotate: false
+  xy: 326, 234
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+specialBarrel6.png
+  rotate: false
+  xy: 370, 26
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+specialBarrel6_outline.png
+  rotate: false
+  xy: 346, 0
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+specialBarrel7.png
+  rotate: false
+  xy: 370, 242
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+specialBarrel7_outline.png
+  rotate: false
+  xy: 345, 290
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankBlue_barrel1.png
+  rotate: false
+  xy: 358, 90
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+tankBlue_barrel1_outline.png
+  rotate: false
+  xy: 326, 264
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+tankBlue_barrel2.png
+  rotate: false
+  xy: 372, 142
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankBlue_barrel2_outline.png
+  rotate: false
+  xy: 368, 350
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankBlue_barrel3.png
+  rotate: false
+  xy: 378, 220
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankBlue_barrel3_outline.png
+  rotate: false
+  xy: 360, 158
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankBody_bigRed.png
+  rotate: false
+  xy: 170, 120
+  size: 48, 48
+  orig: 48, 48
+  offset: 0, 0
+  index: -1
+tankBody_bigRed_outline.png
+  rotate: false
+  xy: 121, 68
+  size: 52, 52
+  orig: 52, 52
+  offset: 0, 0
+  index: -1
+tankBody_blue.png
+  rotate: false
+  xy: 257, 42
+  size: 38, 38
+  orig: 38, 38
+  offset: 0, 0
+  index: -1
+tankBody_blue_outline.png
+  rotate: false
+  xy: 216, 0
+  size: 42, 42
+  orig: 42, 42
+  offset: 0, 0
+  index: -1
+tankBody_dark.png
+  rotate: false
+  xy: 218, 132
+  size: 38, 36
+  orig: 38, 36
+  offset: 0, 0
+  index: -1
+tankBody_darkLarge.png
+  rotate: false
+  xy: 172, 294
+  size: 48, 56
+  orig: 48, 56
+  offset: 0, 0
+  index: -1
+tankBody_darkLarge_outline.png
+  rotate: false
+  xy: 120, 330
+  size: 52, 60
+  orig: 52, 60
+  offset: 0, 0
+  index: -1
+tankBody_dark_outline.png
+  rotate: false
+  xy: 216, 168
+  size: 42, 40
+  orig: 42, 40
+  offset: 0, 0
+  index: -1
+tankBody_green.png
+  rotate: false
+  xy: 258, 230
+  size: 38, 36
+  orig: 38, 36
+  offset: 0, 0
+  index: -1
+tankBody_green_outline.png
+  rotate: false
+  xy: 216, 208
+  size: 42, 40
+  orig: 42, 40
+  offset: 0, 0
+  index: -1
+tankBody_huge.png
+  rotate: false
+  xy: 64, 0
+  size: 58, 68
+  orig: 58, 68
+  offset: 0, 0
+  index: -1
+tankBody_huge_outline.png
+  rotate: false
+  xy: 0, 254
+  size: 62, 72
+  orig: 62, 72
+  offset: 0, 0
+  index: -1
+tankBody_red.png
+  rotate: false
+  xy: 295, 36
+  size: 34, 36
+  orig: 34, 36
+  offset: 0, 0
+  index: -1
+tankBody_red_outline.png
+  rotate: false
+  xy: 260, 80
+  size: 38, 40
+  orig: 38, 40
+  offset: 0, 0
+  index: -1
+tankBody_sand.png
+  rotate: false
+  xy: 258, 0
+  size: 38, 36
+  orig: 38, 36
+  offset: 0, 0
+  index: -1
+tankBody_sand_outline.png
+  rotate: false
+  xy: 218, 92
+  size: 42, 40
+  orig: 42, 40
+  offset: 0, 0
+  index: -1
+tankDark_barrel1.png
+  rotate: false
+  xy: 344, 70
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+tankDark_barrel1_outline.png
+  rotate: false
+  xy: 326, 98
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+tankDark_barrel2.png
+  rotate: false
+  xy: 378, 0
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankDark_barrel2_outline.png
+  rotate: false
+  xy: 357, 290
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankDark_barrel3.png
+  rotate: false
+  xy: 379, 112
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankDark_barrel3_outline.png
+  rotate: false
+  xy: 346, 30
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankGreen_barrel1.png
+  rotate: false
+  xy: 359, 116
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+tankGreen_barrel1_outline.png
+  rotate: false
+  xy: 344, 158
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+tankGreen_barrel2.png
+  rotate: false
+  xy: 378, 26
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankGreen_barrel2_outline.png
+  rotate: false
+  xy: 358, 214
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankGreen_barrel3.png
+  rotate: false
+  xy: 378, 86
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankGreen_barrel3_outline.png
+  rotate: false
+  xy: 358, 30
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankRed_barrel1.png
+  rotate: false
+  xy: 368, 60
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+tankRed_barrel1_outline.png
+  rotate: false
+  xy: 343, 128
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+tankRed_barrel2.png
+  rotate: false
+  xy: 378, 194
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankRed_barrel2_outline.png
+  rotate: false
+  xy: 356, 60
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankRed_barrel3.png
+  rotate: false
+  xy: 378, 246
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankRed_barrel3_outline.png
+  rotate: false
+  xy: 358, 320
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankSand_barrel1.png
+  rotate: false
+  xy: 356, 366
+  size: 12, 26
+  orig: 12, 26
+  offset: 0, 0
+  index: -1
+tankSand_barrel1_outline.png
+  rotate: false
+  xy: 342, 98
+  size: 16, 30
+  orig: 16, 30
+  offset: 0, 0
+  index: -1
+tankSand_barrel2.png
+  rotate: false
+  xy: 378, 168
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankSand_barrel2_outline.png
+  rotate: false
+  xy: 358, 244
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tankSand_barrel3.png
+  rotate: false
+  xy: 371, 116
+  size: 8, 26
+  orig: 8, 26
+  offset: 0, 0
+  index: -1
+tankSand_barrel3_outline.png
+  rotate: false
+  xy: 358, 0
+  size: 12, 30
+  orig: 12, 30
+  offset: 0, 0
+  index: -1
+tank_bigRed.png
+  rotate: false
+  xy: 120, 176
+  size: 52, 52
+  orig: 52, 52
+  offset: 0, 0
+  index: -1
+tank_blue.png
+  rotate: false
+  xy: 173, 60
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+tank_dark.png
+  rotate: false
+  xy: 174, 0
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+tank_darkLarge.png
+  rotate: false
+  xy: 122, 0
+  size: 52, 60
+  orig: 52, 60
+  offset: 0, 0
+  index: -1
+tank_green.png
+  rotate: false
+  xy: 215, 46
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+tank_huge.png
+  rotate: false
+  xy: 62, 254
+  size: 62, 76
+  orig: 62, 76
+  offset: 0, 0
+  index: -1
+tank_red.png
+  rotate: false
+  xy: 258, 184
+  size: 38, 46
+  orig: 38, 46
+  offset: 0, 0
+  index: -1
+tank_sand.png
+  rotate: false
+  xy: 216, 248
+  size: 42, 46
+  orig: 42, 46
+  offset: 0, 0
+  index: -1
+tracksDouble.png
+  rotate: false
+  xy: 220, 294
+  size: 41, 52
+  orig: 41, 52
+  offset: 0, 0
+  index: -1
+tracksLarge.png
+  rotate: false
+  xy: 258, 132
+  size: 41, 52
+  orig: 41, 52
+  offset: 0, 0
+  index: -1
+tracksSmall.png
+  rotate: false
+  xy: 261, 266
+  size: 37, 52
+  orig: 37, 52
+  offset: 0, 0
+  index: -1
+treeBrown_large.png
+  rotate: false
+  xy: 0, 64
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+treeBrown_leaf.png
+  rotate: false
+  xy: 174, 46
+  size: 8, 10
+  orig: 8, 10
+  offset: 0, 0
+  index: -1
+treeBrown_small.png
+  rotate: false
+  xy: 264, 354
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+treeBrown_twigs.png
+  rotate: false
+  xy: 299, 128
+  size: 26, 22
+  orig: 26, 22
+  offset: 0, 0
+  index: -1
+treeGreen_large.png
+  rotate: false
+  xy: 0, 0
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+treeGreen_leaf.png
+  rotate: false
+  xy: 104, 176
+  size: 8, 10
+  orig: 8, 10
+  offset: 0, 0
+  index: -1
+treeGreen_small.png
+  rotate: false
+  xy: 264, 318
+  size: 36, 36
+  orig: 36, 36
+  offset: 0, 0
+  index: -1
+treeGreen_twigs.png
+  rotate: false
+  xy: 298, 296
+  size: 26, 22
+  orig: 26, 22
+  offset: 0, 0
+  index: -1
+wireCrooked.png
+  rotate: false
+  xy: 172, 168
+  size: 44, 48
+  orig: 44, 48
+  offset: 0, 0
+  index: -1
+wireStraight.png
+  rotate: false
+  xy: 329, 0
+  size: 17, 70
+  orig: 17, 70
+  offset: 0, 0
+  index: -1

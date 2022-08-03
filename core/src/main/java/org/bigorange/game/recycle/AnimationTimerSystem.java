@@ -4,7 +4,7 @@ import com.badlogic.ashley.core.Entity;
 import com.badlogic.ashley.core.Family;
 import com.badlogic.ashley.systems.IteratingSystem;
 import org.bigorange.game.ecs.EntityEngine;
-import org.bigorange.game.ecs.component.AnimationComponent;
+import org.bigorange.game.ecs.component.AnimationSimpleComponent;
 
 /**
  * 动画时间系统，根据时间来确定某一帧
@@ -12,12 +12,12 @@ import org.bigorange.game.ecs.component.AnimationComponent;
 public class AnimationTimerSystem extends IteratingSystem {
 
     public AnimationTimerSystem() {
-        super(Family.all(AnimationComponent.class).get());
+        super(Family.all(AnimationSimpleComponent.class).get());
     }
 
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
-        AnimationComponent animationComponent = EntityEngine.aniCmpMapper.get(entity);
-        animationComponent.aniTimer += deltaTime;
+        AnimationSimpleComponent animationSimpleComponent = EntityEngine.aniCmpMapper.get(entity);
+        animationSimpleComponent.aniTimer += deltaTime;
     }
 }

@@ -1,0 +1,23 @@
+{
+  gameObjId : BULLET1
+  state : IDLE
+  direction : DOWN
+  questConfigPath : ""
+  currentQuestId : ""
+  itemTypeId: NONE
+  animationConfig: [
+    {
+      frameDuration: 0.25
+      animationType: IDLE
+      atlasRegion: WEAPONS
+      tileWidth: 4
+      tileHeight: 10
+      stopFrameIndex: 0
+      subTextures: [
+        {
+          value: bulletRed1.png
+        }
+      ]
+    }
+  ]
+}

@@ -7,7 +7,8 @@ public enum TextureAtlasAssets {
 
     STATUSUI("skins/statusui.atlas"),
 
-    UISKIN("hud/uiskin.atlas");
+    UISKIN("hud/uiskin.atlas"),
+    WEAPONS("weapons/weapons.atlas");
 
 
 

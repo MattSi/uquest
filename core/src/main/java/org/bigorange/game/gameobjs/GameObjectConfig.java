@@ -17,6 +17,7 @@ public class GameObjectConfig {
     private String questConfigPath;
     private String currentQuestId;
     private String itemTypeId;
+    private String atlas;
 
     private Array<AnimationConfig> animationConfig;
     private Array<InventotyItem.ItemTypeId> inventory;
@@ -38,10 +39,12 @@ public class GameObjectConfig {
         private int stopFrameIndex;
 
         private Array<GridPoint2> gridPoints;
+        private Array<String> subTextures;
 
         public AnimationConfig() {
             animationType = AnimationType.IDLE;
             gridPoints = new Array<>();
+            subTextures = new Array<>();
         }
 
         public int getStopFrameIndex() {
@@ -99,6 +102,14 @@ public class GameObjectConfig {
         public void setGridPoints(Array<GridPoint2> gridPoints) {
             this.gridPoints = gridPoints;
         }
+
+        public Array<String> getSubTextures() {
+            return subTextures;
+        }
+
+        public void setSubTextures(Array<String> subTextures) {
+            this.subTextures = subTextures;
+        }
     }
 
     public String getGameObjId() {
@@ -141,16 +152,21 @@ public class GameObjectConfig {
         return entityProperties;
     }
 
+    public String getAtlas() {
+        return atlas;
+    }
+
     @Override
     public String toString() {
         return "GameObjectConfig{" +
-                "entityId='" + gameObjId + '\'' +
+                "gameObjId='" + gameObjId + '\'' +
                 ", state=" + state +
                 ", direction=" + direction +
                 ", conversationConfigPath='" + conversationConfigPath + '\'' +
                 ", questConfigPath='" + questConfigPath + '\'' +
                 ", currentQuestId='" + currentQuestId + '\'' +
                 ", itemTypeId='" + itemTypeId + '\'' +
+                ", atlas='" + atlas + '\'' +
                 ", animationConfig=" + animationConfig +
                 ", inventory=" + inventory +
                 ", entityProperties=" + entityProperties +

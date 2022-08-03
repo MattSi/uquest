@@ -18,7 +18,7 @@ import static org.bigorange.game.GameConfig.UNIT_SCALE;
 public class EnemyAnimationSystem extends IteratingSystem {
     private static final String TAG = EnemyAnimationSystem.class.getSimpleName();
     public EnemyAnimationSystem() {
-        super(Family.all(AnimationComponent.class,
+        super(Family.all(AnimationSimpleComponent.class,
                 Animation4DirectionsComponent.class,
                 Box2DComponent.class,
                 SpeedComponent.class
@@ -38,7 +38,7 @@ public class EnemyAnimationSystem extends IteratingSystem {
     @Override
     protected void processEntity(Entity entity, float deltaTime) {
         final Animation4DirectionsComponent ani4dCmp = ECSEngine.ani4dCmpMapper.get(entity);
-        final AnimationComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
+        final AnimationSimpleComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final SteeringComponent steeringCmp = ECSEngine.steerCmpMapper.get(entity);
 

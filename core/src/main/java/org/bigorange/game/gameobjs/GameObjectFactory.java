@@ -26,6 +26,8 @@ public class GameObjectFactory {
 
     public static String PLAYER_CONFIG = "scripts/player.json";
     public static String DOOR_KEEPER_CONFIG = "scripts/door_keeper.json";
+    public static String EXPLOSION1_CONFIG = "scripts/explosion1.json";
+    public static String BULLET1_CONFIG = "scripts/bullet1.json";
     private GameObjectFactory(){
         world = new World(new Vector2(0,0), true);
         world.setContinuousPhysics(true);
@@ -35,11 +37,15 @@ public class GameObjectFactory {
 
         gameObjects.put(GameObjectName.PLAYER.toString(), loadGameObjectConfigByPath(PLAYER_CONFIG));
         gameObjects.put(GameObjectName.DOOR_KEEPER.toString(), loadGameObjectConfigByPath(DOOR_KEEPER_CONFIG));
+        gameObjects.put(GameObjectName.EXPLOSION1.toString(), loadGameObjectConfigByPath(EXPLOSION1_CONFIG));
+        gameObjects.put(GameObjectName.BULLET1.toString(), loadGameObjectConfigByPath(BULLET1_CONFIG));
     }
 
     public static enum GameObjectName {
         PLAYER,
         DOOR_KEEPER,
+        EXPLOSION1,
+        BULLET1,
         FIRE
     }
 

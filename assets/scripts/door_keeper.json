@@ -6,6 +6,7 @@ conversationConfigPath : "conversations/conversation001.json"
 questConfigPath : ""
 currentQuestId : ""
 itemTypeId: NONE
+atlas: CHARACTERS
 animationConfig: [
 	{
 		frameDuration: 0.25
