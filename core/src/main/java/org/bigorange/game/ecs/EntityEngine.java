@@ -7,7 +7,6 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Disposable;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.ecs.system.RemoveSystem;
-import org.bigorange.game.recycle.AnimationTimerSystem;
 
 public abstract class EntityEngine extends PooledEngine implements Disposable {
     private static final String TAG = EntityEngine.class.getSimpleName();
@@ -28,6 +27,7 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
     public static ComponentMapper<ActionableComponent> actionCmpMapper = ComponentMapper.getFor(ActionableComponent.class);
     public static ComponentMapper<CpuCmpClosedToPlayerComponent> cpuCloseToPlayerComMapper = ComponentMapper.getFor(CpuCmpClosedToPlayerComponent.class);
     public static ComponentMapper<RollingComponent> rollingCmpMapper = ComponentMapper.getFor(RollingComponent.class);
+    public static ComponentMapper<DeathClockComponent> deathClockCmpMapper = ComponentMapper.getFor(DeathClockComponent.class);
 
     private final Array<RenderSystem> renderSystems;
     public EntityEngine() {
@@ -35,7 +35,6 @@ public abstract class EntityEngine extends PooledEngine implements Disposable {
         this.renderSystems = new Array<>();
 
         addSystem(new RemoveSystem());
-        addSystem(new AnimationTimerSystem());
     }
 
     public void addRenderSystem(final RenderSystem renderSystem) {

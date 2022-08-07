@@ -9,6 +9,9 @@ import org.bigorange.game.ecs.component.AnimationSimpleComponent;
 
 import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
+/**
+ * 动画时间系统，根据时间来确定某一帧
+ */
 public class AnimationSimpleSystem extends IteratingSystem {
     private static final String TAG = AnimationSimpleSystem.class.getSimpleName();
 

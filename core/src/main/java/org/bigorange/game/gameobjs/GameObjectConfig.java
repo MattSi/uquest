@@ -18,6 +18,7 @@ public class GameObjectConfig {
     private String currentQuestId;
     private String itemTypeId;
     private String atlas;
+    private float lifeTime;
 
     private Array<AnimationConfig> animationConfig;
     private Array<InventotyItem.ItemTypeId> inventory;
@@ -156,6 +157,14 @@ public class GameObjectConfig {
         return atlas;
     }
 
+    public float getLifeTime() {
+        return lifeTime;
+    }
+
+    public void setLifeTime(float lifeTime) {
+        this.lifeTime = lifeTime;
+    }
+
     @Override
     public String toString() {
         return "GameObjectConfig{" +
@@ -167,6 +176,7 @@ public class GameObjectConfig {
                 ", currentQuestId='" + currentQuestId + '\'' +
                 ", itemTypeId='" + itemTypeId + '\'' +
                 ", atlas='" + atlas + '\'' +
+                ", lifeTime=" + lifeTime +
                 ", animationConfig=" + animationConfig +
                 ", inventory=" + inventory +
                 ", entityProperties=" + entityProperties +

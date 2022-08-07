@@ -77,6 +77,7 @@ public class PlayerControlSystem extends IteratingSystem implements
         if (isShooting) {
             isShooting = false;
             ecsEngine.addBullet(b2dCmp.body.getPosition(), new Vector2(shootingTarget.x, shootingTarget.y));
+            ecsEngine.addExplosion1(b2dCmp.body.getPosition(), new Vector2(shootingTarget.x, shootingTarget.y));
         }
 
         // Process Action

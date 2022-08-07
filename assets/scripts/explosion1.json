@@ -5,6 +5,7 @@
   questConfigPath : ""
   currentQuestId : ""
   itemTypeId: NONE
+  lifeTime: 1
   animationConfig: [
     {
       frameDuration: 0.25

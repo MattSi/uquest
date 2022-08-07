@@ -12,14 +12,14 @@ import org.bigorange.game.gameobjs.State;
 public class GameObjectComponent2 implements Component, Pool.Poolable {
     public String gameObjId;
     public State state = State.IDLE;
-    public float birthTime;
+    public long birthTime;
     public boolean isMapGenerated;
     public Vector2 spawnLocation = new Vector2(Vector2.Zero);
     public Direction direction = Direction.DOWN;
 
     @Override
     public void reset() {
-        birthTime = 0f;
+        birthTime = 0L;
         gameObjId = null;
         state = State.IDLE;
         isMapGenerated = false;

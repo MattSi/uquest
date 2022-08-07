@@ -61,6 +61,7 @@ public class ECSEngine extends EntityEngine {
         addSystem(new AnimationSimpleSystem());
         addSystem(new AnimationSystem(gameCamera));
         addSystem(new RollingSystem());
+        addSystem(new DeathClockSystem(this));
 
         addRenderSystem(new GameRenderSystem(this, this.world, gameCamera));
 
@@ -68,6 +69,30 @@ public class ECSEngine extends EntityEngine {
 
     }
 
+    // 在target处使用爆炸效果
+    public void addExplosion1(Vector2 start, Vector2 target){
+        final Entity explosion = createEntity();
+        final GameObjectConfig explosionCfg = GameObjectFactory.getInstance().
+                getGameObjectConfig(GameObjectFactory.GameObjectName.EXPLOSION1);
+
+        final GameObjectComponent2 basicCmp = createBasicComponent(explosionCfg, start);
+        explosion.add(basicCmp);
+
+        if(explosionCfg.getLifeTime() != 0f){
+            final DeathClockComponent dClockCmp = createComponent(DeathClockComponent.class);
+            dClockCmp.tick = explosionCfg.getLifeTime();
+            explosion.add(dClockCmp);
+        }
+
+        // Add Sprite
+        final AnimationSimpleComponent aniCmp = createSimpleAnimationComponent(explosionCfg);
+        explosion.add(aniCmp);
+
+        final AmmoComponent ammoCmp = createComponent(AmmoComponent.class);
+        explosion.add(ammoCmp);
+
+        addEntity(explosion);
+    }
 
     // 生成子弹
     public void addBullet(Vector2 start, Vector2 target) {
@@ -75,12 +100,14 @@ public class ECSEngine extends EntityEngine {
         final GameObjectConfig bullet1Cfg = GameObjectFactory.getInstance().
                 getGameObjectConfig(GameObjectFactory.GameObjectName.BULLET1);
 
-        final GameObjectComponent goCmp = createComponent(GameObjectComponent.class);
-        goCmp.birthTime = System.nanoTime();
-        goCmp.id = 2222;
-        goCmp.type = GameObjectType.MISSILE;
-        bullet.add(goCmp);
+        final GameObjectComponent2 basicCmp = createBasicComponent(bullet1Cfg, start);
+        bullet.add(basicCmp);
 
+        if(bullet1Cfg.getLifeTime() != 0f){
+            final DeathClockComponent dClockCmp = createComponent(DeathClockComponent.class);
+            dClockCmp.tick = bullet1Cfg.getLifeTime();
+            bullet.add(dClockCmp);
+        }
         final Box2DComponent b2dCmp = createComponent(Box2DComponent.class);
         b2dCmp.height = 0.2f;
         b2dCmp.width = 0.2f;
@@ -113,9 +140,8 @@ public class ECSEngine extends EntityEngine {
         bullet.add(aniCmp);
 
         final BulletComponent bulletCmp = createComponent(BulletComponent.class);
-        bulletCmp.startTime = System.currentTimeMillis();
-        bulletCmp.maxSpeed = 8;
         bulletCmp.target = target;
+
 
         float tmp = target.x - start.x;
         if(MathUtils.isZero(tmp)){
@@ -132,10 +158,13 @@ public class ECSEngine extends EntityEngine {
 
         float rad = MathUtils.atan2((target.y - start.y), (target.x - start.x));
         final SpeedComponent speedCmp = createComponent(SpeedComponent.class);
-        speedCmp.velocity.x = bulletCmp.maxSpeed * MathUtils.cos(rad);
-        speedCmp.velocity.y = bulletCmp.maxSpeed * MathUtils.sin(rad);
+        speedCmp.maxSpeed = 8;
+        speedCmp.velocity.x = speedCmp.maxSpeed * MathUtils.cos(rad);
+        speedCmp.velocity.y = speedCmp.maxSpeed * MathUtils.sin(rad);
         bullet.add(speedCmp);
 
+        final AmmoComponent ammoCmp = createComponent(AmmoComponent.class);
+        bullet.add(ammoCmp);
         addEntity(bullet);
     }
 
@@ -481,7 +510,7 @@ public class ECSEngine extends EntityEngine {
         component.gameObjId = cfg.getGameObjId();
         component.isMapGenerated = false;
         component.state = cfg.getState();
-        component.birthTime = System.nanoTime();
+        component.birthTime = System.currentTimeMillis();
         component.spawnLocation = spawnLocation;
         component.direction = cfg.getDirection();
 

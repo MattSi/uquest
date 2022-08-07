@@ -71,9 +71,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
                         exclude(RemoveComponent.class).get());
 
         this.bulletsForRender = entityEngine.
-                getEntitiesFor(Family.all(BulletComponent.class,
-                                Box2DComponent.class,
-                                SpeedComponent.class).
+                getEntitiesFor(Family.all(AmmoComponent.class).
                         exclude(RemoveComponent.class).get());
 
         this.enemiesForRender = entityEngine.getEntitiesFor(Family.all(
@@ -149,26 +147,29 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
     }
 
-    private void renderBullet(Entity entity, float alpha){
+    private void renderBullet(Entity entity, float alpha) {
         final AnimationSimpleComponent aniCmp = ECSEngine.aniCmpMapper.get(entity);
         final Box2DComponent b2dCmp = ECSEngine.b2dCmpMapper.get(entity);
         final BulletComponent bulletCmp = ECSEngine.bulletCmpMapper.get(entity);
+        final GameObjectComponent2 goCmp = ECSEngine.gameObj2CmpMapper.get(entity);
 
         /**
          * 1. find current animation type
          * 2. load animation key frame.
          */
-        //final Animation<Sprite> currentAnimation = aniCmp.animations.get(aniCmp.aniType);
         final Sprite keyFrame = aniCmp.animation.getKeyFrame(aniCmp.aniTimer, true);
-        final Vector2 position = b2dCmp.body.getPosition();
+
+        final Vector2 position = b2dCmp != null ? b2dCmp.body.getPosition() : goCmp.spawnLocation;
 
 
         keyFrame.setOriginCenter();
         keyFrame.setBounds(position.x, position.y, aniCmp.width * UNIT_SCALE, aniCmp.height * UNIT_SCALE);
-        keyFrame.setRotation(bulletCmp.rotation);
+        if(bulletCmp!=null) {
+            keyFrame.setRotation(bulletCmp.rotation);
+        }
         keyFrame.draw(spriteBatch);
 
-        Gdx.app.log(TAG, "Width: "+ aniCmp.width + " Height: "+ aniCmp.height);
+        //Gdx.app.log(TAG, "Width: " + aniCmp.width + " Height: " + aniCmp.height);
         //Gdx.app.log(TAG, "Position: " + position.toString());
     }
 

@@ -2,12 +2,14 @@ package org.bigorange.game;
 
 import com.badlogic.ashley.core.ComponentMapper;
 import com.badlogic.ashley.core.Entity;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.ecs.component.CpuComponent;
 import org.bigorange.game.ecs.component.PlayerComponent;
 
 public class WorldContactManager implements ContactListener {
+    private static final String TAG = WorldContactManager.class.getSimpleName();
     private final ComponentMapper<PlayerComponent> playerCmpMapper;
     private final ComponentMapper<CpuComponent> cpuCmpMapper;
     private final Array<WorldContactListener> listeners;
@@ -38,6 +40,7 @@ public class WorldContactManager implements ContactListener {
         cpuGameObj = null;
         isPlayerSensor = false;
 
+        Gdx.app.log(TAG, "--------------------------------------");
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
 
