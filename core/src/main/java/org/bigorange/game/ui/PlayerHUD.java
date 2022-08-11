@@ -42,11 +42,11 @@ public class PlayerHUD extends BaseScreen implements  ConversationGraphObserver,
 
 
         conversationUI = new ConversationUI(skin);
-        conversationUI.setMovable(true);
+       // conversationUI.setMovable(true);
         conversationUI.setVisible(false);
         conversationUI.setPosition(stage.getWidth() / 2, 0);
-        conversationUI.setWidth(stage.getWidth() / 2);
-        conversationUI.setHeight(stage.getHeight() / 2);
+        conversationUI.setWidth(stage.getWidth() / 4);
+        conversationUI.setHeight(stage.getHeight() / 4);
 
         final TextureAtlas textureAtlas = Utils.getResourceManager().get("hud/uiskin.atlas", TextureAtlas.class);
         statusUI = new StatusUI(skin, textureAtlas);

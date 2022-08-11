@@ -7,31 +7,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.ai.msg.MessageManager;
 import com.badlogic.gdx.ai.msg.TelegramProvider;
 import com.badlogic.gdx.ai.msg.Telegraph;
-import com.badlogic.gdx.utils.Array;
 import org.bigorange.game.Utils;
 import org.bigorange.game.WorldContactManager;
 import org.bigorange.game.ecs.ECSEngine;
 import org.bigorange.game.ecs.component.*;
 import org.bigorange.game.message.MessageType;
 
-
-public class PlayerContactSystem extends EntitySystem implements
-        WorldContactManager.WorldContactListener,
+/**
+ * Player同NPC与Enemy接触的System， 通过Box2D触发
+ */
+public class PlayerPlayerContactSystem extends EntitySystem implements
+        WorldContactManager.WorldPlayerContactListener,
         TelegramProvider {
-    public static final String TAG = PlayerContactSystem.class.getSimpleName();
-    private final Array<PlayerContactListener> listeners;
+    public static final String TAG = PlayerPlayerContactSystem.class.getSimpleName();
 
-    public PlayerContactSystem(){
-        Utils.getWorldContactManager().addWorldContactListener(this);
-        listeners = new Array<>();
+    public PlayerPlayerContactSystem(){
+        Utils.getWorldContactManager().addWorldPlayerContactListener(this);
         MessageManager.getInstance().addProvider(this, MessageType.PLAYER_AWAY_FROM_NPC);
         MessageManager.getInstance().addProvider(this, MessageType.PLAYER_CLOSE_TO_NPC);
         Gdx.app.debug(TAG, this.getClass().getSimpleName() + " instantiated.");
-    }
-
-
-    public void addPlayerContactListener(final PlayerContactListener listener){
-        listeners.add(listener);
     }
 
     @Override
@@ -111,14 +105,9 @@ public class PlayerContactSystem extends EntitySystem implements
         return null;
     }
 
-    public interface PlayerContactListener{
-        void wallContact();
-    }
-
     @Override
     public void removedFromEngine(Engine engine) {
         super.removedFromEngine(engine);
-        listeners.clear();
         MessageManager.getInstance().clearProviders(MessageType.PLAYER_AWAY_FROM_NPC);
     }
 }

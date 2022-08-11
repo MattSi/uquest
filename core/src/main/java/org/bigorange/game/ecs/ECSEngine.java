@@ -54,7 +54,8 @@ public class ECSEngine extends EntityEngine {
         addSystem(new PlayerControlSystem(this, gameCamera));
         addSystem(new BulletMovementSystem(this));
         addSystem(new EnemyAnimationSystem());
-        addSystem(new PlayerContactSystem());
+        addSystem(new PlayerPlayerContactSystem());
+        addSystem(new BulletPlayerContactSystem(this));
         addSystem(new SteeringArriveSystem());
         addSystem(new InteractSystem());
         addSystem(new TargetLostSystem());
@@ -70,7 +71,7 @@ public class ECSEngine extends EntityEngine {
     }
 
     // 在target处使用爆炸效果
-    public void addExplosion1(Vector2 start, Vector2 target){
+    public void addExplosion1(Vector2 start, Vector2 target) {
         final Entity explosion = createEntity();
         final GameObjectConfig explosionCfg = GameObjectFactory.getInstance().
                 getGameObjectConfig(GameObjectFactory.GameObjectName.EXPLOSION1);
@@ -78,7 +79,7 @@ public class ECSEngine extends EntityEngine {
         final GameObjectComponent2 basicCmp = createBasicComponent(explosionCfg, start);
         explosion.add(basicCmp);
 
-        if(explosionCfg.getLifeTime() != 0f){
+        if (explosionCfg.getLifeTime() != 0f) {
             final DeathClockComponent dClockCmp = createComponent(DeathClockComponent.class);
             dClockCmp.tick = explosionCfg.getLifeTime();
             explosion.add(dClockCmp);
@@ -87,6 +88,10 @@ public class ECSEngine extends EntityEngine {
         // Add Sprite
         final AnimationSimpleComponent aniCmp = createSimpleAnimationComponent(explosionCfg);
         explosion.add(aniCmp);
+
+        // Update Spawn location
+        basicCmp.spawnLocation.x -= aniCmp.width / 2 * UNIT_SCALE;
+        basicCmp.spawnLocation.y -= aniCmp.height / 2 * UNIT_SCALE;
 
         final AmmoComponent ammoCmp = createComponent(AmmoComponent.class);
         explosion.add(ammoCmp);
@@ -128,7 +133,7 @@ public class ECSEngine extends EntityEngine {
 
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
-        fixtureDef.filter.categoryBits = CATEGORY_BULLET;
+        fixtureDef.filter.categoryBits = CATEGORY_PLAYER_BULLET;
         fixtureDef.filter.maskBits = MASK_BULLET | CATEGORY_ENEMY | CATEGORY_TILEMAP_OBJECT;
 
         b2dCmp.body.createFixture(fixtureDef);
@@ -235,8 +240,8 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.density = 1f;
         fixtureDef.friction = 0.8f;
         fixtureDef.restitution = 0f;
-        fixtureDef.filter.categoryBits = CATEGORY_ENEMY;
-        fixtureDef.filter.maskBits = MASK_PLAYER;
+        fixtureDef.filter.categoryBits = CATEGORY_NPC;
+        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -246,8 +251,6 @@ public class ECSEngine extends EntityEngine {
         circleShape.setRadius(2f);
         fixtureDef.isSensor = true;
         fixtureDef.shape = circleShape;
-        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
 
         b2dCmp.body.createFixture(fixtureDef);
         circleShape.dispose();
@@ -330,8 +333,8 @@ public class ECSEngine extends EntityEngine {
         circleShape.setRadius(2f);
         fixtureDef.isSensor = true;
         fixtureDef.shape = circleShape;
-        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        fixtureDef.filter.maskBits = CATEGORY_PLAYER;
+        fixtureDef.filter.categoryBits = 0;
+        fixtureDef.filter.maskBits=0;
 
         b2dCmp.body.createFixture(fixtureDef);
         circleShape.dispose();
@@ -382,7 +385,7 @@ public class ECSEngine extends EntityEngine {
         fixtureDef.isSensor = false;
         fixtureDef.shape = shape;
         fixtureDef.filter.categoryBits = CATEGORY_PLAYER;
-        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_SENSOR;
+        fixtureDef.filter.maskBits = CATEGORY_WORLD | CATEGORY_TILEMAP_OBJECT | CATEGORY_ENEMY | CATEGORY_NPC;
 
         b2dCmp.body.createFixture(fixtureDef);
         shape.dispose();
@@ -392,8 +395,6 @@ public class ECSEngine extends EntityEngine {
         circleShape.setRadius(5f);
         fixtureDef.isSensor = true;
         fixtureDef.shape = circleShape;
-        fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-        // fixtureDef.filter.maskBits =
 
         final PlayerComponent playerCmp = createComponent(PlayerComponent.class);
 
@@ -472,8 +473,6 @@ public class ECSEngine extends EntityEngine {
             circleShape.setRadius(1f);
             fixtureDef.isSensor = true;
             fixtureDef.shape = circleShape;
-            fixtureDef.filter.categoryBits = CATEGORY_SENSOR;
-            fixtureDef.filter.maskBits = CATEGORY_PLAYER;
 
             b2dCmp.body.createFixture(fixtureDef);
             circleShape.dispose();

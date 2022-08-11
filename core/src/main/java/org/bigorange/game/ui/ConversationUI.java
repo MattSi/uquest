@@ -15,7 +15,7 @@ import org.bigorange.game.ecs.component.ActionableComponent;
 /**
  * Conversation UI: embedded in Player HUD
  */
-public class ConversationUI extends Window {
+public class ConversationUI extends Table {
     public static final String TAG = ConversationUI.class.getSimpleName();
 
     private Label dialogText;
@@ -25,7 +25,8 @@ public class ConversationUI extends Window {
     private Json json;
 
     public ConversationUI(Skin skin) {
-        super("dialog", skin, "default");
+       // super("dialog", skin, "default");
+        super();
 
         json = new Json();
         graph = new ConversationGraph();
@@ -33,7 +34,7 @@ public class ConversationUI extends Window {
         //create
         dialogText = new Label("No Conversation", skin, "info");
         dialogText.setWrap(true);
-        dialogText.setAlignment(Align.center);
+        dialogText.setAlignment(Align.topLeft);
         listItems = new List<ConversationChoice>(skin);
 
         closeButton = new TextButton("X", skin);
@@ -46,16 +47,16 @@ public class ConversationUI extends Window {
         scrollPane.setScrollBarPositions(false, true);
 
         //layout
-        this.add();
-        this.add(closeButton);
-        this.row();
+//        this.add();
+//        this.add(closeButton);
+//        this.row();
 
         this.defaults().expand().fill();
-        this.add(dialogText).pad(10, 10, 10, 10);
+        this.add(dialogText).pad(1, 1, 1, 1);
         this.row();
-        this.add(scrollPane).pad(10, 10, 10, 10);
+        this.add(scrollPane).pad(1, 1, 1, 1);
 
-        //this.debug();
+        this.debug();
         this.pack();
 
         //listeners
@@ -81,7 +82,7 @@ public class ConversationUI extends Window {
 
     //TODO, hard code for now, how to locate NPC's conversation ID
     public void loadConversation(ActionableComponent actionCmp) {
-        this.getTitleLabel().setText("");
+        //this.getTitleLabel().setText("");
         clearDialog();
 
         final ConversationGraph g = json.fromJson(ConversationGraph.class, Gdx.files.internal(actionCmp.talkScript));

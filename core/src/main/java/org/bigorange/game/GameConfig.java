@@ -14,14 +14,17 @@ public class GameConfig {
 
     //玩家
     public static final short CATEGORY_PLAYER = 1<<0;
-
     //敌人
     public static final short CATEGORY_ENEMY = 1<<1;
-    //子弹
-    public static final short CATEGORY_BULLET = 1<<2;
+    //NPC
+    public static final short CATEGORY_NPC = 1<<2;
+    //玩家的子弹
+    public static final short CATEGORY_PLAYER_BULLET = 1<<3;
+    //敌人的子弹
+    public static final short CATEGORY_ENEMY_BULLET = 1<<4;
 
     //TileMap生成的对象
-    public static final short CATEGORY_TILEMAP_OBJECT = 1<<3;
+    public static final short CATEGORY_TILEMAP_OBJECT = 1<<5;
 
     //传感器
     public static final short CATEGORY_SENSOR = 1<<9;
@@ -42,7 +45,7 @@ public class GameConfig {
     //只能和PLAYER碰撞
     public static final short MASK_SENSOR = CATEGORY_PLAYER;
 
-    public static final short MASK_BULLET = ~CATEGORY_BULLET;
+    public static final short MASK_BULLET = ~CATEGORY_PLAYER_BULLET;
     //可以和任何物体碰撞
     public static final short MASK_GROUND = -1;
 }

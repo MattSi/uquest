@@ -18,7 +18,6 @@ import org.bigorange.game.Utils;
 import org.bigorange.game.assets.MapAsset;
 import org.bigorange.game.assets.MusicAsset;
 import org.bigorange.game.ecs.ECSEngine;
-import org.bigorange.game.ecs.system.PlayerContactSystem;
 import org.bigorange.game.ecs.system.PlayerControlSystem;
 import org.bigorange.game.gameobjs.GameObjectConfig;
 import org.bigorange.game.gameobjs.GameObjectFactory;
@@ -28,7 +27,7 @@ import org.bigorange.game.message.MessageType;
 import org.bigorange.game.ui.PlayerHUD;
 import org.bigorange.game.ui.TTFSkin;
 
-public class GameScreen extends BaseScreen implements PlayerContactSystem.PlayerContactListener, TelegramProvider,Telegraph {
+public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph {
     private final ECSEngine ecsEngine;
     private final World world;
 
@@ -83,7 +82,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
         // TODO, init Box2D light system
 
         ecsEngine = new ECSEngine(world, camera, hudCamera);
-        ecsEngine.getSystem(PlayerContactSystem.class).addPlayerContactListener(this);
 
         final TiledMap tiledMap = resourceManager.get(MapAsset.LEVEL1.getFilePath(), TiledMap.class);
         mapManager.loadMap(tiledMap, world);
@@ -135,12 +133,6 @@ public class GameScreen extends BaseScreen implements PlayerContactSystem.Player
     @Override
     public void hide() {
         super.hide();
-
-    }
-
-    @Override
-    public void wallContact() {
-
     }
 
     public void addEnemies() {

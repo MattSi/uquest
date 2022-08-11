@@ -143,7 +143,7 @@ public class GameRenderSystem implements RenderSystem, MapListener {
         //spriteBatch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         spriteBatch.end();
 
-        //b2dRenderer.render(world, gameCamera.combined);
+        b2dRenderer.render(world, gameCamera.combined);
         //Gdx.app.debug(TAG,"Number Of Bullets Entity: " + bulletsForRender.size());
     }
 
