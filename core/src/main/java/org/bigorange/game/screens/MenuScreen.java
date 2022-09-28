@@ -104,6 +104,7 @@ public class MenuScreen extends BaseScreen {
         menuItems.add(new TextButton("Quit Game", skin, "huge"));
         content.add(menuItems.peek()).fill().expand().padBottom(175).row();
 
+
         return content;
     }
 

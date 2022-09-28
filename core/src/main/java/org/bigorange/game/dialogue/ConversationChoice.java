@@ -1,5 +1,13 @@
 package org.bigorange.game.dialogue;
 
+/**
+ * 对话节点选择项
+ *  -- 当对话进行时，玩家会根据NPC的对话，做出一些选择
+ *  sourceId : 当前对话节点
+ *  destinationId : 要跳转到的对话节点
+ *  choicePhrase : 选择的文本
+ *  conversationCommandEvent : 选择后需要执行的命令
+ */
 public class ConversationChoice {
     private int sourceId;
     private int destinationId;

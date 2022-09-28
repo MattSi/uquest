@@ -75,7 +75,6 @@ public class WorldContactManager implements ContactListener {
         playerContactObj = null;
         isPlayerSensor = false;
 
-        Gdx.app.log(TAG, "--------------------------------------");
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
 

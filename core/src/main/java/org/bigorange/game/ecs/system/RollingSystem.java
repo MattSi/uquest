@@ -25,7 +25,7 @@ public class RollingSystem extends IteratingSystem {
          * 1. 改变Entity颜色
          * 2. 冻结Entity的动画
          * 3. 无敌状态 (前半程)
-         * 4. 速度1.5倍
+         * 4. 速度6倍
          * 5. 阻止键盘操作 (过程中)
          */
         final RollingComponent rollingCmp = EntityEngine.rollingCmpMapper.get(entity);

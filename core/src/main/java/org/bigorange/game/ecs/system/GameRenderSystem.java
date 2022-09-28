@@ -31,7 +31,9 @@ import space.earlygrey.shapedrawer.ShapeDrawer;
 
 import static org.bigorange.game.GameConfig.UNIT_SCALE;
 
-
+/**
+ * 游戏渲染系统
+ */
 public class GameRenderSystem implements RenderSystem, MapListener {
     private static final String TAG = GameRenderSystem.class.getSimpleName();
 

@@ -5,14 +5,14 @@
   questConfigPath : ""
   currentQuestId : ""
   itemTypeId: NONE
-  lifeTime: 1
+  lifeTime: 0.3
   animationConfig: [
     {
-      frameDuration: 0.25
+      frameDuration: 0.1
       animationType: IDLE
       atlasRegion: WEAPONS
-      tileWidth: 64
-      tileHeight: 63
+      tileWidth: 32
+      tileHeight: 32
       stopFrameIndex: 0
       subTextures: [
         {

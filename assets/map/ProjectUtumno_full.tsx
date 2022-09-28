@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<tileset version="1.8" tiledversion="1.8.2" name="ProjectUtumno_full" tilewidth="32" tileheight="32" tilecount="6080" columns="64">
+<tileset version="1.9" tiledversion="1.9.1" name="ProjectUtumno_full" tilewidth="32" tileheight="32" tilecount="6080" columns="64">
  <image source="ProjectUtumno_full.png" width="2048" height="3040"/>
  <tile id="1">
   <animation>
@@ -116,5 +116,10 @@
    <frame tileid="1677" duration="200"/>
    <frame tileid="1678" duration="200"/>
   </animation>
+ </tile>
+ <tile id="3773">
+  <objectgroup draworder="index" id="2">
+   <object id="1" x="5.45455" y="6.72727" width="21.4545" height="20.3636"/>
+  </objectgroup>
  </tile>
 </tileset>

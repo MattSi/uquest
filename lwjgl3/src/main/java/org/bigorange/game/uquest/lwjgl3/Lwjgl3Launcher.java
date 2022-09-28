@@ -3,6 +3,7 @@ package org.bigorange.game.uquest.lwjgl3;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 import org.bigorange.game.UndergroundQuest;
+import org.bigorange.game.example.ViewportTest;
 
 import static com.badlogic.gdx.Application.LOG_DEBUG;
 
@@ -14,6 +15,7 @@ public class Lwjgl3Launcher {
 
 	private static Lwjgl3Application createApplication() {
 
+		//final Lwjgl3Application game = new Lwjgl3Application(new ViewportTest(), getDefaultConfiguration());
 		final Lwjgl3Application game = new Lwjgl3Application(new UndergroundQuest(), getDefaultConfiguration());
 		game.setLogLevel(LOG_DEBUG);
 		return game;

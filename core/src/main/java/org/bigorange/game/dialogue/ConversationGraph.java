@@ -4,7 +4,12 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.IntMap;
 import com.badlogic.gdx.utils.Json;
 
-
+/**
+ * 对话图 : 玩家和NPC对话时，所有对话节点和选择节点的数据结构
+ *
+ * conversations : 对话节点(node)集合
+ * associatedChoices : 每个对话节点的关联选择项
+ */
 public class ConversationGraph extends ConversationGraphSubject {
     private IntMap<ConversationNode> conversations;
     private IntMap<Array<ConversationChoice>> associatedChoices;
