@@ -10,6 +10,8 @@ This project uses [Gradle](http://gradle.org/) to manage dependencies.
 The Gradle wrapper was included, so you can run Gradle tasks using `gradlew.bat` or `./gradlew` commands.
 Useful Gradle tasks and flags:
 
+## Technology points
+
 - Ashley ECS framework
 - LibGdx-AI module for steering
 - LibGdx-AI FSM module for animation automation
