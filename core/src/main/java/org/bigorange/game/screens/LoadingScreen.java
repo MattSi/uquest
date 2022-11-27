@@ -34,19 +34,21 @@ public class LoadingScreen extends BaseScreen  {
         isMusicLoaded = false;
 
         table = new Table();
-        table.setFillParent(true);
+        table.setFillParent(false);
+        table.setPosition(100,20);
         progressBar = new ProgressBar(0, 1, 0.01f, false, skin, "green_h");
 
         pressAnyButtonInfo = new TextButton("Press Any Key", skin, "huge");
         pressAnyButtonInfo.setVisible(false);
-        pressAnyButtonInfo.getLabel().setWrap(true);
+        pressAnyButtonInfo.getLabel().setWrap(false);
 
         note = new TextButton("Loading...", skin, "normal");
 
         //table.add(new Image(skin.getDrawable("banner"))).expand().top().padTop(65).row();
         table.add(pressAnyButtonInfo).expand().fillX().center().row();
         table.add(note).expand().fillX().bottom().row();
-        table.add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
+        //table.add(progressBar).expandX().fillX().pad(15, 50, 175, 50).bottom();
+        table.add(progressBar).expandX().fillX().bottom();
 
         pressAnyButtonInfo.addListener(new ClickListener(){
             @Override
@@ -62,7 +64,7 @@ public class LoadingScreen extends BaseScreen  {
         });
 
         stage.addActor(table);
-       // stage.setDebugAll(true);
+        stage.setDebugAll(true);
     }
 
     @Override

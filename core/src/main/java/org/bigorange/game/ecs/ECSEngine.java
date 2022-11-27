@@ -264,6 +264,7 @@ public class ECSEngine extends EntityEngine {
     public void addEnemy(Vector2 spawnLocation, String enemyId) {
         final Entity enemy = createEntity();
 
+
 //        final EnemyComponent enemyCmp = createComponent(EnemyComponent.class);
 //        enemyCmp.state = EnemyComponent.EnemyState.IDLE;
 //        enemyCmp.maxSpeed = 2f;

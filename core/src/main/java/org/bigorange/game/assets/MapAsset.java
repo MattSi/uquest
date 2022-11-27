@@ -6,7 +6,7 @@ public enum MapAsset {
     LEVEL1("map/battle1.tmx"),
     LEVEL2("map/battle2.tmx"),
     ROOM("map/room.tmx"),
-    INTRO("map/intro.tmx");
+    INTRO("map/intro/intro1.tmx");
 
     public static final Class klass = TiledMap.class;
 

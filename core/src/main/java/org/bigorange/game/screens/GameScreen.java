@@ -13,6 +13,9 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import org.bigorange.game.ResourceManager;
 import org.bigorange.game.Utils;
 import org.bigorange.game.assets.MapAsset;
@@ -35,6 +38,8 @@ public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph
     protected OrthographicCamera hudCamera = null;
     private static final int VIEWPORT_WIDTH = 10;
     private static final int VIEWPORT_HEIGHT = 10;
+    private final Viewport screenViewport;
+    private final Viewport gameViewport;
 
     /**
      * 集成了不同的Viewport,
@@ -67,10 +72,13 @@ public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph
         // Camera setup
         setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
 
+
         camera = new OrthographicCamera();
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        //camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        gameViewport = new StretchViewport(1280,720, camera);
         hudCamera = new OrthographicCamera();
-        hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
+        //hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
+        screenViewport = new ScreenViewport(hudCamera);
 
 
         GameObjectFactory gof = GameObjectFactory.getInstance();
@@ -83,13 +91,14 @@ public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph
 
         ecsEngine = new ECSEngine(world, camera, hudCamera);
 
-        final TiledMap tiledMap = resourceManager.get(MapAsset.LEVEL1.getFilePath(), TiledMap.class);
+        final TiledMap tiledMap = resourceManager.get(MapAsset.INTRO.getFilePath(), TiledMap.class);
         mapManager.loadMap(tiledMap, world);
         mapManager.spawnGameObjects(this.ecsEngine, this.ecsEngine.getGameObjEntities());
 
         final Map currentMap = mapManager.getCurrentMap();
         final Array<Vector2> playerStartLocations = currentMap.getPlayerStartLocations();
         this.ecsEngine.addPlayer2(playerStartLocations.get(0));
+        //this.ecsEngine.addPlayer2(new Vector2(50,50));
         //setCursor();
         addEnemies();
         addNpcs();
@@ -116,17 +125,22 @@ public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph
         world.step(delta, 6, 2);
         stage.act(delta);
 
+        gameViewport.apply();
         ecsEngine.render(delta);
-        stage.getViewport().apply();
-        stage.draw();
 
+        stage.getViewport().apply();
+        //stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-        setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
-        camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        //setupViewport(VIEWPORT_WIDTH, VIEWPORT_HEIGHT);
+        gameViewport.update(width, height);
+        //camera.setToOrtho(false, VIEWPORT.viewportWidth, VIEWPORT.viewportHeight);
+        //hudCamera.setToOrtho(false, VIEWPORT.physicalWidth, VIEWPORT.physicalHeight);
+        screenViewport.update(width,height);
 
+        stage.getViewport().update(width,height, true);
         ecsEngine.resize(width, height);
     }
 
@@ -223,8 +237,9 @@ public class GameScreen extends BaseScreen implements TelegramProvider,Telegraph
             VIEWPORT.viewportHeight = VIEWPORT.viewportWidth * (VIEWPORT.physicalHeight / VIEWPORT.physicalWidth);
         }
 
-        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.virtualWidth + "," + VIEWPORT.virtualHeight + ")");
-        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.viewportWidth + "," + VIEWPORT.viewportHeight + ")");
-        Gdx.app.debug(TAG, "WorldRenderer: virtual: (" + VIEWPORT.physicalWidth + "," + VIEWPORT.physicalHeight + ")");
+        Gdx.app.log(TAG, "WorldRenderer: virtual: (" + VIEWPORT.virtualWidth + "," + VIEWPORT.virtualHeight + ")");
+        Gdx.app.log(TAG, "WorldRenderer: viewport: (" + VIEWPORT.viewportWidth + "," + VIEWPORT.viewportHeight + ")");
+        Gdx.app.log(TAG, "WorldRenderer: physical: (" + VIEWPORT.physicalWidth + "," + VIEWPORT.physicalHeight + ")");
+
     }
 }

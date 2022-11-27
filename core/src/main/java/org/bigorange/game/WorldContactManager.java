@@ -54,6 +54,7 @@ public class WorldContactManager implements ContactListener {
         final Object userDataA = contact.getFixtureA().getBody().getUserData();
         final Object userDataB = contact.getFixtureB().getBody().getUserData();
 
+
         if(!(userDataA instanceof Entity) || !(userDataB instanceof Entity)){
             return false;
         }

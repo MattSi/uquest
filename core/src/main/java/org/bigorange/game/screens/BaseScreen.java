@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import org.bigorange.game.Utils;
 import org.bigorange.game.input.*;
 import org.bigorange.game.ui.TTFSkin;
@@ -19,8 +20,7 @@ public abstract class BaseScreen implements Screen, InputListener {
     protected boolean keyInputListenerEnabled;
 
     public BaseScreen(TTFSkin skin, ScreenManager screenManager) {
-        this.stage = new Stage(new FitViewport(Gdx.graphics.getWidth(),
-                Gdx.graphics.getHeight(),
+        this.stage = new Stage(new ScreenViewport(
                 new OrthographicCamera()));
         this.skin = skin;
         this.screenManager = screenManager;

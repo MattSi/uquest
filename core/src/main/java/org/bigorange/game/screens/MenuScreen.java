@@ -86,7 +86,7 @@ public class MenuScreen extends BaseScreen {
 
 
         //menuItems.add(new TextButton(hud.getLocalizedString("newGame"), skin, "huge"));
-        menuItems.add(new TextButton("New Game", skin, "huge"));
+        menuItems.add(new TextButton("测试New Game", skin, "huge"));
         content.add(menuItems.peek()).fill().expand().row();
         content.add(continueItem).fill().expand().row();
 
